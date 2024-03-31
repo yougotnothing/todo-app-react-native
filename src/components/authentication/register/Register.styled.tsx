@@ -1,13 +1,10 @@
 import styled from "styled-components/native";
 
-export const Container = styled.View`
+export const Wrapper = styled.View`
   flex: 1;
-  gap: 20px;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
-  padding: 20px;
   background-color: #fff;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const Title = styled.Text`
@@ -31,20 +28,4 @@ export const Button = styled.TouchableOpacity`
 export const Text = styled.Text`
   font-size: 20px;
   font-weight: bold;
-`;
-
-export const Task = styled.View`
-  flex: 1;
-  background-color: #fff;
-  align-items: center;
-  justify-content: center;
-  margin-top: 10px;
-  margin-bottom: 10px;
-`;
-
-export const TasksWrapper = styled.SafeAreaView`
-  flex: 1;
-  width: 100%;
-  height: 500px;
-  background-color: #fff;
-`;
+`

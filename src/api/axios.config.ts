@@ -9,14 +9,6 @@ export const api = axios.create({
     'Access-Control-Allow-Origin': 'http://192.168.0.38:3000',
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-  }
-});
-
-api.interceptors.response.use((response) => response, (error) => {
-  if(error.response) {
-    if(error.response.status === 401) {
-      AsyncStorage.removeItem('token');
-      return Promise.reject(error);
-    }
+    'Authorization': `${async () => await AsyncStorage.getItem('token')}`
   }
 });

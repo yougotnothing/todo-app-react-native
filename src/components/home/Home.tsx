@@ -1,49 +1,39 @@
-// Home.tsx
-
 import { useNavigation } from "@react-navigation/native";
-import { Button, Container, Input, Title, Text } from "./Home.styled";
-import { useEffect, useState } from "react";
+import { Container, Input, Task, TasksWrapper } from "./Home.styled";
+import Text from "../../templates/components/Text";
+import React, { useEffect, useState } from "react";
+import Button from "../../templates/components/Button";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
 import { api } from "../../api/axios.config";
+import { FlatList, SafeAreaView } from "react-native";
+import { TodoDto } from "../../dto/todo.dto";
+import { colors } from "../../templates/colors";
 
 export default function Home() {
   const [login, setLogin] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
-  const [tasks, setTasks] = useState<any[]>([]);
+  const [tasks, setTasks] = useState<TodoDto[]>([]);
   const navigation = useNavigation<any>();
-
-  useEffect(() => {
-    const loadPage = async () => {
-      try {
-        const token = await AsyncStorage.getItem('token');
-        console.log('token', token);
-
-        if(token && token.length > 0) {
-          setLoggedIn(true);
-          const response = await api.get('/user/get-tasks', {
-            headers: {
-              Authorization: `Basic ${token}`
-            }
-          });
-          console.log('response', response.data.tasks);
-          setTasks(response.data);
-        }else{
-          console.log('No token found');
+  
+  const handleGetTasks = async () => {
+    const token = await AsyncStorage.getItem('token');
+    try {
+      const response = await api.get('/user/get-tasks', {
+        headers: {
+          Authorization: `Basic ${token}`
         }
-      } catch (error: any) {
-        console.log(error.message);
-      }
+      });
+      console.log('response', response.data.tasks);
+      setTasks(response.data.tasks);
+    } catch (error: any) {
+      console.log(error.message);
     }
-
-    loadPage();
-  }, [loggedIn])
+  }
 
   useEffect(() => {
-    console.log('login', login);
-    console.log('password', password);
-  }, [login, password]);
+    handleGetTasks();
+  }, []);
 
   const handleLogin = async () => {
     try {
@@ -54,25 +44,27 @@ export default function Home() {
       await AsyncStorage.setItem('token', response.data.token);
       setLoggedIn(true);
       console.log('Successfully logged in');
-    } catch (error: any) {
+    }catch (error: any) {
       console.log(error.message);
     }
   }
 
   return (
     <Container>
-      <Input
-        placeholder="Enter your name"
-        value={login}
-        onChangeText={setLogin}
-      />
-      <Input
-        placeholder="Enter your password"
-        textContentType="password"
-        value={password}
-        onChangeText={setPassword}
-      />
-      <Button onPress={handleLogin}><Text>Login</Text></Button>
+      <Text color={colors.fonts.blue} size="large" weight="700" text="todo"/>
+      <TasksWrapper>
+        <FlatList
+          data={tasks}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <Task>
+              <Text color={colors.fonts.blue} size="medium" weight="700" text={item.header} />
+              <Text color={colors.fonts.black} size="small" weight="400" text={item.content} />
+            </Task>
+          )}
+        />
+      </TasksWrapper>
+      <Button onPress={handleLogin} text="Login" />
     </Container>
   )
 }
