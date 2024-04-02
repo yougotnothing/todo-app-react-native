@@ -1,7 +1,14 @@
 export interface Props {
   size: 'small' | 'medium' | 'large';
-  weight?: '700' | '500' | '400' |'300';
-  fontFamily?: 
+  weight?:
+    | '900'
+    | '800'
+    | '700'
+    | '600'
+    | '500'
+    | '400'
+    | '300'; 
+  fontFamily?:
     | "Jost-Bold"
     | "Jost-Black"
     | "Jost-ExtraBold"

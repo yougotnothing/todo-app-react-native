@@ -1,17 +1,19 @@
 import { useFormik } from "formik";
 import { registerSchema } from "../../../config/validation/yup.config";
-import { Wrapper, Input, Button } from "./Register.styled";
+import { Wrapper, InputsWrapper, Button, TitleWrapper, HeaderWrapper, Footer, AlreadyHaveAccount, AlreadyHaveAccountButton } from "./Register.styled";
+import Input from "../../../templates/components/Input";
 import Text from "../../../templates/components/Text";
-import { RegisterDto } from "../../../types/register.type";
+import { RegisterDto } from "../../../dto/register.dto";
 import { handleRegister } from "../functions";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Register() {
+  const navigation = useNavigation<any>();
   const formik = useFormik<RegisterDto>({
     initialValues: {
       name: '',
       password: '',
       email: '',
-      confirmPassword: ''
     },
     validationSchema: registerSchema,
     onSubmit: () => {}
@@ -19,32 +21,48 @@ export default function Register() {
 
   return (
     <Wrapper>
-      <Text size="large" weight="700" text="Register" />
-      <Input
-        placeholder="Enter your name"
-        value={formik.values.name}
-        onChangeText={formik.handleChange('name')}
-      />
-      <Input
-        placeholder="Enter your password"
-        textContentType="password"
-        value={formik.values.password}
-        onChangeText={formik.handleChange('password')}
-      />
-      <Input
-        placeholder="Enter your email"
-        value={formik.values.email}
-        onChangeText={formik.handleChange('email')}
-      />
-      <Input
-        placeholder="Confirm your password"
-        textContentType="password"
-        value={formik.values.confirmPassword}
-        onChangeText={formik.handleChange('confirmPassword')}
-      />
-      <Button onPress={() => handleRegister(formik.values)}>
-        <Text size="medium" weight="500" text="Register" />
+      <TitleWrapper>
+        <Text color="#9BA3EB" fontFamily="Jost-SemiBold" size="large" text="Mtodo Logo" />
+      </TitleWrapper>
+      <HeaderWrapper>
+        <Text color="#9BA3EB" size="large" fontFamily="Jost-Medium" text="Hello!" />
+        <Text color="#B9B8FA" size="medium" fontFamily="Jost-Medium" text="welcome to Mtodo app sign up to get started" />
+      </HeaderWrapper>
+      <InputsWrapper>
+        <Input
+          placeholder="Your name"
+          value={formik.values.name}
+          textContentType="name"
+          onChange={formik.handleChange('name')}
+          />
+        <Input
+          placeholder="Enter email"
+          value={formik.values.email}
+          textContentType="emailAddress"
+          onChange={formik.handleChange('email')}
+        />
+        <Input
+          placeholder="Password"
+          textContentType="password"
+          value={formik.values.password}
+          onChange={formik.handleChange('password')}
+        />
+        <Footer>
+          <Text color="#888888" size="small" fontFamily="Jost-Regular" text="by singing up you agree to our" />
+          <Text color="#646FD4" size="small" fontFamily="Jost-Regular" text="terms & conditions" />
+          <Text color="#888888" size="small" fontFamily="Jost-Regular" text="of use and" />
+          <Text color="#646FD4" size="small" fontFamily="Jost-Regular" text="privacy policy" />
+        </Footer>
+      </InputsWrapper>
+      <Button onPress={() => handleRegister(formik.values).then(() => navigation.navigate('Home'))}>
+        <Text color="white" size="medium" weight="500" text="SIGN UP" />
       </Button>
+      <AlreadyHaveAccount>
+        <Text color="#8D93AB" size="small" fontFamily="Jost-Medium" text="Already have an account?" />
+        <AlreadyHaveAccountButton onPress={() => navigation.navigate('Log in')}>
+          <Text color="#646FD4" size="small" fontFamily="Jost-Medium" text="LOG IN" />
+        </AlreadyHaveAccountButton>
+      </AlreadyHaveAccount>
     </Wrapper>
   )
 }

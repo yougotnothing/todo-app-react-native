@@ -2,13 +2,13 @@ import { NavigationContainer, Route } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "../src/components/home/Home";
 import Register from "../src/components/authentication/register/Register";
-import Text from "../src/templates/components/Text";
 import WelcomePage from "../src/components/welcome-page/Welcome-page";
 import SignUp from "../src/components/welcome-page/Sign-up";
 
 const Stack = createNativeStackNavigator();
 
 export default function Router() {
+
   return (
     <NavigationContainer theme={{
       dark: false,

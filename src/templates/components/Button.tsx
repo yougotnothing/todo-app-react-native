@@ -1,7 +1,6 @@
 import styled from "styled-components/native";
 import { Props } from "../types/button.type";
 import Text from "./Text";
-import { colors } from "../colors";
 
 const Button = styled.TouchableOpacity`
   background-color: #646FD4;

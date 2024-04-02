@@ -1,14 +1,13 @@
 import { api } from "../../../api/axios.config";
-import { LoginDto } from "../../../types/login.type";
-import { RegisterDto } from "../../../types/register.type";
+import { LoginDto } from "../../../dto/login.dto";
+import { RegisterDto } from "../../../dto/register.dto";
 
 export const handleRegister = async (dto: RegisterDto) => {
   try {
     const response = await api.post('/auth/register', {
       name: dto.name,
       password: dto.password,
-      email: dto.email,
-      confirmPassword: dto.confirmPassword
+      email: dto.email
     });
     console.log('response', response.data);
   }catch(error: any) {
