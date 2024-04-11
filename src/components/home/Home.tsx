@@ -1,11 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
-import { Container, Input, Task, TasksWrapper } from "./Home.styled";
+import { Container, Task, TasksWrapper } from "./Home.styled";
 import Text from "../../templates/components/Text";
 import React, { useEffect, useState } from "react";
 import Button from "../../templates/components/Button";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { api } from "../../api/axios.config";
-import { FlatList, SafeAreaView } from "react-native";
+import { FlatList } from "react-native";
 import { TodoDto } from "../../dto/todo.dto";
 import { colors } from "../../templates/colors";
 
@@ -14,16 +14,24 @@ export default function Home() {
   const [password, setPassword] = useState<string>("");
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [tasks, setTasks] = useState<TodoDto[]>([]);
-  const navigation = useNavigation<any>();
-  
+  const navigation = useNavigation();
+
   const handleGetTasks = async () => {
-    const token = await AsyncStorage.getItem('token');
     try {
+      const token = await AsyncStorage.getItem('token');
+      console.log('token', token);
+
+      if (!token) {
+        console.log('Token not found');
+        return;
+      }
+
       const response = await api.get('/user/get-tasks', {
         headers: {
           Authorization: `Basic ${token}`
         }
       });
+
       console.log('response', response.data.tasks);
       setTasks(response.data.tasks);
     } catch (error: any) {
@@ -34,20 +42,6 @@ export default function Home() {
   useEffect(() => {
     handleGetTasks();
   }, []);
-
-  const handleLogin = async () => {
-    try {
-      const response = await api.post('/auth/login', {
-        name: login,
-        password: password
-      });
-      await AsyncStorage.setItem('token', response.data.token);
-      setLoggedIn(true);
-      console.log('Successfully logged in');
-    }catch (error: any) {
-      console.log(error.message);
-    }
-  }
 
   return (
     <Container>
@@ -64,7 +58,7 @@ export default function Home() {
           )}
         />
       </TasksWrapper>
-      <Button onPress={handleLogin} text="Login" />
+      <Button onPress={handleGetTasks} text="get tasks" />
     </Container>
   )
 }

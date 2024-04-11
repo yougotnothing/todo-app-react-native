@@ -24,7 +24,7 @@ export default function SignUp() {
         </Button>
         <SignUpWrapper>
           <Text color="#8D93AB" fontFamily="Jost-Medium" size="small" weight="400" text="Already have an account?" />
-          <SignUpButton onPress={() => console.log('Sign Up')}>
+          <SignUpButton onPress={() => navigation.navigate('Login')}>
             <Text color="#646FD4" fontFamily="Jost-Medium" size="small" weight="700" text="LOG IN" />
           </SignUpButton>
         </SignUpWrapper>

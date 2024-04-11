@@ -1,32 +1,59 @@
-import { NavigationContainer, Route } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Home from "../src/components/home/Home";
 import Register from "../src/components/authentication/register/Register";
 import WelcomePage from "../src/components/welcome-page/Welcome-page";
 import SignUp from "../src/components/welcome-page/Sign-up";
+import Login from "../src/components/authentication/login/Login";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import Home from "../src/components/home/Home";
 
 const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 
-export default function Router() {
-
+const DrawerStack = () => {
   return (
-    <NavigationContainer theme={{
-      dark: false,
-      colors: {
-        primary: 'rgba(0, 0, 0, 0)',
-        background: 'rgb(0, 114, 122)',
-        card: '#646FD4',
-        text: '#fff',
-        border: '#000',
-        notification: 'rgba(0, 0, 0, 0)',
+    <Drawer.Navigator initialRouteName="Home" screenOptions={{
+      headerStyle: {
+        backgroundColor: "#646FD4",
+      },
+      headerTintColor: "#9BA3EB",
+      headerTitleStyle: {
+        fontFamily: "Jost-Medium",
+        fontWeight: "700",
+        fontSize: 20,
+        color: "white",
       }
     }}>
-      <Stack.Navigator initialRouteName="Welcome">
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Register" component={Register} />
-        <Stack.Screen name="Welcome" component={WelcomePage} />
-        <Stack.Screen name="Sign Up" component={SignUp} />
-      </Stack.Navigator>
-    </NavigationContainer>
+      <Drawer.Screen name="Home" component={Home} />
+    </Drawer.Navigator>
+  )
+}
+
+export default function Router() {
+  return (
+    <Stack.Navigator screenOptions={{
+      headerStyle: {
+        backgroundColor: "#646FD4",
+      },
+      headerTintColor: "#9BA3EB",
+      headerTitleStyle: {
+        fontFamily: "Jost-Medium",
+        fontWeight: "700",
+        fontSize: 20,
+        color: "white",
+      }}} initialRouteName="Welcome"
+    >
+      <Stack.Screen
+        name="Root"
+        component={DrawerStack}
+        options={{
+          headerShown: false,
+          gestureEnabled: false
+        }}
+      />
+      <Stack.Screen name="Register" component={Register} />
+      <Stack.Screen name="Welcome" component={WelcomePage} />
+      <Stack.Screen name="Sign Up" component={SignUp} />
+      <Stack.Screen name="Login" component={Login} />
+    </Stack.Navigator>
   )
 }

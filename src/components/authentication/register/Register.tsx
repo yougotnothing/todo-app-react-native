@@ -4,8 +4,8 @@ import { Wrapper, InputsWrapper, Button, TitleWrapper, HeaderWrapper, Footer, Al
 import Input from "../../../templates/components/Input";
 import Text from "../../../templates/components/Text";
 import { RegisterDto } from "../../../dto/register.dto";
-import { handleRegister } from "../functions";
 import { useNavigation } from "@react-navigation/native";
+import { api } from "../../../api/axios.config";
 
 export default function Register() {
   const navigation = useNavigation<any>();
@@ -13,11 +13,28 @@ export default function Register() {
     initialValues: {
       name: '',
       password: '',
-      email: '',
+      email: ''
     },
     validationSchema: registerSchema,
     onSubmit: () => {}
   });
+
+  const register = async () => {
+    try {
+      await api.post('/auth/register', {
+        ...formik.values
+      })
+      .then(req => {
+        if(req.status !== 200) { 
+          return;
+        }else navigation.navigate('Home');
+        
+        console.log('request', req.data);
+      });
+    }catch(error: any) {
+      console.error(error);
+    }
+  }
 
   return (
     <Wrapper>
@@ -30,18 +47,21 @@ export default function Register() {
       </HeaderWrapper>
       <InputsWrapper>
         <Input
+          isError={!!formik.errors.name}
           placeholder="Your name"
           value={formik.values.name}
           textContentType="name"
           onChange={formik.handleChange('name')}
-          />
+        />
         <Input
+          isError={!!formik.errors.email}
           placeholder="Enter email"
           value={formik.values.email}
           textContentType="emailAddress"
           onChange={formik.handleChange('email')}
         />
         <Input
+          isError={!!formik.errors.password}
           placeholder="Password"
           textContentType="password"
           value={formik.values.password}
@@ -54,7 +74,7 @@ export default function Register() {
           <Text color="#646FD4" size="small" fontFamily="Jost-Regular" text="privacy policy" />
         </Footer>
       </InputsWrapper>
-      <Button onPress={() => handleRegister(formik.values).then(() => navigation.navigate('Home'))}>
+      <Button onPress={register}>
         <Text color="white" size="medium" weight="500" text="SIGN UP" />
       </Button>
       <AlreadyHaveAccount>

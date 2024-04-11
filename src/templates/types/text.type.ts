@@ -1,3 +1,5 @@
+import { Colors } from "../colors";
+
 export interface Props {
   size: 'small' | 'medium' | 'large';
   weight?:

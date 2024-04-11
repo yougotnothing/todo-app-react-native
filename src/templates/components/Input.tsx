@@ -4,14 +4,18 @@ import { SvgXml } from "react-native-svg";
 import { eye } from "./eye.image";
 import { useEffect, useState } from "react";
 
-const TextInput = styled.TextInput`
+interface TextInputProps {
+  $isError?: boolean;
+}
+
+const TextInput = styled.TextInput<TextInputProps>`
   background-color: transparent;
   border-radius: 12px;
   padding: 16px 22px;
   font-size: 16px;
   width: 100%;
   color: #D9D9D9;
-  border: 1.5px solid #D9D9D9;
+  border: 1.5px solid ${({ $isError }) => $isError ? '#BF1A1A' : '#D9D9D9'};
 `;
 
 const Wrapper = styled.View`
@@ -39,9 +43,10 @@ interface InputProps {
   textContentType?: TextInputIOSProps['textContentType'];
   value: string;
   onChange: (text: string) => void;
+  isError?: boolean;
 }
 
-export default function Input({ placeholder, textContentType, value, onChange }: InputProps) {
+export default function Input({ placeholder, textContentType, value, onChange, isError }: InputProps) {
   const [showPassword, setShowPassword] = useState<boolean>(true);
 
   const handleSetShowPassword = () => {
@@ -55,6 +60,7 @@ export default function Input({ placeholder, textContentType, value, onChange }:
         textContentType={textContentType}
         value={value}
         onChangeText={onChange}
+        $isError={isError}
         secureTextEntry={!showPassword && textContentType === 'password'}
       />
       {textContentType === 'password' && (

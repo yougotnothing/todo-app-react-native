@@ -48,3 +48,13 @@ export const TasksWrapper = styled.SafeAreaView`
   height: 500px;
   background-color: #fff;
 `;
+
+export const SearchInput = styled.TextInput`
+  background-color: white;
+  border-radius: 14px;
+  padding: 8px 16px 8px 24px;
+  font-size: 17px;
+  width: 75%;
+  color: #D9D9D9;
+  position: relative;
+`;

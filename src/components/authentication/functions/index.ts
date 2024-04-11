@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { api } from "../../../api/axios.config";
 import { LoginDto } from "../../../dto/login.dto";
 import { RegisterDto } from "../../../dto/register.dto";
@@ -9,6 +10,8 @@ export const handleRegister = async (dto: RegisterDto) => {
       password: dto.password,
       email: dto.email
     });
+
+    await AsyncStorage.setItem('token', response.data.token);
     console.log('response', response.data);
   }catch(error: any) {
     console.error(error);
@@ -18,10 +21,11 @@ export const handleRegister = async (dto: RegisterDto) => {
 export const handleLogin = async (dto: LoginDto) => {
   try {
     const response = await api.post('/auth/login', {
-      name: dto.name,
+      login: dto.login,
       password: dto.password
     });
 
+    await AsyncStorage.setItem('token', response.data.token);
     console.log('response', response.data);
   }catch(error: any) {
     console.error(error);
