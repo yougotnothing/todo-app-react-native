@@ -1,8 +1,8 @@
 import { TextInputIOSProps } from "react-native";
 import styled from "styled-components/native";
 import { SvgXml } from "react-native-svg";
-import { eye } from "./eye.image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import Icons from "../../config/enum/icons.enum";
 
 interface TextInputProps {
   $isError?: boolean;
@@ -65,7 +65,7 @@ export default function Input({ placeholder, textContentType, value, onChange, i
       />
       {textContentType === 'password' && (
         <Eye onPress={handleSetShowPassword}>
-          <SvgXml xml={eye} />
+          <SvgXml xml={Icons["eye"]} />
         </Eye>
       )}
     </Wrapper>

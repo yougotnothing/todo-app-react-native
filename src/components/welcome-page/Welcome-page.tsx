@@ -4,6 +4,7 @@ import { welcome_image } from "./welcome-image";
 import Text from "../../templates/components/Text";
 import { colors } from "../../templates/colors";
 import { useNavigation } from "@react-navigation/native";
+import Icons from "../../config/enum/icons.enum";
 
 export default function WelcomePage() {
   const navigation = useNavigation<any>();
@@ -11,7 +12,7 @@ export default function WelcomePage() {
   return (
     <Wrapper>
       <SvgXml
-        xml={welcome_image}
+        xml={Icons["welcome"]}
         width="470"
         height="359"
       />

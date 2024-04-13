@@ -23,7 +23,7 @@ const DrawerStack = () => {
         color: "white",
       }
     }}>
-      <Drawer.Screen name="Home" component={Home} />
+      <Drawer.Screen name="Home" component={Home} options={{ headerShown: false }} />
     </Drawer.Navigator>
   )
 }
@@ -40,7 +40,7 @@ export default function Router() {
         fontWeight: "700",
         fontSize: 20,
         color: "white",
-      }}} initialRouteName="Welcome"
+      }}} initialRouteName="Root"
     >
       <Stack.Screen
         name="Root"
@@ -53,7 +53,7 @@ export default function Router() {
       <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="Welcome" component={WelcomePage} />
       <Stack.Screen name="Sign Up" component={SignUp} />
-      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Log in" component={Login} />
     </Stack.Navigator>
   )
 }

@@ -3,6 +3,7 @@ import { Button, ButtonsWrapper, SignUpButton, SignUpWrapper, TextWrapper, Wrapp
 import { sign_up_image } from "./welcome-image";
 import Text from "../../templates/components/Text";
 import { useNavigation } from "@react-navigation/native";
+import Icons from "../../config/enum/icons.enum";
 
 export default function SignUp() {
   const navigation = useNavigation<any>();
@@ -10,7 +11,7 @@ export default function SignUp() {
   return (
     <Wrapper>
       <SvgXml
-        xml={sign_up_image}
+        xml={Icons["sign up"]}
         width="470"
         height="359"
       />

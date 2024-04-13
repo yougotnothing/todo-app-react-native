@@ -23,7 +23,7 @@ export interface Props {
 }
 
 export interface TextProps extends Props {
-  text?: string;
+  text?: string | null;
   isButton?: boolean;
   header?: boolean;
   color: string;

@@ -5,6 +5,8 @@ import { TextProps } from "../../templates/types/text.type";
 
 export const T = styled.Text<TextProps>`
   text-align: center;
+  margin: 0;
+  padding: 0;
   font-size: ${({ size }) =>
     size === 'small'
     ? '14px'
