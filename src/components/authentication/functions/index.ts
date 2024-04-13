@@ -33,7 +33,7 @@ export const handleLogin = async (dto: LoginDto) => {
   }
 }
 
-export const handleGetUser = async (set: React.Dispatch<React.SetStateAction<UserDto | null>>) => {
+export const handleGetUser = async (set: React.Dispatch<React.SetStateAction<UserDto | undefined>>) => {
   try {
     const token = await AsyncStorage.getItem('token');
 

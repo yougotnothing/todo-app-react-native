@@ -11,7 +11,7 @@ import { handleGetUser } from "../authentication/functions";
 import { UserDto } from "../../dto/user.dto";
 
 export default function Home() {
-  const [user, setUser] = useState<UserDto | null>(null); 
+  const [user, setUser] = useState<UserDto | undefined>(undefined); 
   const [tasks, setTasks] = useState<TodoDto[]>([]);
   const { openDrawer, navigate } = useNavigation<any>();
 

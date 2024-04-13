@@ -2,7 +2,7 @@ import styled from "styled-components/native";
 
 interface ProfileButtonProps {
   $avatar?: string | null;
-  $isHaveAvatar: boolean | null;
+  $isHaveAvatar: boolean | undefined;
 }
 
 interface TodoButtonProps {
