@@ -11,10 +11,10 @@ import { DrawerItem } from "@react-navigation/drawer";
 
 export default function MiniProfile() {
   const [user, setUser] = useState<UserDto | undefined>(undefined); 
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const routes = [
     { label: "Edit profile", icon: Icons["edit profile"], navigateTo: "Home" },
-    { label: "Daily tasks", icon: Icons["daily tasks"], navigateTo: "Home" },
+    { label: "Daily tasks", icon: Icons["daily tasks"], navigateTo: "Daily tasks" },
     { label: "Important tasks", icon: Icons["important tasks"], navigateTo: "Home" },
     { label: "Done tasks", icon: Icons["done tasks"], navigateTo: "Home" }
   ];

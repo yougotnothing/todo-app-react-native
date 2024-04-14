@@ -164,6 +164,8 @@ export const MainSection = styled.View`
   align-items: center;
   width: 100%;
   gap: 64px;
+  align-self: center;
+  margin: 0 auto;
 `;
 
 export const TimeWrapper = styled.View`
@@ -210,15 +212,6 @@ export const TodoButton = styled.TouchableOpacity<TodoButtonProps>`
   justify-content: ${({ $type }) => !$type ? "center" : "space-between"};
   border: 1px solid ${({ $type }) => !$type ? "#D25EB0" : "transparent"};
   color: ${({ $type }) => !$type ? "#D25EB0" : "white"};
-  margin-right: 8px;
-
-  &::after {
-    content: ${({ $counter }) => $counter};
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 999;
-  }
 `;
 
 export const TodoButtonsWrapper = styled.View`
@@ -226,10 +219,12 @@ export const TodoButtonsWrapper = styled.View`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
-  row-gap: 20px;
-  width: 100%;
   flex: 1;
+  margin: 0 auto;
   padding: 20px;
+  position: relative;
+  align-self: center;
+  row-gap: 20px;
 `;
 
 export const TodoButtonCounter = styled.Text<TodoButtonProps>`

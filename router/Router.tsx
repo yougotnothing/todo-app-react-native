@@ -8,6 +8,7 @@ import Home from "../src/components/home/Home";
 import Icons from "../src/config/enum/icons.enum";
 import { SvgXml } from "react-native-svg";
 import MiniProfile from "../src/components/mini-profile/Mini-profile";
+import TodayTasks from "../src/components/today-tasks/Today-tasks";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -46,8 +47,10 @@ const DrawerStack = () => {
       <Drawer.Screen options={{ drawerIcon: () => <SvgXml xml={Icons["edit profile"]} /> }}
         name="Edit profile" component={Home}
       />
-      <Drawer.Screen options={{ drawerIcon: () => <SvgXml xml={Icons["daily tasks"]} /> }}
-        name="Daily tasks" component={Home}
+      <Drawer.Screen options={{
+        drawerIcon: () => <SvgXml xml={Icons["daily tasks"]} />,
+      }}
+        name="Daily tasks" component={TodayTasks}
       />
       <Drawer.Screen options={{ drawerIcon: () => <SvgXml xml={Icons["important tasks"]} /> }}
         name="Important tasks" component={Home}
@@ -81,10 +84,11 @@ export default function Router() {
           gestureEnabled: false
         }}
       />
-      <Stack.Screen name="Register" component={Register} />
-      <Stack.Screen name="Welcome" component={WelcomePage} />
-      <Stack.Screen name="Sign Up" component={SignUp} />
-      <Stack.Screen name="Log in" component={Login} />
+      <Stack.Screen name="Register"  component={Register} />
+      <Stack.Screen name="Welcome"  component={WelcomePage} />
+      <Stack.Screen name="Sign Up"  component={SignUp} />
+      <Stack.Screen name="Log in"  component={Login} />
+      <Stack.Screen name="Daily tasks" options={{ headerShown: false }} component={TodayTasks} />
     </Stack.Navigator>
   )
 }

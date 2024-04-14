@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { Container, DrawerButton, Header, Input, InputWrapper, LeftCircle, MainSection, Navbar, ProfileButton, RightCircle, SearchIcon, Task, TasksWrapper, TextWrapper, TimeButton, TimeWrapper, TodoButton, TodoButtonCounter, TodoButtonsWrapper } from "./Home.styled";
 import Text from "../../templates/components/Text";
 import React, { useEffect, useState } from "react";
@@ -13,7 +13,7 @@ import { UserDto } from "../../dto/user.dto";
 export default function Home() {
   const [user, setUser] = useState<UserDto | undefined>(undefined); 
   const [tasks, setTasks] = useState<TodoDto[]>([]);
-  const { openDrawer, navigate } = useNavigation<any>();
+  const { navigate, dispatch } = useNavigation();
 
   const handleGetTasks = async () => {
     try {
@@ -62,7 +62,7 @@ export default function Home() {
           />
         </RightCircle>
         <Navbar>
-          <DrawerButton onPress={openDrawer}>
+          <DrawerButton onPress={() => dispatch(DrawerActions.openDrawer())}>
             <SvgXml
               xml={Icons["menu"]}
               height="30"
@@ -70,10 +70,14 @@ export default function Home() {
             />
           </DrawerButton>
           <Text color="white" fontFamily="Jost-Medium" size="large" text="Mtodo logo" />
-          <ProfileButton
-            $isHaveAvatar={user && user.isHaveAvatar}
-            $avatar={user && user.avatar}
-          />
+          {user && user.isHaveAvatar ? (
+            <ProfileButton
+              $isHaveAvatar={user && user.isHaveAvatar}
+              $avatar={user && user.avatar}
+            />
+          ) : (
+            <SvgXml xml={Icons["default avatar"]} width="40" height="40" />
+          )}
         </Navbar>
         <TextWrapper>
           <Text color="#363636" fontFamily="Jost-Medium" size="medium" text="you have" />
@@ -109,11 +113,16 @@ export default function Home() {
         </TimeWrapper>
         <TodoButtonsWrapper>
           {["school", "work", "shop", "read", "work out", undefined].map((item, index) => (
-            <TodoButton key={index} $type={item}>
+            <TodoButton key={index} $type={item} onPress={() => console.log(item)}>
               <SvgXml xml={Icons[`${item} task` as keyof typeof Icons]} />
               <TodoButtonCounter $type={item}>{index}</TodoButtonCounter>
               {item && (
-                <Text color={item ? "white" : "#D25EB0"} fontFamily="Jost-Medium" size={item ? 'medium' : 'large'} text={item ? item : ""} />
+                <Text
+                  color={item ? "white" : "#D25EB0"}
+                  fontFamily="Jost-Medium"
+                  size={item ? 'medium' : 'large'}
+                  text={item ? item : ""}
+                />
               )}
             </TodoButton>
           ))}
