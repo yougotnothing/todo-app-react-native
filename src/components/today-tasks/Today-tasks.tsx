@@ -4,15 +4,38 @@ import Icons from "../../config/enum/icons.enum";
 import Task from "../../templates/components/Task";
 import { useNavigation } from "@react-navigation/native";
 import Text from "../../templates/components/Text";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { api } from "../../api/axios.config";
+import { TodoDto } from "../../dto/todo.dto";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function TodayTasks() {
+  const [todayTasks, setTodayTasks] = useState<TodoDto[]>([]); 
   const { navigate, dispatch } = useNavigation<any>();
 
   useEffect(() => {
     (async () => {
-      const response = await api.get('/tasks/today-tasks');
+      const date = new Date().toUTCString().split(' ');
+      const dateString = `${date[1]} ${date[2]}, ${date[3]}`; 
+
+      console.log('date', dateString);
+      try {
+        const token = await AsyncStorage.getItem('token');
+        
+        const response = await api.get('/tasks/today-tasks', {
+          headers: {
+            Authorization: `Basic ${token}`
+          },
+          params: {
+            createdAt: dateString
+          }
+        });
+        
+        console.log('response', response.data);
+        setTodayTasks(response.data.tasks);
+      }catch(error: any) {
+        console.error(error);
+      }
     })();
   }, []);
   
@@ -33,7 +56,17 @@ export default function TodayTasks() {
         <ReturnButton disabled />
       </Navbar>
       <TasksWrapper>
-        
+        {todayTasks.map((task, index) => (
+          <Task
+            key={index}
+            header={task.header}
+            content={task.content}
+            isChecked={task.isChecked}
+            from={task.from}
+            till={task.till}
+            tasks={task.tasks}
+          />
+        ))}
       </TasksWrapper>
       <Footer>
         <FooterMainInfo>

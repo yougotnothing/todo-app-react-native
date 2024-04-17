@@ -9,6 +9,7 @@ import Icons from "../src/config/enum/icons.enum";
 import { SvgXml } from "react-native-svg";
 import MiniProfile from "../src/components/mini-profile/Mini-profile";
 import TodayTasks from "../src/components/today-tasks/Today-tasks";
+import CreateTask from "../src/components/create-task/Create-task";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -84,11 +85,12 @@ export default function Router() {
           gestureEnabled: false
         }}
       />
-      <Stack.Screen name="Register"  component={Register} />
-      <Stack.Screen name="Welcome"  component={WelcomePage} />
-      <Stack.Screen name="Sign Up"  component={SignUp} />
-      <Stack.Screen name="Log in"  component={Login} />
+      <Stack.Screen name="Register" component={Register} />
+      <Stack.Screen name="Welcome" component={WelcomePage} />
+      <Stack.Screen name="Sign Up" component={SignUp} />
+      <Stack.Screen name="Log in" component={Login} />
       <Stack.Screen name="Daily tasks" options={{ headerShown: false }} component={TodayTasks} />
+      <Stack.Screen name="Create task" options={{ headerShown: false }} component={CreateTask} />
     </Stack.Navigator>
   )
 }

@@ -13,7 +13,15 @@ import { UserDto } from "../../dto/user.dto";
 export default function Home() {
   const [user, setUser] = useState<UserDto | undefined>(undefined); 
   const [tasks, setTasks] = useState<TodoDto[]>([]);
-  const { navigate, dispatch } = useNavigation();
+  const { navigate, dispatch } = useNavigation<any>();
+
+  const handleClickTaskButton = (type?: string) => {
+    if(!type) {
+      navigate('Create task');
+    }
+
+    navigate(`${type} tasks`);
+  }
 
   const handleGetTasks = async () => {
     try {
@@ -113,7 +121,7 @@ export default function Home() {
         </TimeWrapper>
         <TodoButtonsWrapper>
           {["school", "work", "shop", "read", "work out", undefined].map((item, index) => (
-            <TodoButton key={index} $type={item} onPress={() => console.log(item)}>
+            <TodoButton key={index} $type={item} onPress={() => navigate('Create task')}>
               <SvgXml xml={Icons[`${item} task` as keyof typeof Icons]} />
               <TodoButtonCounter $type={item}>{index}</TodoButtonCounter>
               {item && (
