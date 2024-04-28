@@ -1,13 +1,14 @@
 import { SvgXml } from "react-native-svg";
 import { AddTask, ArrowDown, Circle, Footer, FooterMainInfo, Navbar, ReturnButton, TasksWrapper, Wrapper } from "./Today-tasks.styled";
-import Icons from "../../config/enum/icons.enum";
-import Task from "../../templates/components/Task";
-import { useNavigation } from "@react-navigation/native";
-import Text from "../../templates/components/Text";
+import Icons from "@icons";
+import Task from "@templates/Task";
+import { DrawerActions, DrawerRouter, useNavigation } from "@react-navigation/native";
+import Text from "@templates/Text";
 import { useEffect, useState } from "react";
-import { api } from "../../api/axios.config";
-import { TodoDto } from "../../dto/todo.dto";
+import { api } from "axios-config";
+import { TodoDto } from "dto/todo.dto";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { DrawerContent, useDrawerProgress } from "@react-navigation/drawer";
 
 export default function TodayTasks() {
   const [todayTasks, setTodayTasks] = useState<TodoDto[]>([]); 
@@ -49,7 +50,7 @@ export default function TodayTasks() {
         <SvgXml xml={Icons["bottom circle"]} />
       </Circle>
       <Navbar>
-        <ReturnButton onPress={() => navigate('Root')}>
+        <ReturnButton onPress={() => navigate('Home')}>
           <SvgXml xml={Icons["white back button"]} />
         </ReturnButton>
         <Text color="white" fontFamily="Jost-Medium" size="large" text="Today's tasks" />

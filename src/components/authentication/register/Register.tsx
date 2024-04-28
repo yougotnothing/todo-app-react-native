@@ -1,11 +1,11 @@
 import { useFormik } from "formik";
-import { registerSchema } from "../../../config/validation/yup.config";
+import { registerSchema } from "@config/validation";
 import { Wrapper, InputsWrapper, Button, TitleWrapper, HeaderWrapper, Footer, AlreadyHaveAccount, AlreadyHaveAccountButton } from "./Register.styled";
-import Input from "../../../templates/components/Input";
-import Text from "../../../templates/components/Text";
+import Input from "@templates/Input";
+import Text from "@templates/Text";
 import { RegisterDto } from "../../../dto/register.dto";
 import { useNavigation } from "@react-navigation/native";
-import { api } from "../../../api/axios.config";
+import { api } from "axios-config";
 
 export default function Register() {
   const navigation = useNavigation<any>();
@@ -22,7 +22,7 @@ export default function Register() {
   const register = async () => {
     try {
       await api.post('/auth/register', {
-        ...formik.values
+        ...formik.values,
       })
       .then(req => {
         if(req.status !== 200) { 

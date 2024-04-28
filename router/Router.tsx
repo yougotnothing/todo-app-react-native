@@ -1,15 +1,20 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Register from "../src/components/authentication/register/Register";
-import WelcomePage from "../src/components/welcome-page/Welcome-page";
-import SignUp from "../src/components/welcome-page/Sign-up";
-import Login from "../src/components/authentication/login/Login";
-import { DrawerContentScrollView, createDrawerNavigator } from "@react-navigation/drawer";
-import Home from "../src/components/home/Home";
-import Icons from "../src/config/enum/icons.enum";
 import { SvgXml } from "react-native-svg";
-import MiniProfile from "../src/components/mini-profile/Mini-profile";
-import TodayTasks from "../src/components/today-tasks/Today-tasks";
-import CreateTask from "../src/components/create-task/Create-task";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Icons from "@icons";
+import Home from "components/home/Home";
+import SignUp from "components/welcome-page/Sign-up";
+import Login from "components/authentication/login/Login";
+import TodayTasks from "components/today-tasks/Today-tasks";
+import CreateTask from "components/create-task/Create-task";
+import MiniProfile from "components/mini-profile/Mini-profile";
+import WelcomePage from "components/welcome-page/Welcome-page";
+import Register from "components/authentication/register/Register";
+import Notification from "notifications/Notification";
+
+interface Token {
+  token: string | null;
+}
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -49,6 +54,7 @@ const DrawerStack = () => {
         name="Edit profile" component={Home}
       />
       <Drawer.Screen options={{
+        gestureHandlerProps: { enabled: true },
         drawerIcon: () => <SvgXml xml={Icons["daily tasks"]} />,
       }}
         name="Daily tasks" component={TodayTasks}
@@ -63,7 +69,10 @@ const DrawerStack = () => {
   )
 }
 
-export default function Router() {
+export default function Router({ token }: Token) {
+  const noHeader = { headerShown: false };
+  const noHeaderTitle = (title: string) => ({ ...noHeader, headerTitle: title });
+
   return (
     <Stack.Navigator screenOptions={{
       headerStyle: {
@@ -75,22 +84,19 @@ export default function Router() {
         fontWeight: "700",
         fontSize: 20,
         color: "white",
-      }}} initialRouteName="Root"
+      }}} initialRouteName={token ? 'Root' : 'Welcome'}
     >
-      <Stack.Screen
-        name="Root"
-        component={DrawerStack}
-        options={{
-          headerShown: false,
-          gestureEnabled: false
-        }}
-      />
+      <Stack.Screen name="Root" component={DrawerStack} options={{ ...noHeader, gestureEnabled: false }} />
+      <Stack.Screen name="Notification" component={Notification} />
       <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="Welcome" component={WelcomePage} />
       <Stack.Screen name="Sign Up" component={SignUp} />
       <Stack.Screen name="Log in" component={Login} />
-      <Stack.Screen name="Daily tasks" options={{ headerShown: false }} component={TodayTasks} />
-      <Stack.Screen name="Create task" options={{ headerShown: false }} component={CreateTask} />
+      <Stack.Screen name="Create task" options={noHeader} component={CreateTask} />
+      <Stack.Screen name="Daily tasks" options={noHeader} component={TodayTasks} />
+      <Stack.Screen name="Today tasks" options={noHeader} component={TodayTasks} />
+      <Stack.Screen name="Week tasks" options={noHeaderTitle("Week tasks")} component={TodayTasks} /> 
+      <Stack.Screen name="Month tasks" options={noHeaderTitle("Month tasks")} component={TodayTasks} />
     </Stack.Navigator>
   )
 }

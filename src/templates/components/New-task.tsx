@@ -18,7 +18,7 @@ const Wrapper = styled.View<NewTaskProps>`
   height: 100%;
   width: 100%;
   background-color: white;
-  background-color: rgba(255, 255, 255, 0.5); /* Чтобы размытие было видно, установите непрозрачный цвет фона */
+  background-color: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(10px);
   position: absolute;
   right: 0;

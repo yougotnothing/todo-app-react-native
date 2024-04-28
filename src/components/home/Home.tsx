@@ -1,55 +1,38 @@
 import { DrawerActions, useNavigation } from "@react-navigation/native";
-import { Container, DrawerButton, Header, Input, InputWrapper, LeftCircle, MainSection, Navbar, ProfileButton, RightCircle, SearchIcon, Task, TasksWrapper, TextWrapper, TimeButton, TimeWrapper, TodoButton, TodoButtonCounter, TodoButtonsWrapper } from "./Home.styled";
-import Text from "../../templates/components/Text";
-import React, { useEffect, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { api } from "../../api/axios.config";
-import { TodoDto } from "../../dto/todo.dto";
+import {
+  Container,
+  DrawerButton,
+  Header,
+  Input,
+  InputWrapper,
+  LeftCircle,
+  MainSection,
+  Navbar,
+  ProfileButton,
+  RightCircle,
+  SearchIcon,
+  TextWrapper, 
+  TimeButton,
+  TimeWrapper,
+  TodoButton,
+  TodoButtonCounter,
+  TodoButtonsWrapper
+} from "./Home.styled";
+import Text from "@templates/Text";
+import { useEffect } from "react";
 import { SvgXml } from "react-native-svg";
-import Icons from "../../config/enum/icons.enum";
-import { handleGetUser } from "../authentication/functions";
-import { UserDto } from "../../dto/user.dto";
+import Icons from "@icons";
+import { tasks } from "@store/tasks.mobx";
+import { user } from "@store/user.mobx";
 
 export default function Home() {
-  const [user, setUser] = useState<UserDto | undefined>(undefined); 
-  const [tasks, setTasks] = useState<TodoDto[]>([]);
   const { navigate, dispatch } = useNavigation<any>();
 
-  const handleClickTaskButton = (type?: string) => {
-    if(!type) {
-      navigate('Create task');
-    }
-
-    navigate(`${type} tasks`);
-  }
-
-  const handleGetTasks = async () => {
-    try {
-      const token = await AsyncStorage.getItem('token');
-      console.log('token', token);
-
-      if (!token) {
-        console.log('Token not found');
-        return;
-      }
-
-      const response = await api.get('/user/get-tasks', {
-        headers: {
-          Authorization: `Basic ${token}`
-        }
-      });
-
-      console.log('response', response.data.tasks);
-      setTasks(response.data.tasks);
-    }catch(error: any) {
-      console.log(error.message);
-    }
-  }
-
   useEffect(() => {
-    handleGetTasks();
-    handleGetUser(setUser);
+    tasks.getTasksByType('school');
+    user.getUser();
 
+    console.log('todos', tasks.todos);
     console.log('user: ', user);
   }, []);
 
@@ -57,7 +40,8 @@ export default function Home() {
     <Container>
       <Header>
         <LeftCircle>
-          <SvgXml xml={Icons["right circle"]}
+          <SvgXml 
+            xml={Icons["right circle"]}
             width="250"
             height="250"
           />
@@ -89,7 +73,7 @@ export default function Home() {
         </Navbar>
         <TextWrapper>
           <Text color="#363636" fontFamily="Jost-Medium" size="medium" text="you have" />
-          <Text color="white" fontFamily="Jost-Medium" size="large" text={`${tasks.length} tasks`} />
+          <Text color="white" fontFamily="Jost-Medium" size="large" text={`${tasks.todayTasks.length} tasks`} />
           <Text color="#363636" fontFamily="Jost-Medium" size="medium" text="today!" />
           <Text
             color="#363636"
@@ -97,7 +81,7 @@ export default function Home() {
             size="medium"
             text={new Date().toLocaleDateString(
               'en-US',
-              { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}
+              { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
             )}
           />
         </TextWrapper>
@@ -113,15 +97,25 @@ export default function Home() {
       </Header>
       <MainSection>
         <TimeWrapper>
-          {["Today", "Week", "Month"].map((item, index) => (
-            <TimeButton key={index}>
-              <Text color="#7D7D7D" fontFamily="Jost-Regular" size="small" text={item} />
-            </TimeButton>
-          ))}
+          <TimeButton
+            onPress={() => navigate(`Week tasks`)}
+          >
+            <Text color="#7D7D7D" fontFamily="Jost-Regular" size="small" text="Week" />
+          </TimeButton>
+          <TimeButton
+            onPress={() => navigate(`Today tasks`)}
+          >
+            <Text color="#7D7D7D" fontFamily="Jost-Regular" size="small" text="Today" />
+          </TimeButton>
+          <TimeButton
+            onPress={() => navigate(`Month tasks`)}
+          >
+            <Text color="#7D7D7D" fontFamily="Jost-Regular" size="small" text="Month" />
+          </TimeButton>
         </TimeWrapper>
         <TodoButtonsWrapper>
           {["school", "work", "shop", "read", "work out", undefined].map((item, index) => (
-            <TodoButton key={index} $type={item} onPress={() => navigate('Create task')}>
+            <TodoButton key={index} $type={item} onPress={() => dispatch(DrawerActions.jumpTo('Today tasks'))}>
               <SvgXml xml={Icons[`${item} task` as keyof typeof Icons]} />
               <TodoButtonCounter $type={item}>{index}</TodoButtonCounter>
               {item && (

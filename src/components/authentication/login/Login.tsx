@@ -24,9 +24,6 @@ export default function Login() {
     }
 
     handleLogin(formik.values)
-      .then(() => {
-        navigation.navigate('Root');
-      });
   }
 
   return (
