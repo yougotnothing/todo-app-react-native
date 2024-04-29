@@ -24,9 +24,17 @@ import { SvgXml } from "react-native-svg";
 import Icons from "@icons";
 import { tasks } from "@store/tasks.mobx";
 import { user } from "@store/user.mobx";
+import NewTask from "@templates/New-task";
+import { createTaskModal } from "@store/create-task-modal.mobx";
 
 export default function Home() {
   const { navigate, dispatch } = useNavigation<any>();
+
+  const handleNavigate = (type?: string) => {
+    if(!type) {
+      createTaskModal.open();
+    }else navigate(`${type} tasks`);
+  }
 
   useEffect(() => {
     tasks.getTasksByType('school');
@@ -38,6 +46,7 @@ export default function Home() {
 
   return (
     <Container>
+      <NewTask isOpen={createTaskModal.isOpen}  />
       <Header>
         <LeftCircle>
           <SvgXml 
@@ -97,26 +106,16 @@ export default function Home() {
       </Header>
       <MainSection>
         <TimeWrapper>
-          <TimeButton
-            onPress={() => navigate(`Week tasks`)}
-          >
-            <Text color="#7D7D7D" fontFamily="Jost-Regular" size="small" text="Week" />
-          </TimeButton>
-          <TimeButton
-            onPress={() => navigate(`Today tasks`)}
-          >
-            <Text color="#7D7D7D" fontFamily="Jost-Regular" size="small" text="Today" />
-          </TimeButton>
-          <TimeButton
-            onPress={() => navigate(`Month tasks`)}
-          >
-            <Text color="#7D7D7D" fontFamily="Jost-Regular" size="small" text="Month" />
-          </TimeButton>
+          {["Today", "Week", "Month"].map((item, index) => (
+            <TimeButton key={index} onPress={() => navigate(`${item} tasks`)}>
+              <Text color="#7D7D7D" fontFamily="Jost-Regular" size="small" text={item} />
+            </TimeButton>
+          ))}
         </TimeWrapper>
         <TodoButtonsWrapper>
-          {["school", "work", "shop", "read", "work out", undefined].map((item, index) => (
-            <TodoButton key={index} $type={item} onPress={() => dispatch(DrawerActions.jumpTo('Today tasks'))}>
-              <SvgXml xml={Icons[`${item} task` as keyof typeof Icons]} />
+          {["School", "Work", "Shop", "Read", "Work out", undefined].map((item, index) => (  
+            <TodoButton key={index} $type={item?.toLowerCase()} onPress={() => handleNavigate(item)}>
+              <SvgXml xml={Icons[`${item?.toLowerCase()} task` as keyof typeof Icons]} />
               <TodoButtonCounter $type={item}>{index}</TodoButtonCounter>
               {item && (
                 <Text

@@ -1,6 +1,7 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { api, authorizedUser } from "axios-config";
 import { UserDto } from "dto/user.dto";
-import { action, observable } from "mobx";
+import { action, computed, observable } from "mobx";
 
 class UserStore implements UserDto {
   @observable name: string = "";

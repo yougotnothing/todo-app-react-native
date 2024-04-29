@@ -44,9 +44,9 @@ const Header = styled.View`
   width: 100%;
 `;
 
-export default function NewTask({ $isOpen }: NewTaskProps) {
+export default function NewTask({ isOpen }: { isOpen: boolean }) {
   return (
-    <Wrapper $isOpen={$isOpen}>
+    <Wrapper $isOpen={isOpen}>
       <TaskWrapper>
         <Header>
           <Text color="#363636" fontFamily="Jost-Medium" size="small" text="New task" />
