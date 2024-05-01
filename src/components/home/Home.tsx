@@ -26,27 +26,25 @@ import { tasks } from "@store/tasks.mobx";
 import { user } from "@store/user.mobx";
 import NewTask from "@templates/New-task";
 import { createTaskModal } from "@store/create-task-modal.mobx";
+import { observer } from "mobx-react";
+import { tasksPages } from "@store/tasks-pages.mobx";
 
-export default function Home() {
+const Home = observer(() => { 
   const { navigate, dispatch } = useNavigation<any>();
-
-  const handleNavigate = (type?: string) => {
-    if(!type) {
-      createTaskModal.open();
-    }else navigate(`${type} tasks`);
-  }
 
   useEffect(() => {
     tasks.getTasksByType('school');
     user.getUser();
+    createTaskModal.close();
 
     console.log('todos', tasks.todos);
     console.log('user: ', user);
+    console.log('isOpen: ', createTaskModal.isOpen);
   }, []);
 
   return (
     <Container>
-      <NewTask isOpen={createTaskModal.isOpen}  />
+      <NewTask />
       <Header>
         <LeftCircle>
           <SvgXml 
@@ -107,14 +105,25 @@ export default function Home() {
       <MainSection>
         <TimeWrapper>
           {["Today", "Week", "Month"].map((item, index) => (
-            <TimeButton key={index} onPress={() => navigate(`${item} tasks`)}>
+            <TimeButton key={index} onPress={() => {
+                tasksPages.setType(item as "Today" | "Week" | "Month"); 
+                navigate(`${item} tasks`)
+              }}>
               <Text color="#7D7D7D" fontFamily="Jost-Regular" size="small" text={item} />
             </TimeButton>
           ))}
         </TimeWrapper>
         <TodoButtonsWrapper>
           {["School", "Work", "Shop", "Read", "Work out", undefined].map((item, index) => (  
-            <TodoButton key={index} $type={item?.toLowerCase()} onPress={() => handleNavigate(item)}>
+            <TodoButton
+              key={index}
+              $type={item?.toLowerCase()}
+              onPress={() => {
+                if(item) {
+                  navigate(`${item} tasks`);
+                }else createTaskModal.setIsOpen(true);
+              }}
+            >
               <SvgXml xml={Icons[`${item?.toLowerCase()} task` as keyof typeof Icons]} />
               <TodoButtonCounter $type={item}>{index}</TodoButtonCounter>
               {item && (
@@ -131,4 +140,6 @@ export default function Home() {
       </MainSection>
     </Container>
   )
-}
+});
+
+export default Home;

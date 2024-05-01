@@ -35,10 +35,6 @@ export default function Text({ size, weight, text, fontFamily, color }: TextProp
       console.warn(error);
       return;
     }
-
-    if(loaded) {
-      console.log('Fonts loaded');
-    }
   }, [loaded, error]);
 
   return (

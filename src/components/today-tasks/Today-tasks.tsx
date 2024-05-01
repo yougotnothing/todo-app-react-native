@@ -9,8 +9,9 @@ import { api } from "axios-config";
 import { TodoDto } from "dto/todo.dto";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { tasksPages } from "@store/tasks-pages.mobx";
+import { observer } from "mobx-react";
 
-export default function TodayTasks() {
+const TodayTasks = observer(() => {
   const [todayTasks, setTodayTasks] = useState<TodoDto[]>([]); 
   const { navigate, dispatch } = useNavigation<any>();
 
@@ -87,4 +88,6 @@ export default function TodayTasks() {
       </Footer>
     </Wrapper>
   )
-}
+});
+
+export default TodayTasks;

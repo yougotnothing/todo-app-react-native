@@ -1,13 +1,17 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { api, authorizedUser } from "axios-config";
 import { UserDto } from "dto/user.dto";
-import { action, computed, observable } from "mobx";
+import { action, makeObservable, observable } from "mobx";
 
 class UserStore implements UserDto {
   @observable name: string = "";
   @observable email: string = "";
   @observable avatar: string = "";
   @observable isHaveAvatar: boolean = false;
+
+  constructor() {
+    makeObservable(this);
+  }
 
   @action
   setUser(user: UserDto) {
