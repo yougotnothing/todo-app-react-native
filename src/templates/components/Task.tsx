@@ -2,7 +2,7 @@ import styled from "styled-components/native";
 import { SvgXml } from "react-native-svg";
 import Text from "./Text";
 import { useEffect, useState } from "react";
-import Icons from "../../config/enum/icons.enum";
+import Icons from "@icons";
 
 interface TaskProps {
   header: string;
@@ -119,20 +119,17 @@ const TodoActions = styled.View<TodoActionProps>`
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
   background-color: white;
   position: absolute;
+  gap: 4px;
+  top: 0;
   right: 0;
 `;
 
 const TodoAction = styled.TouchableOpacity<TodoActionProps>`
-  background-color: transparent;
+  background-color: ${({ $isActive }) => $isActive ? '#646FD4' : 'transparent'};
   border-radius: 6px;
   width: 100%;
-  padding: 3px;
-  color: #363636;
-
-  &:active {
-    background-color: #646FD4;
-    color: white;
-  }
+  padding: 2px 14px;
+  color: ${({ $isActive }) => $isActive ? 'white' : '#363636'};
 `;
 
 export default function Task({ header, content, isChecked, from, till, tasks }: TaskProps) {
@@ -141,7 +138,7 @@ export default function Task({ header, content, isChecked, from, till, tasks }: 
   const [isActionsOpen, setIsActionsOpen] = useState<boolean>(false);
   const [isActive, setIsActive] = useState<boolean[]>(Array(3).fill(false));
 
-  const handleSetIsActive = (index: number, value: boolean) => {
+  const handleSetIsActive = (index: number, value: boolean) => { 
     setIsActive(prevState => {
       const newState = [...prevState];
       newState[index] = value;
@@ -152,9 +149,15 @@ export default function Task({ header, content, isChecked, from, till, tasks }: 
   const todoActionPress = (index: number) => {
     return {
       onPressIn: () => handleSetIsActive(index, true),
-      onPressOut: () => handleSetIsActive(index, false),
+      onPressOut: () => {
+        handleSetIsActive(index, false);
+        setIsActionsOpen(false);
+      },
       onLongPress: () => handleSetIsActive(index, true),
-      onLongPressOut: () => handleSetIsActive(index, false),
+      onLongPressOut: () => {
+        handleSetIsActive(index, false);
+        setIsActionsOpen(false);
+      },
     }
   }
   
@@ -199,13 +202,13 @@ export default function Task({ header, content, isChecked, from, till, tasks }: 
           <SvgXml xml={Icons["three dots"]} />
         </Settings>
         <TodoActions $isOpen={isActionsOpen}>
-          <TodoAction $isActive={isActive[0]} {...todoActionPress(0)}>
+          <TodoAction activeOpacity={1} $isActive={isActive[0]} {...todoActionPress(0)}>
             <Text color={isActive[0] ? 'white' : '#363636'} size="small" fontFamily="Jost-Regular" text="add subtasks" />
           </TodoAction>
-          <TodoAction $isActive={isActive[1]} {...todoActionPress(1)}>
+          <TodoAction activeOpacity={1} $isActive={isActive[1]} {...todoActionPress(1)}>
             <Text color={isActive[1] ? 'white' : '#363636'} size="small" fontFamily="Jost-Regular" text="edit tasks" />
           </TodoAction>
-          <TodoAction $isActive={isActive[2]} {...todoActionPress(2)}>
+          <TodoAction activeOpacity={1} $isActive={isActive[2]} {...todoActionPress(2)}>
             <Text color={isActive[2] ? 'white' : '#363636'} size="small" fontFamily="Jost-Regular" text="delete tasks" />
           </TodoAction>
         </TodoActions>

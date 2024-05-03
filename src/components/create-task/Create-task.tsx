@@ -1,7 +1,7 @@
-import Wrapper from "../../templates/components/Wrapper";
-import Text from "../../templates/components/Text";
-import Button from "../../templates/components/Button";
-import NewTask from "../../templates/components/New-task";
+import Wrapper from "@templates/Wrapper";
+import Text from "@templates/Text";
+import Button from "@templates/Button";
+import NewTask from "@templates/New-task";
 
 export default function CreateTask() {
   return (

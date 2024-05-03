@@ -3,14 +3,19 @@ import { action, makeObservable, observable, runInAction } from "mobx";
 import { user } from "./user.mobx";
 
 class CreateTaskModalStore implements TaskEntity {
-  @observable
-  isOpen: boolean = false;
+  date: string = `${new Date()
+                        .toLocaleTimeString()
+                        .split(':')[0]}:${
+                    new Date()
+                        .toLocaleTimeString()
+                        .split(':')[0]}`;
+  @observable isOpen: boolean = false;
   @observable header: string = "";
   @observable content: string = "";
   @observable type: TaskType = "work";
   @observable creator: string = user.name;
-  @observable till: string = "";
-  @observable from: string = "";
+  @observable till: string = this.date;
+  @observable from: string = this.date;
   @observable important: boolean = false;
   @observable tasks?: Array<{ isChecked: boolean, content: string }>;
   @observable createdAt: string = new Date()
@@ -24,84 +29,65 @@ class CreateTaskModalStore implements TaskEntity {
   constructor() {
     makeObservable(this);
   }
-  
+
+  @action
   close(): void {
-    runInAction(() => {
-      this.isOpen = false;
-    });
+    this.isOpen = false;
   }
 
   @action
   open(): void {
-    runInAction(() => {
-      this.isOpen = true;
-    });
+    this.isOpen = true;
   }
 
   @action
   setHeader(newHeader: string): void {
-    runInAction(() => {
-      this.header = newHeader;
-    });
+    this.header = newHeader;
   }
 
   @action
   setIsOpen(isOpen: boolean): void {
-    runInAction(() => {
-      this.isOpen = isOpen;
-    });
+    this.isOpen = isOpen;
   }
 
   @action
   setContent(newContent: string): void {
-    runInAction(() => {
-      this.content = newContent;
-    });
+    this.content = newContent;
   }
 
   @action
   setType(newType: TaskType): void {
-    runInAction(() => {
-      this.type = newType;
-    });
+    this.type = newType;
   }
 
   @action
   setTill(time: string): void {
-    runInAction(() => {
-      this.till = time;
-    });
+    const splittedTime = time.split(':');
+    this.till = `${splittedTime[0]}:${splittedTime[1]}`;
   }
 
   @action
   setFrom(time: string): void {
-    runInAction(() => {
-      this.from = time;
-    });
+    const splittedTime = time.split(':');
+    this.from = `${splittedTime[0]}:${splittedTime[1]}`;
   }
 
   @action
   setImportant(isImportant: boolean): void {
-    runInAction(() => {
-      this.important = isImportant;
-    });
+    this.important = isImportant;
   }
 
   @action
   setTaskIsChecked(isChecked: boolean, index: number): void {
-    runInAction(() => {
-      this.tasks?.forEach((item, i) => {
-        if(i === index) item.isChecked = isChecked;
-      });
+    this.tasks?.forEach((item, i) => {
+      if(i === index) item.isChecked = isChecked;
     });
   }
 
   @action
   setTaskContent(content: string, index: number): void {
-    runInAction(() => {
-      this.tasks?.forEach((item, i) => {
-        if(i === index) item.content = content;
-      });
+    this.tasks?.forEach((item, i) => {
+      if(i === index) item.content = content;
     });
   }
 }
