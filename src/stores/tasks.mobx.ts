@@ -1,6 +1,7 @@
-import { api, authorizedUser } from "axios-config";
+import { api } from "axios-config";
 import { TaskEntity, TaskType, TodoDto, UserTasks,  } from "dto/todo.dto";
-import { action, observable } from "mobx";
+import { action, makeObservable, observable, runInAction } from "mobx";
+import { DATE_CONFIG } from "src/config/date.config";
 
 class TasksStore {
   @observable todayTasks: Array<TodoDto> = [];
@@ -9,31 +10,33 @@ class TasksStore {
     "work": [],
     "shop": [],
     "read": [],
-    "work out": []
+    "work out": [],
   };
+
+  constructor() {
+    makeObservable(this);
+  }
 
   @action
   async getTasksByType(type: TaskType) {
     try {
       const response = await api.get('/tasks/get-tasks-by-type', {
-        ...await authorizedUser(),
         params: {
           type
         }
       });
-
+      
       this.todos[type] = response.data.tasks;
-    }catch(error: unknown) {
-      console.error(error);
-      return;
+      }catch(error: unknown) {
+        console.error(error);
+        return;
+      }
     }
-  }
 
   @action
   async changeHeader(data: { header: string, id: number }, type: TaskType) {
     try {
       await api.patch('/tasks/change-header', {
-        ...await authorizedUser(),
         ...data
       });
 
@@ -50,7 +53,6 @@ class TasksStore {
     try {
       await api.delete('tasks/delete-task', {
         params: { id },
-        ...await authorizedUser()
       });
 
       console.log('deleted');
@@ -65,7 +67,6 @@ class TasksStore {
   async addTask(task: TaskEntity) {
     try {
       await api.post('/tasks/add-task', {
-        ...await authorizedUser(),
         ...task
       });
 
@@ -77,16 +78,48 @@ class TasksStore {
   }
 
   @action
-  async getTodayTasks(data: { createdAt: string }) {
+  async getTasks(type: "today" | "week" | "month", data: string = new Date().toLocaleDateString('en-US', DATE_CONFIG)) {
     try {
-      const response = await api.get('/tasks/get-today-tasks', {
-        ...await authorizedUser(),
+      switch(type) {
+        case "today":
+          await this.getTodayTasks();
+          break;
+        case "week":
+          const week = await api.get('/tasks/week-tasks', {
+            params: {
+              week: data && data
+            }
+          });
+
+          runInAction(() => this.todayTasks = week.data.tasks);
+          break;
+        case "month":
+          const month = await api.get('/tasks/month-tasks', {
+            params: {
+              month: data && data
+            }
+          });
+
+          runInAction(() => this.todayTasks = month.data.tasks);
+          break;
+      }
+    }catch(error: unknown) {
+      console.error(error);
+      return;
+    }
+  }
+
+  @action
+  async getTodayTasks() {
+    try {
+      const params = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      const response = await api.get('/tasks/today-tasks', {
         params: {
-          ...data
+          createdAt: new Date().toLocaleDateString('en-US', params as Intl.DateTimeFormatOptions)
         }
       });
 
-      this.todayTasks = response.data.tasks;
+      runInAction(() => this.todayTasks = response.data.tasks);
     }catch(error: unknown) {
       console.error(error);
       return;

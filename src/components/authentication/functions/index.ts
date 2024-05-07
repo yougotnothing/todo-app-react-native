@@ -21,7 +21,7 @@ export const handleRegister = async (dto: RegisterDto) => {
 
 export const handleLogin = async (dto: LoginDto) => {
   try {
-    const navigation = useNavigation<any>();
+    // const navigation = useNavigation<any>();
     const response = await api.post('/auth/login', {
       login: dto.login,
       password: dto.password
@@ -29,7 +29,7 @@ export const handleLogin = async (dto: LoginDto) => {
 
     await AsyncStorage.setItem('token', response.data.token);
     console.log('response', response.data);
-    navigation.navigate('Root');
+    // navigation.navigate('Root');
   }catch(error: any) {
     console.error(error);
   }

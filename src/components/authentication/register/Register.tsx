@@ -1,8 +1,8 @@
 import { useFormik } from "formik";
 import { registerSchema } from "@config/validation";
 import { Wrapper, InputsWrapper, Button, TitleWrapper, HeaderWrapper, Footer, AlreadyHaveAccount, AlreadyHaveAccountButton } from "./Register.styled";
-import Input from "@templates/Input";
-import Text from "@templates/Text";
+import Input from "src/templates/Input";
+import Text from "src/templates/Text";
 import { RegisterDto } from "../../../dto/register.dto";
 import { useNavigation } from "@react-navigation/native";
 import { api } from "axios-config";

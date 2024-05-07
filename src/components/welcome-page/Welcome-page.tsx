@@ -1,6 +1,6 @@
 import { Button, TextWrapper, Wrapper } from "./Welcome-page.styled";
 import { SvgXml } from "react-native-svg";
-import Text from "../../templates/components/Text";
+import Text from "../../templates/Text";
 import { useNavigation } from "@react-navigation/native";
 import Icons from "../../config/enum/icons.enum";
 

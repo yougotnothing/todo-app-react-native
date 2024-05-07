@@ -99,7 +99,6 @@ export const Navbar = styled.View`
 
 export const ProfileButton = styled.TouchableOpacity<ProfileButtonProps>`
   background-color: transparent;
-  border-radius: 50%;
   width: 40px;
   height: 40px;
   background-image: url(${({ $avatar, $isHaveAvatar }) => $isHaveAvatar ? $avatar : ''}); 

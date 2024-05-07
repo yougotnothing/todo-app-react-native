@@ -28,8 +28,6 @@ export const ReturnButton = styled.TouchableOpacity`
 export const UserImage = styled.Image<UserImageProps>`
   width: 50px;
   height: 50px;
-  border-radius: 50%;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
   display: ${({ $isHaveAvatar }) => $isHaveAvatar ? 'flex' : 'none'};
 `;
 
@@ -37,7 +35,6 @@ export const DefaultAvatar = styled.View<UserImageProps>`
   display: ${({ $isHaveAvatar }) => $isHaveAvatar ? 'none' : 'flex'};
   width: 50px;
   height: 50px;
-  border-radius: 50%;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
 `;
 

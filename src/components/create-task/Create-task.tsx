@@ -1,17 +1,13 @@
-import Wrapper from "@templates/Wrapper";
-import Text from "@templates/Text";
-import Button from "@templates/Button";
-import NewTask from "@templates/New-task";
+import NewTask from "@templates/New task/New-task";
+import { observer } from "mobx-react";
 
-export default function CreateTask() {
+function CreateTask() {
+
   return (
     <>
       <NewTask />
-      <Wrapper>
-        <Text color="#9BA3EB" fontFamily="Jost-Medium" size="large" text="Create task" />
-        <Text color="#B9B8FA" fontFamily="Jost-Medium" size="medium" text="Start managing your tasks with Mtodo. Your busy life deserves this. you can manage checklist and your goal." />
-        <Button onPress={() => console.log('create task')} text="Create task" />
-      </Wrapper>
     </>
   )
 }
+
+export default observer(CreateTask);

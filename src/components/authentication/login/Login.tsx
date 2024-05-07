@@ -1,11 +1,12 @@
 import { useFormik } from "formik";
-import Input from "../../../templates/components/Input";
-import Text from "../../../templates/components/Text";
+import Input from "src/templates/Input";
+import Text from "src/templates/Text"; 
 import { LogoWrapper, MainSection, TitleWrapper, Wrapper, Button, NotAMember, RegisterButton } from "./Login.styled";
-import { LoginDto } from "../../../dto/login.dto";
-import { loginSchema } from "../../../config/validation/yup.config";
+import { LoginDto } from "dto/login.dto";
 import { handleLogin } from "../functions";
 import { useNavigation } from "@react-navigation/native";
+import { loginSchema } from "@config/validation";
+import { user } from "@store/user.mobx";
 
 export default function Login() {
   const navigation = useNavigation<any>();
@@ -19,11 +20,10 @@ export default function Login() {
   });
 
   const login = async () => {
-    if(!formik.values.login || !formik.values.password) {
-      return;
-    }
+    if(!formik.values.login || !formik.values.password) return;
 
-    handleLogin(formik.values)
+    await user.login(formik.values)
+    .then(() => navigation.navigate('Root'));
   }
 
   return (

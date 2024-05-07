@@ -1,6 +1,6 @@
 import { SvgXml } from "react-native-svg";
 import styled from "styled-components/native";
-import Icons from "../../config/enum/icons.enum";
+import Icons from "../config/enum/icons.enum";
 
 interface CircleProps {
   $left?: number | 'initial';

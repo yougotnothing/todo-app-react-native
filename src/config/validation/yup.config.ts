@@ -11,3 +11,6 @@ export const loginSchema = yup.object().shape({
   name: yup.string().required('Name is required'),
   password: yup.string().required('Password is required')
 });
+
+export const taskHeaderSchema = yup.string().min(1, 'Task header is required')
+                                            .max(24, 'Task header is too long');

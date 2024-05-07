@@ -13,13 +13,12 @@ export interface TodoDto {
 
 export interface TaskEntity {
   type: TaskType;
-  content: string;
   header: string;
-  creator: string;
   till: string;
   from: string;
   important: boolean;
   createdAt: string;
+  tasks: Array<{ isChecked: boolean, content: string }>;
 }
 
 export interface UserTasks {
@@ -30,4 +29,10 @@ export interface UserTasks {
   "work out": Array<TodoDto & { type: 'work out' }>;
 }
 
-export type TaskType = 'school' | 'work' | 'shop' | 'read' | 'work out';
+
+export type TaskType = 
+  |'school'
+  | 'work'
+  | 'shop'
+  | 'read'
+  | 'work out';

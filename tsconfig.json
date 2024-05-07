@@ -9,14 +9,16 @@
     "paths": {
       "dto/*": ["src/dto/*"],
       "components/*": ["src/components/*"],
-      "@templates/*": ["src/templates/components/*"],
+      "@templates/*": ["src/templates/*"],
       "@config/validation": ["src/config/validation/yup.config"],
       "axios-config": ["src/api/axios.config"],
       "notifications/*": ["src/notifications/*"],
       "@config/enum": ["src/config/enum/*"],
       "@icons": ["src/config/enum/icons.enum"],
       "router": ["router/Router"],
-      "@store/*": ["src/stores/*"]
+      "@store/*": ["src/stores/*"],
+      "fonts/*": ["assets/fonts/*"],
+      "images/*": ["assets/images/*"]
     }
   }
 }

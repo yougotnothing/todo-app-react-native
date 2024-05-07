@@ -1,7 +1,7 @@
 import styled from "styled-components/native";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
-import { TextProps } from "../../components/interfaces/text.interface";
+import { TextProps } from "../components/interfaces/text.interface";
 
 export const T = styled.Text<TextProps>`
   text-align: center;
@@ -19,15 +19,15 @@ export const T = styled.Text<TextProps>`
 
 export default function Text({ size, weight, text, fontFamily, color }: TextProps) {
   const [loaded, error] = useFonts({
-    "Jost-Bold": require('../../../assets/fonts/Jost-Bold.ttf'),
-    "Jost-Black": require('../../../assets/fonts/Jost-Black.ttf'),
-    "Jost-ExtraBold": require('../../../assets/fonts/Jost-ExtraBold.ttf'),
-    "Jost-ExtraLight": require('../../../assets/fonts/Jost-ExtraLight.ttf'),
-    "Jost-Light": require('../../../assets/fonts/Jost-Light.ttf'),
-    "Jost-Medium": require('../../../assets/fonts/Jost-Medium.ttf'),
-    "Jost-Regular": require('../../../assets/fonts/Jost-Regular.ttf'),
-    "Jost-SemiBold": require('../../../assets/fonts/Jost-SemiBold.ttf'),
-    "Jost-Thin": require('../../../assets/fonts/Jost-Thin.ttf'),
+    "Jost-Bold": require('fonts/Jost-Bold.ttf'),
+    "Jost-Black": require('fonts/Jost-Black.ttf'),
+    "Jost-ExtraBold": require('fonts/Jost-ExtraBold.ttf'),
+    "Jost-ExtraLight": require('fonts/Jost-ExtraLight.ttf'),
+    "Jost-Light": require('fonts/Jost-Light.ttf'),
+    "Jost-Medium": require('fonts/Jost-Medium.ttf'),
+    "Jost-Regular": require('fonts/Jost-Regular.ttf'),
+    "Jost-SemiBold": require('fonts/Jost-SemiBold.ttf'),
+    "Jost-Thin": require('fonts/Jost-Thin.ttf'),
   });
 
   useEffect(() => {

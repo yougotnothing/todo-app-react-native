@@ -1,46 +1,22 @@
 import { SvgXml } from "react-native-svg";
 import { AddTask, ArrowDown, Circle, Footer, FooterMainInfo, Navbar, ReturnButton, TasksWrapper, Wrapper } from "./Today-tasks.styled";
 import Icons from "@icons";
-import Task from "@templates/Task";
+import Task from "src/templates/Task";
 import { useNavigation } from "@react-navigation/native";
-import Text from "@templates/Text";
+import Text from "src/templates/Text";
 import { useEffect, useState } from "react";
 import { api } from "axios-config";
-import { TodoDto } from "dto/todo.dto";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { tasksPages } from "@store/tasks-pages.mobx";
 import { observer } from "mobx-react";
+import { tasks } from "@store/tasks.mobx";
 
 const TodayTasks = observer(() => {
-  const [todayTasks, setTodayTasks] = useState<TodoDto[]>([]); 
   const { navigate, dispatch } = useNavigation<any>();
 
   useEffect(() => {
-    (async () => {
-      const date = new Date().toUTCString().split(' ');
-      const dateString = `${date[1]} ${date[2]}, ${date[3]}`; 
-
-      console.log('date', dateString);
-      try {
-        const token = await AsyncStorage.getItem('token');
-        
-        const response = await api.get('/tasks/today-tasks', {
-          headers: {
-            Authorization: `Basic ${token}`
-          },
-          params: {
-            createdAt: dateString
-          }
-        });
-        
-        console.log('response', response.data);
-        setTodayTasks(response.data.tasks);
-      }catch(error: any) {
-        console.error(error);
-      }
-    })();
+    tasks.getTasks(tasksPages.type.toLowerCase() as "today" | "week" | "month");
+    console.log(tasks.todayTasks);
   }, []);
-  
 
   return (
     <Wrapper>
@@ -63,7 +39,7 @@ const TodayTasks = observer(() => {
         <ReturnButton disabled />
       </Navbar>
       <TasksWrapper>
-        {todayTasks.map((task, index) => (
+        {tasks.todayTasks.map((task, index) => (
           <Task
             key={index}
             header={task.header}

@@ -18,33 +18,29 @@ import {
   TodoButtonCounter,
   TodoButtonsWrapper
 } from "./Home.styled";
-import Text from "@templates/Text";
+import Text from "src/templates/Text";
 import { useEffect } from "react";
 import { SvgXml } from "react-native-svg";
 import Icons from "@icons";
 import { tasks } from "@store/tasks.mobx";
 import { user } from "@store/user.mobx";
-import NewTask from "@templates/New-task";
 import { createTaskModal } from "@store/create-task-modal.mobx";
 import { observer } from "mobx-react";
 import { tasksPages } from "@store/tasks-pages.mobx";
+import CreateTask from "components/create-task/Create-task";
+import { UserTasks } from "dto/todo.dto";
 
 const Home = observer(() => { 
   const { navigate, dispatch } = useNavigation<any>();
 
   useEffect(() => {
-    tasks.getTasksByType('school');
+    tasks.getTodayTasks();
     user.getUser();
-    createTaskModal.close();
-
-    console.log('todos', tasks.todos);
-    console.log('user: ', user);
-    console.log('isOpen: ', createTaskModal.isOpen);
   }, []);
 
   return (
     <Container>
-      <NewTask />
+      <CreateTask />
       <Header>
         <LeftCircle>
           <SvgXml 
@@ -107,7 +103,7 @@ const Home = observer(() => {
           {["Today", "Week", "Month"].map((item, index) => (
             <TimeButton key={index} onPress={() => {
                 tasksPages.setType(item as "Today" | "Week" | "Month"); 
-                navigate(`${item} tasks`)
+                navigate(`${item} tasks`);
               }}>
               <Text color="#7D7D7D" fontFamily="Jost-Regular" size="small" text={item} />
             </TimeButton>
@@ -121,11 +117,13 @@ const Home = observer(() => {
               onPress={() => {
                 if(item) {
                   navigate(`${item} tasks`);
-                }else createTaskModal.setIsOpen(true);
+                }else createTaskModal.open("till from");
               }}
             >
               <SvgXml xml={Icons[`${item?.toLowerCase()} task` as keyof typeof Icons]} />
-              <TodoButtonCounter $type={item}>{index}</TodoButtonCounter>
+              <TodoButtonCounter $type={item}>
+                {item && tasks.todos[item.toLowerCase() as keyof UserTasks].length}
+              </TodoButtonCounter>
               {item && (
                 <Text
                   color={item ? "white" : "#D25EB0"}

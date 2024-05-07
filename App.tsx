@@ -3,7 +3,7 @@ import Router from 'router';
 import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react';
-import Text from '@templates/Text';
+import Text from 'src/templates/Text';
 
 export default function App() {
   const [user_token, setUser_token] = useState<string | null>(null);

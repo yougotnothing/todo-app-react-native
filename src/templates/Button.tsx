@@ -1,5 +1,5 @@
 import styled from "styled-components/native";
-import { Props } from "../../components/interfaces/button.interface";
+import { Props } from "../components/interfaces/button.interface";
 import Text from "./Text";
 
 const Button = styled.TouchableOpacity`

@@ -1,6 +1,13 @@
 import { TaskEntity, TaskType } from "dto/todo.dto";
-import { action, makeObservable, observable, runInAction } from "mobx";
+import { action, makeObservable, observable } from "mobx";
 import { user } from "./user.mobx";
+import { api, authorizedUser } from "axios-config";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+type ModalType = 
+  | "till from"
+  | "subtasks"
+  | "content";
 
 class CreateTaskModalStore implements TaskEntity {
   date: string = `${new Date()
@@ -9,7 +16,9 @@ class CreateTaskModalStore implements TaskEntity {
                     new Date()
                         .toLocaleTimeString()
                         .split(':')[0]}`;
-  @observable isOpen: boolean = false;
+  @observable isTillFromModalOpen: boolean = false;
+  @observable isSubtasksModalOpen: boolean = false;
+  @observable isContentModalOpen: boolean = false;
   @observable header: string = "";
   @observable content: string = "";
   @observable type: TaskType = "work";
@@ -17,7 +26,7 @@ class CreateTaskModalStore implements TaskEntity {
   @observable till: string = this.date;
   @observable from: string = this.date;
   @observable important: boolean = false;
-  @observable tasks?: Array<{ isChecked: boolean, content: string }>;
+  @observable tasks: Array<{ isChecked: boolean, content: string }> = [];
   @observable createdAt: string = new Date()
                                       .toLocaleDateString('en-US', {
                                         weekday: 'long',
@@ -31,23 +40,49 @@ class CreateTaskModalStore implements TaskEntity {
   }
 
   @action
-  close(): void {
-    this.isOpen = false;
+  clear() {
+    this.header = "";
+    this.content = "";
+    this.isTillFromModalOpen = false;
+    this.isSubtasksModalOpen = false;
+    this.isContentModalOpen = false;
+    this.important = false;
+    this.tasks = [];
   }
 
   @action
-  open(): void {
-    this.isOpen = true;
+  close(type: ModalType): void {
+    switch(type) {
+      case "till from":
+        this.isTillFromModalOpen = false;
+        break;
+      case "subtasks":
+        this.isSubtasksModalOpen = false;
+        break;
+      case "content":
+        this.isContentModalOpen = false;
+        break;
+    }
+  }
+
+  @action
+  open(type: ModalType): void {
+    switch(type) {
+      case "till from":
+        this.isTillFromModalOpen = true;
+        break;
+      case "subtasks":
+        this.isSubtasksModalOpen = true;
+        break;
+      case "content":
+        this.isContentModalOpen = true;
+        break;
+    }
   }
 
   @action
   setHeader(newHeader: string): void {
     this.header = newHeader;
-  }
-
-  @action
-  setIsOpen(isOpen: boolean): void {
-    this.isOpen = isOpen;
   }
 
   @action
@@ -79,16 +114,50 @@ class CreateTaskModalStore implements TaskEntity {
 
   @action
   setTaskIsChecked(isChecked: boolean, index: number): void {
-    this.tasks?.forEach((item, i) => {
+    this.tasks.forEach((item, i) => {
       if(i === index) item.isChecked = isChecked;
     });
   }
 
   @action
   setTaskContent(content: string, index: number): void {
-    this.tasks?.forEach((item, i) => {
+    this.tasks.forEach((item, i) => {
       if(i === index) item.content = content;
     });
+  }
+
+  @action
+  addSubtask() {
+    this.tasks.push({ isChecked: false, content: "" });
+  }
+
+  @action
+  toTaskEntity(): TaskEntity {
+    return {
+      type: this.type,
+      header: this.header,
+      from: this.from,
+      till: this.till,
+      important: this.important,
+      tasks: this.tasks,
+      createdAt: this.createdAt
+    }
+  }
+
+  @action
+  async createTask() {
+    try {
+      if(!this.toTaskEntity().header.length) return;
+      
+      const response = await api.post('/user/add-task', {
+        ...this.toTaskEntity()
+      });
+
+      console.log('response: ', response.data);
+    }catch(error: unknown) {
+      console.error(error);
+      return;
+    }
   }
 }
 
