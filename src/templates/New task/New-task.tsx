@@ -105,14 +105,21 @@ function NewTask() {
         </TillFrom>
         <TillFrom>
           <Text color="#888888" size="small" fontFamily="Jost-Regular" text="till" />
-          <TillFromButton onPress={() => setIsFromOpen(true)}>
+          <TillFromButton onPress={() => setIsTillOpen(true)}>
             <Text color="#888888" size="small" fontFamily="Jost-Regular" text={createTaskModal.till} />
           </TillFromButton>
         </TillFrom>
-        <DatePicker type="from" isVisible={isFromOpen} onCancel={() => setIsFromOpen(false)} />
-        <DatePicker type="till" isVisible={isTillOpen} onCancel={() => setIsTillOpen(false)} />
+        <DatePicker
+          type="from"
+          isVisible={isFromOpen}
+          onCancel={() => setIsFromOpen(false)}
+        />
+        <DatePicker
+          type="till"
+          isVisible={isTillOpen}
+          onCancel={() => setIsTillOpen(false)}
+        />
       </TillFromWrapper>
-
       <SubtasksModal />
       <Footer>
         <TransparentButton onPress={() => createTaskModal.clear()} text="Cancel" />

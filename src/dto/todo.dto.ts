@@ -8,7 +8,7 @@ export interface TodoDto {
   till: string;
   from: string;
   important: boolean;
-  tasks?: Array<{ isChecked: boolean, content: string }>;
+  tasks: Array<{ isChecked: boolean; content: string }>;
 }
 
 export interface TaskEntity {
@@ -18,21 +18,15 @@ export interface TaskEntity {
   from: string;
   important: boolean;
   createdAt: string;
-  tasks: Array<{ isChecked: boolean, content: string }>;
+  tasks: Array<{ isChecked: boolean; content: string }>;
 }
-
-export interface UserTasks {
-  "school": Array<TodoDto & { type: 'school' }>;
-  "work": Array<TodoDto & { type: 'work' }>;
-  "shop": Array<TodoDto & { type: 'shop' }>;
-  "read": Array<TodoDto & { type: 'read' }>;
-  "work out": Array<TodoDto & { type: 'work out' }>;
-}
-
 
 export type TaskType = 
-  |'school'
+  | 'school'
   | 'work'
   | 'shop'
   | 'read'
   | 'work out';
+
+export type UserTasks = Record<TaskType, Array<TodoDto & { type: TaskType }>>;
+export type Tasks = Record<"today" | "week" | "month", TodoDto[]>;

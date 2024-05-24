@@ -3,13 +3,13 @@ import Input from "src/templates/Input";
 import Text from "src/templates/Text"; 
 import { LogoWrapper, MainSection, TitleWrapper, Wrapper, Button, NotAMember, RegisterButton } from "./Login.styled";
 import { LoginDto } from "dto/login.dto";
-import { handleLogin } from "../functions";
 import { useNavigation } from "@react-navigation/native";
 import { loginSchema } from "@config/validation";
 import { user } from "@store/user.mobx";
+import { RouterProps } from "router/router.interface";
 
 export default function Login() {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<RouterProps>();
   const formik = useFormik<LoginDto>({
     initialValues: {
       login: '',

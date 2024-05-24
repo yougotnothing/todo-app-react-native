@@ -10,17 +10,20 @@ interface DatePickerProps {
 
 function DatePicker({ type, onCancel, isVisible }: DatePickerProps) {
   const setDateByType = (type: "till" | "from", time: Date): void => {
-    if(type === "till") createTaskModal.setTill(time.toLocaleTimeString());
-    else createTaskModal.setFrom(time.toLocaleTimeString());
-  }
+    if(type === "till") {
+      createTaskModal.setTill(time.toLocaleTimeString());
+    }else createTaskModal.setFrom(time.toLocaleTimeString());
+  };
 
-  return <DateTimePicker
+  return (
+    <DateTimePicker
       onConfirm={time => setDateByType(type, time)}
       onCancel={onCancel}
       isVisible={isVisible}
       mode="time"
       date={new Date()}
     />
+  );
 }
 
 export default observer(DatePicker);

@@ -1,18 +1,28 @@
-import { api, authorizedUser } from "axios-config";
-import { TodoDto } from "dto/todo.dto";
+import { api } from "axios-config";
+import { TaskType, TodoDto } from "dto/todo.dto";
 import { action, observable } from "mobx";
+import { tasks } from "./tasks.mobx";
 
-type TasksPagesStoreType = "Today" | "Week" | "Month" | "Daily";
+type Pages = DailyPages | TaskType;
+type DailyPages = 
+  | "Today"
+  | "Week"
+  | "Month"
+  | "Daily";
 
 class TasksPagesStore {
-  @observable type: TasksPagesStoreType = "Daily";
+  @observable type: Pages = "Daily";
   @observable tasks: TodoDto[] = [];
 
   @action
-  async getTasksByType(type: TasksPagesStoreType) {
+  async getTasksByType(type: Pages) {
     try {
+      if(type !== "Daily" && type !== "Month" && type !== "Week" && type !== "Today") {
+        tasks.getTasksByType(type.toLowerCase() as TaskType);
+        return;
+      };
+
       const response = await api.get(`/tasks/get-tasks-by`, {
-        ...await authorizedUser(),
         params: {
           type
         }
@@ -20,14 +30,14 @@ class TasksPagesStore {
 
       this.tasks = response.data.tasks;
       console.log(`${type} tasks: `, response.data.tasks);
-    }catch(error: unknown) {
-      console.error(error);
+    }catch(error: any) {
+      console.error(error.response.data);
       return;
     }
   }
 
   @action
-  setType(type: TasksPagesStoreType) {
+  setType(type: Pages) {
     this.type = type;
   }
 }

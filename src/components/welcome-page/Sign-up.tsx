@@ -1,12 +1,12 @@
 import { SvgXml } from "react-native-svg";
 import { Button, ButtonsWrapper, SignUpButton, SignUpWrapper, TextWrapper, Wrapper } from "./Welcome-page.styled";
-import { sign_up_image } from "./welcome-image";
 import Text from "../../templates/Text";
 import { useNavigation } from "@react-navigation/native";
 import Icons from "../../config/enum/icons.enum";
+import { RouterProps } from "router/router.interface";
 
 export default function SignUp() {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<RouterProps>();
 
   return (
     <Wrapper>

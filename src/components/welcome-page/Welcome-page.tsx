@@ -3,9 +3,10 @@ import { SvgXml } from "react-native-svg";
 import Text from "../../templates/Text";
 import { useNavigation } from "@react-navigation/native";
 import Icons from "../../config/enum/icons.enum";
+import { RouterProps } from "router/router.interface";
 
 export default function WelcomePage() {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<RouterProps>();
 
   return (
     <Wrapper>

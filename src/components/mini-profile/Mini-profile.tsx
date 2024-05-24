@@ -13,9 +13,10 @@ import Icons from "@icons";
 import Text from "@templates/Text";
 import { DrawerItem } from "@react-navigation/drawer";
 import { user } from "@store/user.mobx";
+import { RouterProps } from "router/router.interface";
 
 export default function MiniProfile() {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<RouterProps>();
   const routes = [
     { label: "Edit profile", icon: Icons["edit profile"], navigateTo: "Home" },
     { label: "Daily tasks", icon: Icons["daily tasks"], navigateTo: "Daily tasks" },

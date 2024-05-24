@@ -1,6 +1,6 @@
 import { SvgXml } from "react-native-svg";
 import styled from "styled-components/native";
-import Icons from "../config/enum/icons.enum";
+import Icons from "@icons";
 
 interface CircleProps {
   $left?: number | 'initial';
@@ -15,7 +15,7 @@ const Container = styled.View`
   padding: 20px;
   width: 100%;
   height: 100%;
-  background-color: white;
+  background-color: #fff;
   gap: 52px;
   position: relative;
   z-index: 4;

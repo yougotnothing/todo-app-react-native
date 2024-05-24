@@ -18,6 +18,7 @@ interface Token {
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
+const { Screen, Navigator } = Stack;
 
 const DrawerStack = () => {
   return (
@@ -66,7 +67,7 @@ const DrawerStack = () => {
         name="Done tasks" component={Home}
       />
     </Drawer.Navigator>
-  )
+  );
 }
 
 export default function Router({ token }: Token) {
@@ -74,7 +75,7 @@ export default function Router({ token }: Token) {
   const noHeaderTitle = (title: string) => ({ ...noHeader, headerTitle: title });
 
   return (
-    <Stack.Navigator screenOptions={{
+    <Navigator screenOptions={{
       headerStyle: {
         backgroundColor: "#646FD4",
       },
@@ -86,17 +87,22 @@ export default function Router({ token }: Token) {
         color: "white",
       }}} initialRouteName={token ? 'Root' : 'Welcome'}
     >
-      <Stack.Screen name="Root" component={DrawerStack} options={{ ...noHeader, gestureEnabled: false }} />
-      <Stack.Screen name="Notification" component={Notification} />
-      <Stack.Screen name="Register" component={Register} />
-      <Stack.Screen name="Welcome" component={WelcomePage} />
-      <Stack.Screen name="Sign Up" component={SignUp} />
-      <Stack.Screen name="Log in" component={Login} />
-      <Stack.Screen name="Create task" options={noHeader} component={CreateTask} />
-      <Stack.Screen name="Daily tasks" options={noHeader} component={TodayTasks} />
-      <Stack.Screen name="Today tasks" options={noHeader} component={TodayTasks} />
-      <Stack.Screen name="Week tasks" options={noHeaderTitle("Week tasks")} component={TodayTasks} /> 
-      <Stack.Screen name="Month tasks" options={noHeaderTitle("Month tasks")} component={TodayTasks} />
-    </Stack.Navigator>
+      <Screen name="Root" component={DrawerStack} options={{ ...noHeader, gestureEnabled: false }} />
+      <Screen name="Notification" component={Notification} />
+      <Screen name="Register" component={Register} />
+      <Screen name="Welcome" component={WelcomePage} />
+      <Screen name="Sign Up" component={SignUp} />
+      <Screen name="Log in" component={Login} />
+      <Screen name="Create task" options={noHeader} component={CreateTask} />
+      <Screen name="Daily tasks" options={noHeader} component={TodayTasks} />
+      <Screen name="Today tasks" options={noHeader} component={TodayTasks} />
+      <Screen name="Week tasks" options={noHeaderTitle("Week tasks")} component={TodayTasks} /> 
+      <Screen name="Month tasks" options={noHeaderTitle("Month tasks")} component={TodayTasks} />
+      <Screen name="School tasks" options={noHeaderTitle("School tasks")} component={TodayTasks} />
+      <Screen name="Work tasks" options={noHeaderTitle("Work tasks")} component={TodayTasks} />
+      <Screen name="Shop tasks" options={noHeaderTitle("Shop tasks")} component={TodayTasks} />
+      <Screen name="Read tasks" options={noHeaderTitle("Read tasks")} component={TodayTasks} />
+      <Screen name="Work out tasks" options={noHeaderTitle("Work out tasks")} component={TodayTasks} />
+    </Navigator>
   )
 }

@@ -19,7 +19,7 @@ import {
   TodoButtonsWrapper
 } from "./Home.styled";
 import Text from "src/templates/Text";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { SvgXml } from "react-native-svg";
 import Icons from "@icons";
 import { tasks } from "@store/tasks.mobx";
@@ -28,15 +28,26 @@ import { createTaskModal } from "@store/create-task-modal.mobx";
 import { observer } from "mobx-react";
 import { tasksPages } from "@store/tasks-pages.mobx";
 import CreateTask from "components/create-task/Create-task";
-import { UserTasks } from "dto/todo.dto";
+import { TaskType, UserTasks } from "dto/todo.dto";
+import { RouterProps } from "router/router.interface";
 
-const Home = observer(() => { 
-  const { navigate, dispatch } = useNavigation<any>();
+const Home = observer(() => {
+  const navigation = useNavigation<RouterProps>();
 
   useEffect(() => {
-    tasks.getTodayTasks();
+    tasks.getTasks('today');
+    tasks.getTasksLength();
+    console.log('tasks length: ', tasks.tasksLength);
     user.getUser();
   }, []);
+
+  const handlePressTodoButton = async (type: string | undefined) => {
+    if(type) {
+      tasksPages.setType(type as TaskType);
+      await tasksPages.getTasksByType(type as TaskType);
+      navigation.navigate(`${type} tasks`);
+    }else createTaskModal.open("till from");
+  };
 
   return (
     <Container>
@@ -57,7 +68,7 @@ const Home = observer(() => {
           />
         </RightCircle>
         <Navbar>
-          <DrawerButton onPress={() => dispatch(DrawerActions.openDrawer())}>
+          <DrawerButton onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
             <SvgXml
               xml={Icons["menu"]}
               height="30"
@@ -76,7 +87,7 @@ const Home = observer(() => {
         </Navbar>
         <TextWrapper>
           <Text color="#363636" fontFamily="Jost-Medium" size="medium" text="you have" />
-          <Text color="white" fontFamily="Jost-Medium" size="large" text={`${tasks.todayTasks.length} tasks`} />
+          <Text color="white" fontFamily="Jost-Medium" size="large" text={`${tasks.tasks["today"].length} tasks`} />
           <Text color="#363636" fontFamily="Jost-Medium" size="medium" text="today!" />
           <Text
             color="#363636"
@@ -101,9 +112,11 @@ const Home = observer(() => {
       <MainSection>
         <TimeWrapper>
           {["Today", "Week", "Month"].map((item, index) => (
-            <TimeButton key={index} onPress={() => {
+            <TimeButton
+              key={index}
+              onPress={() => {
                 tasksPages.setType(item as "Today" | "Week" | "Month"); 
-                navigate(`${item} tasks`);
+                navigation.navigate(`${item} tasks`);
               }}>
               <Text color="#7D7D7D" fontFamily="Jost-Regular" size="small" text={item} />
             </TimeButton>
@@ -114,15 +127,11 @@ const Home = observer(() => {
             <TodoButton
               key={index}
               $type={item?.toLowerCase()}
-              onPress={() => {
-                if(item) {
-                  navigate(`${item} tasks`);
-                }else createTaskModal.open("till from");
-              }}
+              onPress={async () => await handlePressTodoButton(item)}
             >
               <SvgXml xml={Icons[`${item?.toLowerCase()} task` as keyof typeof Icons]} />
               <TodoButtonCounter $type={item}>
-                {item && tasks.todos[item.toLowerCase() as keyof UserTasks].length}
+                {item && tasks.tasksLength[item.toLowerCase() as keyof UserTasks]}
               </TodoButtonCounter>
               {item && (
                 <Text

@@ -6,9 +6,10 @@ import Text from "src/templates/Text";
 import { RegisterDto } from "../../../dto/register.dto";
 import { useNavigation } from "@react-navigation/native";
 import { api } from "axios-config";
+import { RouterProps } from "router/router.interface";
 
 export default function Register() {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<RouterProps>();
   const formik = useFormik<RegisterDto>({
     initialValues: {
       name: '',

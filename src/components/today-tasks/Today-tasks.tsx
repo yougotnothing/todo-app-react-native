@@ -1,21 +1,31 @@
 import { SvgXml } from "react-native-svg";
-import { AddTask, ArrowDown, Circle, Footer, FooterMainInfo, Navbar, ReturnButton, TasksWrapper, Wrapper } from "./Today-tasks.styled";
+import {
+  AddTask,
+  ArrowDown,
+  Circle,
+  Footer,
+  FooterMainInfo,
+  Navbar,
+  ReturnButton,
+  TasksWrapper,
+  Wrapper
+} from "./Today-tasks.styled";
 import Icons from "@icons";
 import Task from "src/templates/Task";
 import { useNavigation } from "@react-navigation/native";
 import Text from "src/templates/Text";
-import { useEffect, useState } from "react";
-import { api } from "axios-config";
+import { useEffect } from "react";
 import { tasksPages } from "@store/tasks-pages.mobx";
 import { observer } from "mobx-react";
-import { tasks } from "@store/tasks.mobx";
+import { tasks as tasksStore } from "@store/tasks.mobx";
+import { RouterProps } from "router/router.interface";
+import { Tasks, TodoDto, UserTasks } from "dto/todo.dto";
 
 const TodayTasks = observer(() => {
-  const { navigate, dispatch } = useNavigation<any>();
+  const navigation = useNavigation<RouterProps>();
 
   useEffect(() => {
-    tasks.getTasks(tasksPages.type.toLowerCase() as "today" | "week" | "month");
-    console.log(tasks.todayTasks);
+    tasksStore.getTasks(tasksPages.type.toLowerCase() as "today" | "week" | "month");
   }, []);
 
   return (
@@ -27,7 +37,7 @@ const TodayTasks = observer(() => {
         <SvgXml xml={Icons["bottom circle"]} />
       </Circle>
       <Navbar>
-        <ReturnButton onPress={() => navigate('Home')}>
+        <ReturnButton onPress={() => navigation.navigate('Home')}>
           <SvgXml xml={Icons["white back button"]} />
         </ReturnButton>
         <Text
@@ -39,17 +49,31 @@ const TodayTasks = observer(() => {
         <ReturnButton disabled />
       </Navbar>
       <TasksWrapper>
-        {tasks.todayTasks.map((task, index) => (
-          <Task
-            key={index}
-            header={task.header}
-            content={task.content}
-            isChecked={task.isChecked}
-            from={task.from}
-            till={task.till}
-            tasks={task.tasks}
-          />
-        ))}
+        {tasksPages.tasks && tasksPages.type !== "Today" && tasksPages.type !== "Week" && tasksPages.type !== "Month" ? (
+          tasksStore.userTasks[tasksPages.type.toLowerCase() as keyof UserTasks].map((task, index) => (
+            <Task
+              key={index}
+              header={task.header}
+              content={task.content}
+              isChecked={task.isChecked}
+              from={task.from}
+              till={task.till}
+              tasks={task.tasks}
+            />
+          ))
+        ) : (
+          tasksStore.tasks[tasksPages.type.toLowerCase() as keyof Tasks].map((task, index) => (
+            <Task
+              key={index}
+              header={task.header}
+              content={task.content}
+              isChecked={task.isChecked}
+              from={task.from}
+              till={task.till}
+              tasks={task.tasks}
+            />
+          ))
+        )}
       </TasksWrapper>
       <Footer>
         <FooterMainInfo>

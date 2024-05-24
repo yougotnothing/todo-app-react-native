@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "authomatic",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -31,6 +31,9 @@
       "eas": {
         "projectId": "6b7a4aa0-186c-409f-86ab-ef2a0dc92f82"
       }
-    }
+    },
+    "plugins": [
+      "expo-font"
+    ]
   }
 }

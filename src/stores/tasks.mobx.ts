@@ -2,19 +2,43 @@ import { api } from "axios-config";
 import { TaskEntity, TaskType, TodoDto, UserTasks,  } from "dto/todo.dto";
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { DATE_CONFIG } from "src/config/date.config";
+import { Tasks } from "dto/todo.dto";
 
 class TasksStore {
-  @observable todayTasks: Array<TodoDto> = [];
-  @observable todos: UserTasks = {
+  @observable tasks: Tasks = {
+    "today": [],
+    "week": [],
+    "month": [],
+  }
+  @observable userTasks: UserTasks = {
     "school": [],
     "work": [],
     "shop": [],
     "read": [],
     "work out": [],
-  };
+  }
+  @observable tasksLength: Record<TaskType, number> = {
+    "school": 0,
+    "work": 0,
+    "shop": 0,
+    "read": 0,
+    "work out": 0,
+  }
 
   constructor() {
     makeObservable(this);
+  }
+
+  @action
+  async getTasksLength() {
+    try {
+      const response = await api.get('/tasks/tasks-length');
+
+      runInAction(() => this.tasksLength = response.data.tasks);
+    }catch(error: any) {
+      console.error(error.response.data);
+      return;
+    }
   }
 
   @action
@@ -26,12 +50,12 @@ class TasksStore {
         }
       });
       
-      this.todos[type] = response.data.tasks;
-      }catch(error: unknown) {
-        console.error(error);
-        return;
-      }
+      runInAction(() => (this.userTasks[type] = response.data.tasks));
+    }catch(error: any) {
+      console.error(error.response.data);
+      return;
     }
+  }
 
   @action
   async changeHeader(data: { header: string, id: number }, type: TaskType) {
@@ -49,14 +73,14 @@ class TasksStore {
   }
 
   @action
-  async deleteTask(id: number) {
+  async deleteTask(id: number, type: keyof UserTasks) {
     try {
       await api.delete('tasks/delete-task', {
         params: { id },
       });
 
       console.log('deleted');
-      this.todos.school = this.todos.school.filter(item => item.id !== id);
+      runInAction(() => this.userTasks[type] = this.userTasks[type].filter(item => item.id !== id));
     }catch(error: unknown) {
       console.error(error);
       return;
@@ -78,7 +102,9 @@ class TasksStore {
   }
 
   @action
-  async getTasks(type: "today" | "week" | "month", data: string = new Date().toLocaleDateString('en-US', DATE_CONFIG)) {
+  async getTasks(type: "today" | "week" | "month") {
+    const date = new Date().toLocaleDateString('en-US', DATE_CONFIG);
+
     try {
       switch(type) {
         case "today":
@@ -87,20 +113,23 @@ class TasksStore {
         case "week":
           const week = await api.get('/tasks/week-tasks', {
             params: {
-              week: data && data
+              week: `${date.split(', ')[1]}, ${date.split(', ')[2]}`
             }
           });
 
-          runInAction(() => this.todayTasks = week.data.tasks);
+          runInAction(() => this.tasks["week"] = week.data.tasks);
           break;
         case "month":
           const month = await api.get('/tasks/month-tasks', {
             params: {
-              month: data && data
+              month: date
+                      .split(', ')
+                      .join(' ')
+                      .split(' ')[1]
             }
           });
 
-          runInAction(() => this.todayTasks = month.data.tasks);
+          runInAction(() => this.tasks["month"] = month.data.tasks);
           break;
       }
     }catch(error: unknown) {
@@ -112,14 +141,13 @@ class TasksStore {
   @action
   async getTodayTasks() {
     try {
-      const params = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
       const response = await api.get('/tasks/today-tasks', {
         params: {
-          createdAt: new Date().toLocaleDateString('en-US', params as Intl.DateTimeFormatOptions)
+          createdAt: new Date().toLocaleDateString('en-US', DATE_CONFIG)
         }
       });
 
-      runInAction(() => this.todayTasks = response.data.tasks);
+      runInAction(() => this.tasks["today"] = response.data.tasks);
     }catch(error: unknown) {
       console.error(error);
       return;
