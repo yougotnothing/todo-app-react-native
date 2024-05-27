@@ -18,7 +18,7 @@ import { RouterProps } from "router/router.interface";
 export default function MiniProfile() {
   const navigation = useNavigation<RouterProps>();
   const routes = [
-    { label: "Edit profile", icon: Icons["edit profile"], navigateTo: "Home" },
+    { label: "Edit profile", icon: Icons["edit profile"], navigateTo: "Profile" },
     { label: "Daily tasks", icon: Icons["daily tasks"], navigateTo: "Daily tasks" },
     { label: "Important tasks", icon: Icons["important tasks"], navigateTo: "Home" },
     { label: "Done tasks", icon: Icons["done tasks"], navigateTo: "Home" }

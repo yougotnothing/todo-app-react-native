@@ -4,7 +4,6 @@ import axios, { AxiosRequestConfig } from 'axios';
 export const api = axios.create({
   baseURL: process.env.API_URL,
   withCredentials: true,
-  timeout: 5000,
 });
 
 api.interceptors.request.use(
@@ -14,9 +13,7 @@ api.interceptors.request.use(
     if(!token) config.headers.Authorization = 'null';
 
     config.headers.Authorization = `Basic ${token}`;
-    config.headers['Content-Type'] = 'application/json';
-    config.headers['Accept'] = '*/*';
-
+    config.headers['Access-Control-Allow-Origin'] = process.env.API_URL;
     return config;
   }, 
   (error) => {

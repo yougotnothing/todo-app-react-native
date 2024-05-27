@@ -18,8 +18,8 @@ import {
   TodoButtonCounter,
   TodoButtonsWrapper
 } from "./Home.styled";
-import Text from "src/templates/Text";
-import { useEffect, useState } from "react";
+import Text from "@templates/Text";
+import { useEffect } from "react";
 import { SvgXml } from "react-native-svg";
 import Icons from "@icons";
 import { tasks } from "@store/tasks.mobx";
@@ -37,7 +37,6 @@ const Home = observer(() => {
   useEffect(() => {
     tasks.getTasks('today');
     tasks.getTasksLength();
-    console.log('tasks length: ', tasks.tasksLength);
     user.getUser();
   }, []);
 

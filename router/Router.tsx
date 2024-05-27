@@ -11,6 +11,7 @@ import MiniProfile from "components/mini-profile/Mini-profile";
 import WelcomePage from "components/welcome-page/Welcome-page";
 import Register from "components/authentication/register/Register";
 import Notification from "notifications/Notification";
+import Profile from "components/profile/Profile";
 
 interface Token {
   token: string | null;
@@ -52,7 +53,7 @@ const DrawerStack = () => {
     drawerContent={() => <MiniProfile />}>
       <Drawer.Screen name="Home" component={Home} options={{ headerShown: false }} />
       <Drawer.Screen options={{ drawerIcon: () => <SvgXml xml={Icons["edit profile"]} /> }}
-        name="Edit profile" component={Home}
+        name="Edit profile" component={Profile}
       />
       <Drawer.Screen options={{
         gestureHandlerProps: { enabled: true },
@@ -103,6 +104,7 @@ export default function Router({ token }: Token) {
       <Screen name="Shop tasks" options={noHeaderTitle("Shop tasks")} component={TodayTasks} />
       <Screen name="Read tasks" options={noHeaderTitle("Read tasks")} component={TodayTasks} />
       <Screen name="Work out tasks" options={noHeaderTitle("Work out tasks")} component={TodayTasks} />
+      <Screen name="Profile" options={noHeaderTitle("Profile")} component={Profile} />
     </Navigator>
   )
 }

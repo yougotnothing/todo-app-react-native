@@ -5,7 +5,6 @@ import styled from "styled-components/native";
 import AddButton from "./Add-button";
 import { SvgXml } from "react-native-svg";
 import Icons from "@icons";
-import Text from "@templates/Text";
 
 const Subtask = styled.View`
   display: flex;

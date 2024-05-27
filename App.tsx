@@ -18,13 +18,12 @@ export default function App() {
 
         setUser_token(token);
         setIsFetching(false);
+        console.log('user token: ', token);
       }catch(error: unknown) {
         console.log('error', error);
         setIsFetching(false);
       }
     })();
-
-    console.log('user_token', user_token);
   }, []);
 
   return (

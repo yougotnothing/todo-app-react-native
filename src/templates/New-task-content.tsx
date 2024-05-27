@@ -12,10 +12,6 @@ const TextArea = styled.TextInput`
   color: #888888;
   position: relative;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
-
-  &::placeholder {
-    color: #888888;
-  }
 `;
 
 function NewTaskContent() {

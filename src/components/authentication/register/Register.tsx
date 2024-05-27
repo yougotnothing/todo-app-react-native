@@ -28,7 +28,7 @@ export default function Register() {
       .then(req => {
         if(req.status !== 200) { 
           return;
-        }else navigation.navigate('Home');
+        }else navigation.navigate('Root');
         
         console.log('request', req.data);
       });
