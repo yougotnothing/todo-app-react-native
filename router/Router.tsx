@@ -12,6 +12,7 @@ import WelcomePage from "components/welcome-page/Welcome-page";
 import Register from "components/authentication/register/Register";
 import Notification from "notifications/Notification";
 import Profile from "components/profile/Profile";
+import { user } from "@store/user.mobx";
 
 interface Token {
   token: string | null;
@@ -86,14 +87,15 @@ export default function Router({ token }: Token) {
         fontWeight: "700",
         fontSize: 20,
         color: "white",
-      }}} initialRouteName={token ? 'Root' : 'Welcome'}
+      }}}
+      initialRouteName={token ? 'Root' : 'Welcome'}
     >
       <Screen name="Root" component={DrawerStack} options={{ ...noHeader, gestureEnabled: false }} />
       <Screen name="Notification" component={Notification} />
       <Screen name="Register" component={Register} />
       <Screen name="Welcome" component={WelcomePage} />
       <Screen name="Sign Up" component={SignUp} />
-      <Screen name="Log in" component={Login} />
+      <Screen name="Log in" component={Login} options={{ gestureEnabled: false, headerBackVisible: user.isLoggedIn }} />
       <Screen name="Create task" options={noHeader} component={CreateTask} />
       <Screen name="Daily tasks" options={noHeader} component={TodayTasks} />
       <Screen name="Today tasks" options={noHeader} component={TodayTasks} />

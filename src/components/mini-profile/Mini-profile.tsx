@@ -14,6 +14,8 @@ import Text from "@templates/Text";
 import { DrawerItem } from "@react-navigation/drawer";
 import { user } from "@store/user.mobx";
 import { RouterProps } from "router/router.interface";
+import { TransparentButton } from "@templates/Transparent-button";
+import { useEffect } from "react";
 
 export default function MiniProfile() {
   const navigation = useNavigation<RouterProps>();
@@ -23,6 +25,16 @@ export default function MiniProfile() {
     { label: "Important tasks", icon: Icons["important tasks"], navigateTo: "Home" },
     { label: "Done tasks", icon: Icons["done tasks"], navigateTo: "Home" }
   ];
+
+  useEffect(() => {
+    navigation.dispatch(DrawerActions.closeDrawer());
+  }, []);
+
+  const handleLogout = async () => {
+    await user.logout();
+    navigation.navigate('Log in');
+    navigation.setOptions({ canGoBack: false });
+  }
 
   return (
     <Wrapper>
@@ -54,6 +66,15 @@ export default function MiniProfile() {
           />
         ))}
       </RoutesWrapper>
+      <TransparentButton
+        style={{ 
+          marginTop: "auto",
+          marginLeft: 10,
+          marginRight: "auto"
+        }}
+        onPress={handleLogout}
+        text="Log out"
+      />
     </Wrapper>
   )
 }

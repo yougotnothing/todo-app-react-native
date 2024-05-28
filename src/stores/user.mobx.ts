@@ -2,13 +2,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { api, authorizedUser } from "axios-config";
 import { LoginDto } from "dto/login.dto";
 import { UserDto } from "dto/user.dto";
-import { action, makeObservable, observable } from "mobx";
+import { action, makeObservable, observable, runInAction } from "mobx";
 
 class UserStore implements UserDto {
   @observable name: string = "";
   @observable email: string = "";
   @observable avatar: string = "";
   @observable isHaveAvatar: boolean = false;
+  @observable id: number = 0;
+  @observable isLoggedIn: boolean = false;
 
   constructor() {
     makeObservable(this);
@@ -20,6 +22,8 @@ class UserStore implements UserDto {
     this.email = user.email;
     this.avatar = user.avatar;
     this.isHaveAvatar = user.isHaveAvatar;
+    this.id = user.id;
+    this.isLoggedIn = true;
   }
 
   @action
@@ -41,9 +45,7 @@ class UserStore implements UserDto {
   @action
   async getUser() {
     try {
-      const response = await api.get('/user/get-user', {
-        ...await authorizedUser()
-      });
+      const response = await api.get('/user/get-user');
 
       this.setUser(response.data.user);
     }catch(error: any) {
@@ -81,6 +83,20 @@ class UserStore implements UserDto {
       console.error(error);
       return;
     }
+  }
+
+  @action
+  async logout() {
+    await AsyncStorage.removeItem('token');
+
+    runInAction(() => {
+      this.name = "";
+      this.email = "";
+      this.avatar = "";
+      this.isHaveAvatar = false;
+      this.id = 0;
+      this.isLoggedIn = false;
+    });
   }
 }
 

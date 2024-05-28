@@ -30,6 +30,8 @@ import { tasksPages } from "@store/tasks-pages.mobx";
 import CreateTask from "components/create-task/Create-task";
 import { TaskType, UserTasks } from "dto/todo.dto";
 import { RouterProps } from "router/router.interface";
+import { Image } from "react-native";
+import UserAvatar from "@templates/User-avatar";
 
 const Home = observer(() => {
   const navigation = useNavigation<RouterProps>();
@@ -75,14 +77,12 @@ const Home = observer(() => {
             />
           </DrawerButton>
           <Text color="white" fontFamily="Jost-Medium" size="large" text="Mtodo logo" />
-          {user && user.isHaveAvatar ? (
-            <ProfileButton
-              $isHaveAvatar={user && user.isHaveAvatar}
-              $avatar={user && user.avatar}
-            />
-          ) : (
-            <SvgXml xml={Icons["default avatar"]} width="40" height="40" />
-          )}
+          <UserAvatar
+            avatar={user.avatar}
+            isHaveAvatar={user.isHaveAvatar}
+            size={40}
+            onPress={() => navigation.navigate('Profile')}
+          />
         </Navbar>
         <TextWrapper>
           <Text color="#363636" fontFamily="Jost-Medium" size="medium" text="you have" />

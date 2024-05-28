@@ -1,11 +1,12 @@
-import { api } from "axios-config";
-import { action, makeObservable, observable, runInAction } from "mobx";
+import { action, makeObservable, observable } from "mobx";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
+import { api } from "axios-config";
+import { user } from "./user.mobx";
 
 class ChangeAvatarStore {
   @observable avatar: string = "";
-  @observable avatarBuffer: Blob | null = null;
+  @observable avatarFile: File | null = null;
 
   constructor() {
     makeObservable(this);
@@ -26,37 +27,49 @@ class ChangeAvatarStore {
       base64: true
     });
 
-    if(!result.canceled) await this.setAvatarBuffer(result.assets[0]);
+    if(!result.canceled) await this.setAvatarFile(result.assets[0]);
   }
 
   @action
-  async changeAvatarBuffer(image: string) {
-    if(!image) return;
-
-    const file = await FileSystem.readAsStringAsync(image, { encoding: FileSystem.EncodingType.Base64 });
-
-    if(file.length > 0) runInAction(() => (this.avatarBuffer = new Blob([file], { type: 'image/jpeg' })));
-  }
-
-  @action
-  async setAvatarBuffer(asset: ImagePicker.ImagePickerAsset) {
+  async setAvatarFile(asset: ImagePicker.ImagePickerAsset) {
     try {
-      await this.changeAvatarBuffer(asset.uri);
-      this.setAvatar(asset.uri);
+      const fileUri = asset.uri;
+      const fileInfo = await FileSystem.getInfoAsync(fileUri);
+      
+      if(fileInfo.exists) {
+        const file = {
+          uri: fileUri,
+          name: 'avatar.jpg',
+          type: 'image/jpeg'
+        };
+        
+        this.avatarFile = file as unknown as File;
+        this.setAvatar(fileUri);
+      }
     }catch(error: unknown) {
-      console.error("failed to set avatar buffer: ", error);
+      console.error("failed to set avatar file: ", error);
       return;
     }
   }
 
   @action
   async changeAvatar() {
-    if(!this.avatarBuffer) return;
+    if(!this.avatarFile) return;
+
     try {
       const formData = new FormData();
-      formData.append('avatar', this.avatarBuffer, 'avatar.jpg');
-      await api.post('/user/change-avatar', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
-    } catch(error: unknown) {
+      formData.append('avatar', {
+        uri: this.avatar,
+        name: 'avatar.jpg',
+        type: 'image/jpeg'
+      }as unknown as Blob);
+
+      await api.post('/user/change-avatar', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+    }catch(error: unknown) {
       console.error("failed to change avatar: ", error);
       return;
     }

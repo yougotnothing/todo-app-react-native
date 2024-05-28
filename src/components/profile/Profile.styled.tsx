@@ -29,3 +29,12 @@ export const UserAvatarButton = styled.TouchableOpacity`
 export const UserAvatar = styled.Image`
   border-radius: 150px;
 `;
+
+export const Navbar = styled.View`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 42px;
+`;

@@ -3,4 +3,5 @@ export interface UserDto {
   email: string;
   avatar: string;
   isHaveAvatar: boolean;
+  id: number;
 }

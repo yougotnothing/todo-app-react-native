@@ -1,10 +1,21 @@
-import { TouchableOpacity } from "react-native";
+import { StyleProp, TouchableOpacity, ViewStyle } from "react-native";
 import Text from "./Text";
+import styled from "styled-components/native";
 
-export const TransparentButton = ({ onPress, text }: { onPress: () => unknown; text: string }) => {
+interface TransparentButtonProps {
+  onPress: () => unknown;
+  text: string;
+  style?: StyleProp<ViewStyle>;
+}
+
+const Button = styled.TouchableOpacity`
+  background-color: transparent;
+`;
+
+export const TransparentButton = ({ onPress, text, ...style }: TransparentButtonProps) => {
   return (
-    <TouchableOpacity onPress={onPress} style={{ backgroundColor: "transparent" }}>
+    <Button onPress={onPress} {...style}>
       <Text color="#242F9B" size="medium" fontFamily="Jost-Regular" text={text} />
-    </TouchableOpacity>
+    </Button>
   );
 };

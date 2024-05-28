@@ -1,10 +1,5 @@
 import styled from "styled-components/native";
 
-interface ProfileButtonProps {
-  $avatar?: string | null;
-  $isHaveAvatar: boolean | undefined;
-}
-
 interface TodoButtonProps {
   $type?: string;
   $counter?: number;
@@ -97,11 +92,11 @@ export const Navbar = styled.View`
   margin-top: 42px;
 `;
 
-export const ProfileButton = styled.TouchableOpacity<ProfileButtonProps>`
+export const ProfileButton = styled.TouchableOpacity`
   background-color: transparent;
+  border-radius: 40px;
   width: 40px;
   height: 40px;
-  background-image: url(${({ $avatar, $isHaveAvatar }) => $isHaveAvatar ? $avatar : ''}); 
 `;
 
 export const DrawerButton = styled.TouchableOpacity`

@@ -3,10 +3,11 @@ import Input from "src/templates/Input";
 import Text from "src/templates/Text"; 
 import { LogoWrapper, MainSection, TitleWrapper, Wrapper, Button, NotAMember, RegisterButton } from "./Login.styled";
 import { LoginDto } from "dto/login.dto";
-import { useNavigation } from "@react-navigation/native";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { loginSchema } from "@config/validation";
 import { user } from "@store/user.mobx";
 import { RouterProps } from "router/router.interface";
+import { useEffect } from "react";
 
 export default function Login() {
   const navigation = useNavigation<RouterProps>();
@@ -19,11 +20,18 @@ export default function Login() {
     onSubmit: () => {}
   });
 
+  useEffect(() => {
+    if(!user.isLoggedIn) navigation.setOptions({ canGoBack: false });
+  })
+
   const login = async () => {
     if(!formik.values.login || !formik.values.password) return;
 
     await user.login(formik.values)
-    .then(() => navigation.navigate('Root'));
+              .then(() => {
+                navigation.dispatch(DrawerActions.closeDrawer());
+                navigation.navigate('Root');
+              });
   }
 
   return (

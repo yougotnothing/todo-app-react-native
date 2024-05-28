@@ -5,7 +5,6 @@ interface UserImageProps {
 }
 
 export const Wrapper = styled.View`
-  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -13,6 +12,7 @@ export const Wrapper = styled.View`
   border-top-width: 0;
   border-right-width: 0;
   border-left-width: 0;
+  height: 90%;
 `;
 
 export const ReturnButton = styled.TouchableOpacity`
@@ -29,6 +29,7 @@ export const UserImage = styled.Image<UserImageProps>`
   width: 50px;
   height: 50px;
   display: ${({ $isHaveAvatar }) => $isHaveAvatar ? 'flex' : 'none'};
+  border-radius: 50%;
 `;
 
 export const DefaultAvatar = styled.View<UserImageProps>`
