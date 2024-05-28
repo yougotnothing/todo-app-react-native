@@ -20,7 +20,7 @@ class UserStore implements UserDto {
   setUser(user: UserDto) {
     this.name = user.name;
     this.email = user.email;
-    this.avatar = user.avatar;
+    this.avatar = `${user.avatar}&time=${new Date()}`;
     this.isHaveAvatar = user.isHaveAvatar;
     this.id = user.id;
     this.isLoggedIn = true;
@@ -55,10 +55,14 @@ class UserStore implements UserDto {
   }
 
   @action
+  async updateAvatar(avatar: string) {
+    this.avatar = avatar;
+  }
+
+  @action
   async changeAvatar(avatar: Blob) {
     try {
       await api.put('/user/change-avatar', {
-        ...await authorizedUser(),
         avatar
       });
 
@@ -86,8 +90,22 @@ class UserStore implements UserDto {
   }
 
   @action
-  async logout() {
-    await AsyncStorage.removeItem('token');
+  async getAvatar() {
+    try {
+      await api.get('/user/get-avatar', {
+        params: {
+          id: this.id
+        }
+      });
+    }catch(error: any) {
+      console.error("error handling avatar: ", error.response.data);
+      return;
+    }
+  }
+
+  @action
+  async logout(clearToken: "clear" | "keep" = "clear") {
+    if(clearToken === "clear") await AsyncStorage.removeItem('token');
 
     runInAction(() => {
       this.name = "";
@@ -95,7 +113,7 @@ class UserStore implements UserDto {
       this.avatar = "";
       this.isHaveAvatar = false;
       this.id = 0;
-      this.isLoggedIn = false;
+      if(clearToken === "clear") this.isLoggedIn = false;
     });
   }
 }

@@ -43,7 +43,7 @@ export const UserWrapper = styled.View`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 10px;
+  gap: 16px;
   width: 100%;
 `;
 

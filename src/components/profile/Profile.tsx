@@ -15,8 +15,8 @@ const Profile = observer(() => {
 
   const handleChangeAvatar = async () => {
     await changeAvatar.changeAvatar();
-    await user.getUser();
     navigation.navigate('Root');
+    await user.getUser();
   }
 
   useEffect(() => {
@@ -33,10 +33,7 @@ const Profile = observer(() => {
         onPress={() => changeAvatar.pickAvatar()}
       />
       <Text color="#363636" fontFamily="Jost-Medium" size="large" text="John Doe" />
-      <Button
-        text="Apply" 
-        onPress={handleChangeAvatar}
-      />
+      <Button text="Apply" onPress={handleChangeAvatar} disabled={changeAvatar.isFetching} />
     </Wrapper>
   )
 });

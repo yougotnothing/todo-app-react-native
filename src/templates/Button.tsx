@@ -11,11 +11,15 @@ const Button = styled.TouchableOpacity`
   border-radius: 12px;
   padding: 8px 16px;
   color: #D9D9D9;
+
+  &::disabled {
+    opacity: 0.6;
+  }
 `;
 
-export default function SignUpButton({ onPress, text }: Props) {
+export default function SignUpButton({ onPress, text, disabled }: Props) {
   return(
-    <Button onPress={onPress}>
+    <Button disabled={disabled} onPress={onPress}>
       <Text color="#D9D9D9" isButton size="large" fontFamily="Jost-Regular" text={text} />
     </Button>
   );

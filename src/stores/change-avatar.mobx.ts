@@ -7,6 +7,7 @@ import { user } from "./user.mobx";
 class ChangeAvatarStore {
   @observable avatar: string = "";
   @observable avatarFile: File | null = null;
+  @observable isFetching: boolean = false;
 
   constructor() {
     makeObservable(this);
@@ -57,7 +58,10 @@ class ChangeAvatarStore {
     if(!this.avatarFile) return;
 
     try {
+      this.isFetching = true;
+
       const formData = new FormData();
+
       formData.append('avatar', {
         uri: this.avatar,
         name: 'avatar.jpg',
@@ -69,7 +73,10 @@ class ChangeAvatarStore {
           'Content-Type': 'multipart/form-data'
         }
       });
+
+      this.isFetching = false;
     }catch(error: unknown) {
+      this.isFetching = false;
       console.error("failed to change avatar: ", error);
       return;
     }

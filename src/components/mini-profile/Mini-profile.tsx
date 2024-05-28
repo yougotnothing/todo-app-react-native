@@ -15,7 +15,7 @@ import { DrawerItem } from "@react-navigation/drawer";
 import { user } from "@store/user.mobx";
 import { RouterProps } from "router/router.interface";
 import { TransparentButton } from "@templates/Transparent-button";
-import { useEffect } from "react";
+import UserAvatar from "@templates/User-avatar";
 
 export default function MiniProfile() {
   const navigation = useNavigation<RouterProps>();
@@ -25,10 +25,6 @@ export default function MiniProfile() {
     { label: "Important tasks", icon: Icons["important tasks"], navigateTo: "Home" },
     { label: "Done tasks", icon: Icons["done tasks"], navigateTo: "Home" }
   ];
-
-  useEffect(() => {
-    navigation.dispatch(DrawerActions.closeDrawer());
-  }, []);
 
   const handleLogout = async () => {
     await user.logout();
@@ -42,14 +38,12 @@ export default function MiniProfile() {
         <SvgXml xml={Icons["return button"]} />
       </ReturnButton>
       <UserWrapper>
-        <DefaultAvatar $isHaveAvatar={user.isHaveAvatar}>
-          <SvgXml
-            xml={Icons["default avatar"]}
-            width="50"
-            height="50"
-          />
-        </DefaultAvatar>
-        <UserImage src={user.avatar} $isHaveAvatar={user.isHaveAvatar} />
+        <UserAvatar
+          avatar={user.avatar}
+          isHaveAvatar={user.isHaveAvatar}
+          size={50}
+          onPress={() => navigation.navigate('Profile')}
+        />
         <UserInfo>
           <Text color="#242F9B" fontFamily="Jost-Medium" size="small" text={user.name} />
           <Text color="#888888" fontFamily="Jost-Medium" size="small" text={user.email} />

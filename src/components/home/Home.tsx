@@ -1,4 +1,4 @@
-import { DrawerActions, useNavigation } from "@react-navigation/native";
+import { DrawerActions, useNavigation, useFocusEffect, useIsFocused } from "@react-navigation/native";
 import {
   Container,
   DrawerButton,
@@ -8,7 +8,6 @@ import {
   LeftCircle,
   MainSection,
   Navbar,
-  ProfileButton,
   RightCircle,
   SearchIcon,
   TextWrapper, 
@@ -19,7 +18,7 @@ import {
   TodoButtonsWrapper
 } from "./Home.styled";
 import Text from "@templates/Text";
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { SvgXml } from "react-native-svg";
 import Icons from "@icons";
 import { tasks } from "@store/tasks.mobx";
@@ -30,22 +29,21 @@ import { tasksPages } from "@store/tasks-pages.mobx";
 import CreateTask from "components/create-task/Create-task";
 import { TaskType, UserTasks } from "dto/todo.dto";
 import { RouterProps } from "router/router.interface";
-import { Image } from "react-native";
 import UserAvatar from "@templates/User-avatar";
 
 const Home = observer(() => {
   const navigation = useNavigation<RouterProps>();
 
-  useEffect(() => {
-    tasks.getTasks('today');
-    tasks.getTasksLength();
-    user.getUser();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      user.getUser();
+    }, [{ ...user }])
+  );
 
-  const handlePressTodoButton = async (type: string | undefined) => {
+  const handlePressTodoButton = async (type: TaskType | undefined) => {
     if(type) {
-      tasksPages.setType(type as TaskType);
-      await tasksPages.getTasksByType(type as TaskType);
+      tasksPages.setType(type);
+      await tasksPages.getTasksByType(type);
       navigation.navigate(`${type} tasks`);
     }else createTaskModal.open("till from");
   };
@@ -126,7 +124,7 @@ const Home = observer(() => {
             <TodoButton
               key={index}
               $type={item?.toLowerCase()}
-              onPress={async () => await handlePressTodoButton(item)}
+              onPress={async () => await handlePressTodoButton(item as TaskType | undefined)}
             >
               <SvgXml xml={Icons[`${item?.toLowerCase()} task` as keyof typeof Icons]} />
               <TodoButtonCounter $type={item}>
