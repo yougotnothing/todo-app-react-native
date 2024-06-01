@@ -1,5 +1,5 @@
 export interface Props {
-  size: 'small' | 'medium' | 'large';
+  size?: 'small' | 'medium' | 'large';
   weight?:
     | '900'
     | '800'

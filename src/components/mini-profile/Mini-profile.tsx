@@ -35,14 +35,10 @@ export default function MiniProfile() {
   return (
     <Wrapper>
       <ReturnButton onPress={() => navigation.dispatch(DrawerActions.closeDrawer())}>
-        <SvgXml xml={Icons["return button"]} />
+        <SvgXml xml={Icons["blue back button"]} />
       </ReturnButton>
       <UserWrapper>
-        <UserAvatar
-          avatar={user.avatar}
-          isHaveAvatar={user.isHaveAvatar}
-          size={50}
-          onPress={() => navigation.navigate('Profile')}
+        <UserAvatar user={user} size={50} onPress={() => navigation.navigate('Profile')}
         />
         <UserInfo>
           <Text color="#242F9B" fontFamily="Jost-Medium" size="small" text={user.name} />

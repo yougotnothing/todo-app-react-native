@@ -30,8 +30,11 @@ import CreateTask from "components/create-task/Create-task";
 import { TaskType, UserTasks } from "dto/todo.dto";
 import { RouterProps } from "router/router.interface";
 import UserAvatar from "@templates/User-avatar";
+import DrawerMenuButton from "@templates/Drawer-menu-button";
+import { DATE_CONFIG } from "src/config/date.config";
 
 const Home = observer(() => {
+  const [date, setDate] = useState<string>(new Date().toLocaleDateString('en-US', DATE_CONFIG));
   const navigation = useNavigation<RouterProps>();
 
   useFocusEffect(
@@ -39,6 +42,14 @@ const Home = observer(() => {
       user.getUser();
     }, [{ ...user }])
   );
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDate(new Date().toLocaleDateString('en-US', DATE_CONFIG));
+    }, 60000);
+
+    return () => clearInterval(interval);
+  });
 
   const handlePressTodoButton = async (type: TaskType | undefined) => {
     if(type) {
@@ -67,34 +78,15 @@ const Home = observer(() => {
           />
         </RightCircle>
         <Navbar>
-          <DrawerButton onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
-            <SvgXml
-              xml={Icons["menu"]}
-              height="30"
-              width="30"
-            />
-          </DrawerButton>
+          <DrawerMenuButton onPress={() => navigation.dispatch(DrawerActions.openDrawer())} />
           <Text color="white" fontFamily="Jost-Medium" size="large" text="Mtodo logo" />
-          <UserAvatar
-            avatar={user.avatar}
-            isHaveAvatar={user.isHaveAvatar}
-            size={40}
-            onPress={() => navigation.navigate('Profile')}
-          />
+          <UserAvatar user={user} size={40} onPress={() => navigation.navigate('Profile')} />
         </Navbar>
         <TextWrapper>
           <Text color="#363636" fontFamily="Jost-Medium" size="medium" text="you have" />
           <Text color="white" fontFamily="Jost-Medium" size="large" text={`${tasks.tasks["today"].length} tasks`} />
           <Text color="#363636" fontFamily="Jost-Medium" size="medium" text="today!" />
-          <Text
-            color="#363636"
-            fontFamily="Jost-Medium"
-            size="medium"
-            text={new Date().toLocaleDateString(
-              'en-US',
-              { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
-            )}
-          />
+          <Text color="#363636" fontFamily="Jost-Medium" size="medium" text={date} />
         </TextWrapper>
         <InputWrapper>
           <SearchIcon>

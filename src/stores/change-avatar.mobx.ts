@@ -1,21 +1,31 @@
-import { action, makeObservable, observable } from "mobx";
+import { action, makeObservable, observable, autorun } from "mobx";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import { api } from "axios-config";
 import { user } from "./user.mobx";
+import { DATE_CONFIG } from "src/config/date.config";
 
 class ChangeAvatarStore {
-  @observable avatar: string = "";
+  @observable avatar: string = user.avatar;
   @observable avatarFile: File | null = null;
   @observable isFetching: boolean = false;
 
   constructor() {
     makeObservable(this);
+
+    autorun(() => (
+      this.setAvatar(`${process.env.API_URL}/user/get-avatar?id=${user.id}&time=${new Date().toLocaleDateString('en-US', DATE_CONFIG)}`)
+    ));
   }
 
   @action
   setAvatar(uri: string) {
     this.avatar = uri;
+  }
+
+  @action
+  setIsFetching(isFetching: boolean) {
+    this.isFetching = isFetching;
   }
 
   @action
@@ -28,7 +38,11 @@ class ChangeAvatarStore {
       base64: true
     });
 
-    if(!result.canceled) await this.setAvatarFile(result.assets[0]);
+    if(!result.canceled) {
+      await this.setAvatarFile(result.assets[0]);
+      await this.changeAvatar();
+      this.setAvatar(result.assets[0].uri)
+    };
   }
 
   @action
@@ -44,8 +58,8 @@ class ChangeAvatarStore {
           type: 'image/jpeg'
         };
         
-        this.avatarFile = file as unknown as File;
         this.setAvatar(fileUri);
+        this.avatarFile = file as unknown as File;
       }
     }catch(error: unknown) {
       console.error("failed to set avatar file: ", error);
@@ -58,7 +72,7 @@ class ChangeAvatarStore {
     if(!this.avatarFile) return;
 
     try {
-      this.isFetching = true;
+      this.setIsFetching(true);
 
       const formData = new FormData();
 
@@ -66,7 +80,7 @@ class ChangeAvatarStore {
         uri: this.avatar,
         name: 'avatar.jpg',
         type: 'image/jpeg'
-      }as unknown as Blob);
+      } as unknown as Blob);
 
       await api.post('/user/change-avatar', formData, {
         headers: {
@@ -74,9 +88,9 @@ class ChangeAvatarStore {
         }
       });
 
-      this.isFetching = false;
+      this.setIsFetching(false);
     }catch(error: unknown) {
-      this.isFetching = false;
+      this.setIsFetching(false);
       console.error("failed to change avatar: ", error);
       return;
     }

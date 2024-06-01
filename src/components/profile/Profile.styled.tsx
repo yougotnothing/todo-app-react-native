@@ -1,10 +1,5 @@
 import styled from "styled-components/native";
 
-interface UserAvatarProps {
-  $isHaveAvatar: boolean;
-  $avatar: string;
-}
-
 export const Wrapper = styled.View`
   display: flex;
   flex-direction: column;

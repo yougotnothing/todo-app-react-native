@@ -1,5 +1,5 @@
-export interface Props {
-  onPress?: () => void;
+import { TouchableOpacityProps } from "react-native";
+
+export interface Props extends TouchableOpacityProps {
   text: string;
-  disabled?: boolean;
 }

@@ -1,7 +1,7 @@
 import styled from "styled-components/native";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
-import { TextProps } from "../components/interfaces/text.interface";
+import { TextProps } from "components/interfaces/text.interface";
 
 export const T = styled.Text<TextProps>`
   text-align: center;

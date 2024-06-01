@@ -1,8 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { api, authorizedUser } from "axios-config";
+import { ChangePasswordDto } from "dto/change-password.dto";
 import { LoginDto } from "dto/login.dto";
 import { UserDto } from "dto/user.dto";
 import { action, makeObservable, observable, runInAction } from "mobx";
+import { DATE_CONFIG } from "src/config/date.config";
 
 class UserStore implements UserDto {
   @observable name: string = "";
@@ -55,8 +57,25 @@ class UserStore implements UserDto {
   }
 
   @action
-  async updateAvatar(avatar: string) {
-    this.avatar = avatar;
+  async changePassword(dto: ChangePasswordDto) {
+    try {
+      const response = await api.patch('/user/change-password', {
+        ...dto
+      });
+
+      await AsyncStorage.setItem('token', response.data.token);
+      await this.getUser();
+      
+    }catch(error: any) {
+      console.error(error.response.data);
+      return;
+    }
+  }
+
+  @action
+  async updateAvatar() {
+    const date = new Date().toLocaleDateString('en-US', DATE_CONFIG);
+    this.avatar = `${process.env.API_URL}/user/get-avatar?id=${this.id}&time=${date}`;
   }
 
   @action
@@ -94,7 +113,8 @@ class UserStore implements UserDto {
     try {
       await api.get('/user/get-avatar', {
         params: {
-          id: this.id
+          id: this.id,
+          time: new Date().toLocaleDateString('en-US', DATE_CONFIG)
         }
       });
     }catch(error: any) {

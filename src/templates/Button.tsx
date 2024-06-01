@@ -1,6 +1,6 @@
 import styled from "styled-components/native";
-import { Props } from "../components/interfaces/button.interface";
 import Text from "./Text";
+import { Props } from "components/interfaces/button.interface";
 
 const Button = styled.TouchableOpacity`
   background-color: #646FD4;
@@ -11,16 +11,12 @@ const Button = styled.TouchableOpacity`
   border-radius: 12px;
   padding: 8px 16px;
   color: #D9D9D9;
-
-  &::disabled {
-    opacity: 0.6;
-  }
 `;
 
-export default function SignUpButton({ onPress, text, disabled }: Props) {
+export default function SignUpButton({ text, ...props }: Props) {
   return(
-    <Button disabled={disabled} onPress={onPress}>
-      <Text color="#D9D9D9" isButton size="large" fontFamily="Jost-Regular" text={text} />
+    <Button {...props}>
+      <Text color="#D9D9D9" fontFamily="Jost-Regular" text={text} />
     </Button>
   );
 }

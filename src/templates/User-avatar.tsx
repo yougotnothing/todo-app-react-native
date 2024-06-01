@@ -1,21 +1,21 @@
 import Icons from "@icons";
+import { UserDto } from "dto/user.dto";
 import { observer } from "mobx-react";
 import { Image, TouchableOpacity } from "react-native";
 import { SvgXml } from "react-native-svg";
 
 interface UserAvatarProps {
-  avatar: string;
-  isHaveAvatar: boolean;
+  user: UserDto;
   size: number;
   onPress?: () => void;
 }
 
-const UserAvatar = observer(({ avatar, isHaveAvatar, size, onPress }: UserAvatarProps) => {
+const UserAvatar = observer(({ user, size, onPress }: UserAvatarProps) => {
   return (
-    <TouchableOpacity onPress={onPress}>
-      {isHaveAvatar ? (
+    <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
+      {user.isHaveAvatar ? (
         <Image
-          source={{ uri: avatar }}
+          source={{ uri: user.avatar }}
           width={size}
           height={size}
           borderRadius={size}
