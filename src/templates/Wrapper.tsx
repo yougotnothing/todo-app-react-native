@@ -28,7 +28,7 @@ const Circle = styled.View<CircleProps>`
   right: ${({ $right }) => $right};
 `;
 
-export default function Wrapper({ children }: { children: React.ReactNode }) {
+function Wrapper({ children }: { children: React.ReactNode }) {
   return (
     <Container>
       <Circle $left={0}>
@@ -44,3 +44,5 @@ export default function Wrapper({ children }: { children: React.ReactNode }) {
     </Container>
   )
 }
+
+export default Wrapper;

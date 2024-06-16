@@ -1,11 +1,11 @@
 import { Button, TextWrapper, Wrapper } from "./Welcome-page.styled";
 import { SvgXml } from "react-native-svg";
-import Text from "../../templates/Text";
+import Text from "@templates/Text";
 import { useNavigation } from "@react-navigation/native";
-import Icons from "../../config/enum/icons.enum";
+import Icons from "@icons";
 import { RouterProps } from "router/router.interface";
 
-export default function WelcomePage() {
+function WelcomePage() {
   const navigation = useNavigation<RouterProps>();
 
   return (
@@ -25,3 +25,5 @@ export default function WelcomePage() {
     </Wrapper>
   )
 }
+
+export default WelcomePage;

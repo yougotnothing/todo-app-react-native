@@ -1,8 +1,7 @@
 import { api } from "axios-config";
-import { TaskEntity, TaskType, TodoDto, UserTasks,  } from "dto/todo.dto";
+import { TaskEntity, TaskType, TodoDto, UserTasks, Tasks } from "dto/todo";
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { DATE_CONFIG } from "src/config/date.config";
-import { Tasks } from "dto/todo.dto";
 
 class TasksStore {
   @observable tasks: Tasks = {

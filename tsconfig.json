@@ -7,19 +7,20 @@
     "baseUrl": "./",
     "rootDir": "..",
     "paths": {
-      "dto/*": ["src/dto/*"],
+      "dto/*": ["src/dto/*.dto"],
       "@icons": ["src/config/enum/icons.enum"],
       "components/*": ["src/components/*"],
       "@templates/*": ["src/templates/*"],
-      "@config/validation": ["src/config/validation/yup.config"],
       "axios-config": ["src/api/axios.config"],
       "notifications/*": ["src/notifications/*"],
-      "@config/enum": ["src/config/enum/*"],
+      "@config/validation": ["src/config/validation/yup.config"],
+      "@config/date": ["src/config/date.config"],
       "router": ["router/Router"],
-      "@store/*": ["src/stores/*"],
+      "@store/*": ["src/stores/*.mobx"],
       "fonts/*": ["assets/fonts/*"],
       "images/*": ["assets/images/*"],
-      "@animated/*": ["src/animated/*"]
+      "@animated/*": ["src/animated/*"],
+      "@interfaces/*": ["src/interfaces/*.interface"]
     }
   }
 }

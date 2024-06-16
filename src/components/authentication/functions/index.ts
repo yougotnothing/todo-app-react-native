@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { api } from "../../../api/axios.config";
-import { LoginDto } from "../../../dto/login.dto";
-import { RegisterDto } from "../../../dto/register.dto";
+import { api } from "axios-config";
+import { LoginDto } from "dto/login";
+import { RegisterDto } from "dto/register";
 
 export const handleRegister = async (dto: RegisterDto) => {
   try {

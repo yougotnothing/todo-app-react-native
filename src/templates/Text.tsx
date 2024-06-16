@@ -1,7 +1,7 @@
 import styled from "styled-components/native";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
-import { TextProps } from "components/interfaces/text.interface";
+import { TextProps } from "src/interfaces/text.interface";
 
 export const T = styled.Text<TextProps>`
   text-align: center;
@@ -17,7 +17,7 @@ export const T = styled.Text<TextProps>`
   font-weight: ${({ weight }) => weight ? weight : '500'};
 `;
 
-export default function Text({ size, weight, text, fontFamily, color }: TextProps) {
+function Text({ size, weight, text, fontFamily, color }: TextProps) {
   const [loaded, error] = useFonts({
     "Jost-Bold": require('fonts/Jost-Bold.ttf'),
     "Jost-Black": require('fonts/Jost-Black.ttf'),
@@ -50,3 +50,5 @@ export default function Text({ size, weight, text, fontFamily, color }: TextProp
     </>
   );
 }
+
+export default Text;

@@ -2,8 +2,8 @@ import { action, makeObservable, observable, autorun } from "mobx";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import { api } from "axios-config";
-import { user } from "./user.mobx";
-import { DATE_CONFIG } from "src/config/date.config";
+import { user } from "@store/user";
+import { DATE_CONFIG } from "@config/date";
 
 class ChangeAvatarStore {
   @observable avatar: string = user.avatar;

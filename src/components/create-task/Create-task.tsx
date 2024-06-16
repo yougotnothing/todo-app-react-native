@@ -1,4 +1,4 @@
-import NewTask from "@templates/New task/New-task";
+import NewTask from "@templates/New-task/New-task";
 import { observer } from "mobx-react";
 
 function CreateTask() {

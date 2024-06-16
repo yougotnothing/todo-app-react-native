@@ -1,5 +1,5 @@
 import { observer } from "mobx-react";
-import { createTaskModal } from "@store/create-task-modal.mobx";
+import { createTaskModal } from "@store/create-task-modal";
 import styled from "styled-components/native";
 
 const TextArea = styled.TextInput`

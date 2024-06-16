@@ -1,11 +1,19 @@
 import { useFormik } from "formik";
-import Input from "src/templates/Input";
-import Text from "src/templates/Text"; 
-import { LogoWrapper, MainSection, TitleWrapper, Wrapper, Button, NotAMember, RegisterButton } from "./Login.styled";
-import { LoginDto } from "dto/login.dto";
-import { DrawerActions, useNavigation } from "@react-navigation/native";
+import Input from "@templates/Input";
+import Text from "@templates/Text"; 
+import {
+  LogoWrapper,
+  MainSection,
+  TitleWrapper,
+  Wrapper,
+  Button,
+  NotAMember,
+  RegisterButton
+} from "./Login.styled";
+import { LoginDto } from "dto/login";
+import { useNavigation } from "@react-navigation/native";
 import { loginSchema } from "@config/validation";
-import { user } from "@store/user.mobx";
+import { user } from "@store/user";
 import { RouterProps } from "router/router.interface";
 import { useEffect } from "react";
 
@@ -17,21 +25,23 @@ export default function Login() {
       password: ''
     },
     validationSchema: loginSchema,
-    onSubmit: () => {}
+    onSubmit: (values) => {
+      values.login = "",
+      values.password = "";
+    }
   });
 
   useEffect(() => {
     if(!user.isLoggedIn) navigation.setOptions({ canGoBack: false });
-  })
+  });
 
   const login = async () => {
     if(!formik.values.login || !formik.values.password) return;
 
     await user.login(formik.values)
-              .then(() => {
-                navigation.dispatch(DrawerActions.closeDrawer());
-                navigation.navigate('Root');
-              });
+              .then(({ isLoggedSuccess }) => (
+                isLoggedSuccess && navigation.navigate('Root')
+              ));
   }
 
   return (
@@ -48,8 +58,7 @@ export default function Login() {
           placeholder="Enter your login"
           textContentType="emailAddress"
           onChange={formik.handleChange('login')}
-          value={formik.values.login}
-        />
+          value={formik.values.login} />
         <Input
           placeholder="Enter your password"
           textContentType="password"

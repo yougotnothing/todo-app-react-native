@@ -88,7 +88,7 @@ export const AddTask = styled.TouchableOpacity`
   justify-content: center;
   width: 56px;
   height: 56px;
-  border-radius: 50%;
+  border-radius: 56px;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 `;
 

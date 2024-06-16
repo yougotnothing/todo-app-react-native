@@ -1,7 +1,6 @@
-import { DrawerActions, useNavigation, useFocusEffect, useIsFocused } from "@react-navigation/native";
+import { DrawerActions, useNavigation, useFocusEffect } from "@react-navigation/native";
 import {
   Container,
-  DrawerButton,
   Header,
   Input,
   InputWrapper,
@@ -21,19 +20,23 @@ import Text from "@templates/Text";
 import { useCallback, useEffect, useState } from "react";
 import { SvgXml } from "react-native-svg";
 import Icons from "@icons";
-import { tasks } from "@store/tasks.mobx";
-import { user } from "@store/user.mobx";
-import { createTaskModal } from "@store/create-task-modal.mobx";
+import { tasks } from "@store/tasks";
+import { user } from "@store/user";
+import { createTaskModal } from "@store/create-task-modal";
 import { observer } from "mobx-react";
-import { tasksPages } from "@store/tasks-pages.mobx";
+import { tasksPages } from "@store/tasks-pages";
 import CreateTask from "components/create-task/Create-task";
-import { TaskType, UserTasks } from "dto/todo.dto";
+import { TaskType, UserTasks } from "dto/todo";
 import { RouterProps } from "router/router.interface";
 import UserAvatar from "@templates/User-avatar";
 import DrawerMenuButton from "@templates/Drawer-menu-button";
-import { DATE_CONFIG } from "src/config/date.config";
+import { DATE_CONFIG } from "@config/date";
+import { Platform } from "react-native";
+import { shadowStyle } from "@templates/styles/shadow";
+import TasksInput from "@animated/Tasks-input";
+import { searchTasks } from "@store/search-tasks";
 
-const Home = observer(() => {
+function Home() {
   const [date, setDate] = useState<string>(new Date().toLocaleDateString('en-US', DATE_CONFIG));
   const navigation = useNavigation<RouterProps>();
 
@@ -88,16 +91,14 @@ const Home = observer(() => {
           <Text color="#363636" fontFamily="Jost-Medium" size="medium" text="today!" />
           <Text color="#363636" fontFamily="Jost-Medium" size="medium" text={date} />
         </TextWrapper>
-        <InputWrapper>
-          <SearchIcon>
-            <SvgXml xml={Icons["search"]} />
-          </SearchIcon>
-          <Input
-            placeholderTextColor="#888888"
-            placeholder="Search tasks"
-          />
-        </InputWrapper>
       </Header>
+      <TasksInput
+        placeholder="Search tasks"
+        value={searchTasks.value}
+        onChange={(text) => searchTasks.setValue(text)}
+        onFocus={() => searchTasks.getTasksBySubstring()}
+        onBlur={() => console.log('blur')}
+      />
       <MainSection>
         <TimeWrapper>
           {["Today", "Week", "Month"].map((item, index) => (
@@ -114,6 +115,7 @@ const Home = observer(() => {
         <TodoButtonsWrapper>
           {["School", "Work", "Shop", "Read", "Work out", undefined].map((item, index) => (  
             <TodoButton
+              style={Platform.OS === 'android' && shadowStyle(3, "#000")}
               key={index}
               $type={item?.toLowerCase()}
               onPress={async () => await handlePressTodoButton(item as TaskType | undefined)}
@@ -136,6 +138,6 @@ const Home = observer(() => {
       </MainSection>
     </Container>
   )
-});
+}
 
-export default Home;
+export default observer(Home);

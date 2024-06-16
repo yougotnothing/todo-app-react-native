@@ -18,7 +18,7 @@ const Button = styled.TouchableOpacity`
   margin: 0;
 `;
 
-export default function BackButton({ color, ...props }: Props) {
+function BackButton({ color, ...props }: Props) {
   return (
     <Button {...props}>
       <SvgXml
@@ -27,3 +27,5 @@ export default function BackButton({ color, ...props }: Props) {
     </Button>
   )
 }
+
+export default BackButton;

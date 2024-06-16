@@ -1,4 +1,4 @@
-import { createTaskModal } from "@store/create-task-modal.mobx";
+import { createTaskModal } from "@store/create-task-modal";
 import { observer } from "mobx-react";
 import React, { useEffect } from "react";
 import styled from "styled-components/native";
@@ -17,7 +17,7 @@ const Subtask = styled.View`
 
 const IsChecked = styled.TouchableOpacity`
   background-color: transparent;
-  border-radius: 50%;
+  border-radius: 24px;
   border: 1px solid #888888;
   display: flex;
   flex-direction: row;

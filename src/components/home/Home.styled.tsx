@@ -65,13 +65,15 @@ export const Header = styled.View`
   flex-direction: column;
   gap: 25px;
   padding: 20px;
+  z-index: 10;
+  margin-bottom: -25px;
 `;
 
 export const RightCircle = styled.View`
   position: absolute;
   height: 320px;
   width: 320px;
-  border-radius: 50%;
+  border-radius: 320px;
   left: 27%;
 `;
 
@@ -79,7 +81,7 @@ export const LeftCircle = styled.View`
   position: absolute;
   height: 250px;
   width: 250px;
-  border-radius: 50%;
+  border-radius: 250px;
   left: -14px;
 `;
 
@@ -146,6 +148,8 @@ export const InputWrapper = styled.View`
   flex-direction: row;
   position: relative;
   align-self: center;
+  background-color: white;
+  border-radius: 12px;
 `;
 
 export const MainSection = styled.View`
@@ -156,6 +160,7 @@ export const MainSection = styled.View`
   gap: 64px;
   align-self: center;
   margin: 0 auto;
+  z-index: 4;
 `;
 
 export const TimeWrapper = styled.View`

@@ -9,13 +9,17 @@ export const api = axios.create({
 api.interceptors.request.use(
   async (config) => {
     const token = await AsyncStorage.getItem('token');
-
-    if(!token) config.headers.Authorization = 'null';
-
-    config.headers.Authorization = `Basic ${token}`;
+    
     config.headers['Access-Control-Allow-Origin'] = process.env.API_URL;
+
+    if(!token) {
+      config.headers.Authorization = undefined;
+    }else{
+      config.headers.Authorization = `Basic ${token}`;
+    }
+
     return config;
-  }, 
+  },
   (error) => {
     if(error.response && error.response.status === 401) {
       throw new Error('Invalid token',  error.response.status);
@@ -33,15 +37,3 @@ api.interceptors.response.use(
     }
   }
 );
-
-export const authorizedUser = async (data: AxiosRequestConfig = {}): Promise<AxiosRequestConfig> => {
-  const token = await AsyncStorage.getItem('token');
-  return {
-    headers: {
-      Authorization: `Basic ${token}`,
-      ...data.headers,
-    },
-    ...data.params,
-    ...data.data
-  }
-}

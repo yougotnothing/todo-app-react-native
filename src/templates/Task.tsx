@@ -63,7 +63,7 @@ const TextWrapper = styled.View`
 
 const Checkbox = styled.TouchableOpacity`
   background-color: transparent;
-  border-radius: 50%;
+  border-radius: 24px;
   width: 24px;
   height: 24px;
   border: 1px solid #E7E7E7;
@@ -132,7 +132,7 @@ const TodoAction = styled.TouchableOpacity<TodoActionProps>`
   color: ${({ $isActive }) => $isActive ? 'white' : '#363636'};
 `;
 
-export default function Task({ header, content, isChecked, from, till, tasks }: TaskProps) {
+function Task({ header, content, isChecked, from, till, tasks }: TaskProps) {
   const [isTaskChecked, setIsTaskChecked] = useState<boolean>(isChecked);
   const [isChildrenChecked, setIsChildrenChecked] = useState<boolean[]>(Array(tasks?.length).fill(false));
   const [isActionsOpen, setIsActionsOpen] = useState<boolean>(false);
@@ -230,3 +230,5 @@ export default function Task({ header, content, isChecked, from, till, tasks }: 
     </TaskWrapper>
   );
 }
+
+export default Task;

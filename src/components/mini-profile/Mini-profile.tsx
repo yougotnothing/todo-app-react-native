@@ -1,23 +1,22 @@
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import {
-  DefaultAvatar,
   ReturnButton,
   RoutesWrapper,
-  UserImage,
   UserInfo,
   UserWrapper,
   Wrapper
-} from "components/mini-profile/Mini-profile.styled";
+} from "./Mini-profile.styled";
 import { SvgXml } from "react-native-svg";
 import Icons from "@icons";
 import Text from "@templates/Text";
 import { DrawerItem } from "@react-navigation/drawer";
-import { user } from "@store/user.mobx";
+import { user } from "@store/user";
 import { RouterProps } from "router/router.interface";
-import { TransparentButton } from "@templates/Transparent-button";
+import TransparentButton from "@templates/Transparent-button";
 import UserAvatar from "@templates/User-avatar";
+import { observer } from "mobx-react";
 
-export default function MiniProfile() {
+function MiniProfile() {
   const navigation = useNavigation<RouterProps>();
   const routes = [
     { label: "Edit profile", icon: Icons["edit profile"], navigateTo: "Profile" },
@@ -68,3 +67,5 @@ export default function MiniProfile() {
     </Wrapper>
   )
 }
+
+export default observer(MiniProfile);

@@ -1,8 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { api, authorizedUser } from "axios-config";
-import { ChangePasswordDto } from "dto/change-password.dto";
-import { LoginDto } from "dto/login.dto";
-import { UserDto } from "dto/user.dto";
+import { api } from "axios-config";
+import { ChangePasswordDto } from "dto/change-password";
+import { LoginDto } from "dto/login";
+import { UserDto } from "dto/user";
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { DATE_CONFIG } from "src/config/date.config";
 
@@ -29,18 +29,26 @@ class UserStore implements UserDto {
   }
 
   @action
-  async login(dto: LoginDto) {
+  async login(dto: LoginDto): Promise<{ isLoggedSuccess: boolean }> {
     try {
       const response = await api.post('/auth/login', {
         ...dto
       });
 
+      if(response.status !== 200) return { isLoggedSuccess: false };
+
+      console.log('response: ', response.data);
+
       await AsyncStorage.setItem('token', response.data.token);
       await this.getUser();
+
       console.log("User logged in");
+
+      return { isLoggedSuccess: true };
+
     }catch(error: any) {
       console.error(error);
-      return;
+      return { isLoggedSuccess: false };
     }
   }
 
@@ -60,8 +68,14 @@ class UserStore implements UserDto {
   async changePassword(dto: ChangePasswordDto) {
     try {
       const response = await api.patch('/user/change-password', {
-        ...dto
-      });
+          ...dto,
+        },
+        { 
+          headers: {
+            'X-User-Id': this.id
+          }
+        }
+      );
 
       await AsyncStorage.setItem('token', response.data.token);
       await this.getUser();
@@ -95,12 +109,20 @@ class UserStore implements UserDto {
   @action
   async changeName(name: string) {
     try {
-      await api.patch('/user/change-name', {
-        ...await authorizedUser(),
-        name
+      const response = await api.patch('/user/change-name', {
+        newName: name,
+      },
+      { 
+        headers: {
+          'X-User-Id': this.id
+        }
       });
 
+      console.log(response.data);
+
+      await AsyncStorage.setItem('token', response.data.token);
       await this.getUser();
+
       console.log(`name changed to ${name}!`);
     }catch(error: unknown) {
       console.error(error);

@@ -12,7 +12,7 @@ import WelcomePage from "components/welcome-page/Welcome-page";
 import Register from "components/authentication/register/Register";
 import Notification from "notifications/Notification";
 import Profile from "components/profile/Profile";
-import { user } from "@store/user.mobx";
+import { user } from "@store/user";
 
 interface Token {
   token: string | null;

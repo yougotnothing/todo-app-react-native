@@ -1,0 +1,1 @@
+export const shadowStyle = (elevation: number, shadowColor: string): { elevation: number, shadowColor: string } => ({ elevation, shadowColor });

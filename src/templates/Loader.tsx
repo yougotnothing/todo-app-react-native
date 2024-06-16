@@ -1,6 +1,6 @@
 import { ActivityIndicator, View } from "react-native";
 
-export default function Loader() {
+function Loader() {
   return (
     <View style={{ 
       width: '100%',
@@ -14,3 +14,5 @@ export default function Loader() {
     </View>
   )
 }
+
+export default Loader;

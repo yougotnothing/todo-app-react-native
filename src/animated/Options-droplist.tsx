@@ -1,3 +1,4 @@
+import { shadowStyle } from "@templates/styles/shadow";
 import React, {
   Dispatch,
   FC,
@@ -5,6 +6,7 @@ import React, {
   SetStateAction,
   useEffect
 } from "react";
+import { Platform } from "react-native";
 import Animated, {
   Easing,
   ReduceMotion,
@@ -110,9 +112,10 @@ const OptionsDroplist: FC<OptionsDroplistProps> = ({ $isOpen, children, setIsOpe
   return (
     <>
       {$isOpen && (<Overlay onPress={() => setIsOpen(false)} />)}
-      <OptionsDroplistWrapper style={animatedStyle} $isOpen={$isOpen}>
-        {children}
-      </OptionsDroplistWrapper>
+      <OptionsDroplistWrapper 
+        style={[animatedStyle, Platform.OS === 'android' && shadowStyle(14, '#000')]}
+        $isOpen={$isOpen}
+      >{children}</OptionsDroplistWrapper>
     </>
   );
 };

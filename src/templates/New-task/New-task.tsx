@@ -1,14 +1,14 @@
 import styled from "styled-components/native";
 import Text from "@templates/Text";
 import { observer } from "mobx-react";
-import { createTaskModal } from "@store/create-task-modal.mobx";
+import { createTaskModal } from "@store/create-task-modal";
 import { SvgXml } from "react-native-svg";
 import Icons from "@icons";
 import { useState } from "react";
-import { TransparentButton } from "@templates/Transparent-button";
-import Wrapper from "@templates/New-task-modal-wrapper";
+import TransparentButton from "@templates/Transparent-button";
 import DatePicker from "./Date-picker";
 import SubtasksModal from "@templates/Subtasks-modal";
+import ModalWrapper from "@templates/Modal-wrapper";
 
 const Header = styled.View`
   display: flex;
@@ -80,8 +80,8 @@ function NewTask() {
   const [isTillOpen, setIsTillOpen] = useState<boolean>(false);
 
   return (
-    <Wrapper
-      isVisible={createTaskModal.isTillFromModalOpen}
+    <ModalWrapper
+      isModalVisible={createTaskModal.isTillFromModalOpen}
       onPressOutside={() => createTaskModal.close("till from")}
     >
       <Header>
@@ -125,7 +125,7 @@ function NewTask() {
         <TransparentButton onPress={() => createTaskModal.clear()} text="Cancel" />
         <TransparentButton onPress={() => createTaskModal.createTask()} text="Ok" />
       </Footer>
-    </Wrapper>
+    </ModalWrapper>
   )
 }
 

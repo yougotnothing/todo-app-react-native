@@ -1,8 +1,7 @@
-import { TaskEntity, TaskType } from "dto/todo.dto";
+import { TaskEntity, TaskType } from "dto/todo";
 import { action, makeObservable, observable } from "mobx";
 import { user } from "./user.mobx";
-import { api, authorizedUser } from "axios-config";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { api } from "axios-config";
 
 type ModalType = 
   | "till from"
@@ -15,7 +14,7 @@ class CreateTaskModalStore implements TaskEntity {
                         .split(':')[0]}:${
                     new Date()
                         .toLocaleTimeString()
-                        .split(':')[0]}`;
+                        .split(':')[1]}`;
   @observable isTillFromModalOpen: boolean = false;
   @observable isSubtasksModalOpen: boolean = false;
   @observable isContentModalOpen: boolean = false;

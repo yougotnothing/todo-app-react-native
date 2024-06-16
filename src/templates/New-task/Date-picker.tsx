@@ -1,6 +1,6 @@
-import { createTaskModal } from "@store/create-task-modal.mobx";
+import { createTaskModal } from "@store/create-task-modal";
 import { observer } from "mobx-react";
-import DateTimePicker from "react-native-modal-datetime-picker";
+import DateTimePicker from 'react-native-modal-datetime-picker';
 
 interface DatePickerProps {
   type: "till" | "from";
@@ -8,7 +8,7 @@ interface DatePickerProps {
   isVisible: boolean;
 }
 
-function DatePicker({ type, onCancel, isVisible }: DatePickerProps) {
+function DatePicker({ type = "till", onCancel, isVisible }: DatePickerProps) {
   const setDateByType = (type: "till" | "from", time: Date): void => {
     if(type === "till") {
       createTaskModal.setTill(time.toLocaleTimeString());

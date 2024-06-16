@@ -29,6 +29,7 @@
     "expo-image-picker": "~15.0.5",
     "expo-module-scripts": "^3.5.1",
     "expo-notifications": "~0.28.3",
+    "expo-react-native-shadow": "^1.0.3",
     "expo-status-bar": "~1.12.1",
     "formik": "^2.4.5",
     "mobx": "^6.12.3",

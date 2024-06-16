@@ -7,14 +7,14 @@ const Button = styled.TouchableOpacity`
   background-color: #9BA3EB;
   height: 50px;
   width: 50px;
-  border-radius: 50%;
+  border-radius: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
 `;
 
-export default function AddButton({ ...props }: TouchableOpacityProps) {
+function AddButton({ ...props }: TouchableOpacityProps) {
   return (
     <Button {...props}>
       <SvgXml
@@ -23,3 +23,5 @@ export default function AddButton({ ...props }: TouchableOpacityProps) {
     </Button>
   )
 }
+
+export default AddButton;

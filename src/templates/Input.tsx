@@ -1,8 +1,11 @@
 import { TextInputIOSProps } from "react-native";
+import { Platform } from "react-native";
 import styled from "styled-components/native";
 import { SvgXml } from "react-native-svg";
 import { useState } from "react";
-import Icons from "../config/enum/icons.enum";
+import Icons from "@icons";
+import { InputProps } from "@interfaces/input";
+import { shadowStyle } from "./styles/shadow";
 
 interface TextInputProps {
   $isError?: boolean;
@@ -11,7 +14,7 @@ interface TextInputProps {
 const TextInput = styled.TextInput<TextInputProps>`
   background-color: transparent;
   border-radius: 12px;
-  padding: 16px 22px;
+  padding: ${() => Platform.OS === 'android' ? '12px' : '16px'} 22px;
   font-size: 16px;
   width: 100%;
   color: #888888;
@@ -38,30 +41,24 @@ const Eye = styled.TouchableOpacity`
   height: 35px;
 `;
 
-interface InputProps {
-  placeholder: string;
-  textContentType?: TextInputIOSProps['textContentType'];
-  value: string;
-  onChange: (text: string) => void;
-  isError?: boolean;
-}
-
-export default function Input({ placeholder, textContentType, value, onChange, isError }: InputProps) {
-  const [showPassword, setShowPassword] = useState<boolean>(true);
-
-  const handleSetShowPassword = () => {
-    setShowPassword(!showPassword);
-  }
+function Input({ placeholder, textContentType, value, onChange, isError, onBlur, onFocus }: InputProps) {
+  const [showPassword, setShowPassword] = useState<boolean>(
+    () => textContentType === 'password' ? false : true
+  );
+  const handleSetShowPassword = () => (setShowPassword(!showPassword));
 
   return (
     <Wrapper>
       <TextInput
+        onBlur={onBlur}
+        onFocus={onFocus}
         placeholderTextColor="#D9D9D9"
         placeholder={placeholder}
         textContentType={textContentType}
         value={value}
         onChangeText={onChange}
         $isError={isError}
+        style={Platform.OS === 'android' && shadowStyle(14, "#000")}
         secureTextEntry={!showPassword && textContentType === 'password'}
       />
       {textContentType === 'password' && (
@@ -72,3 +69,5 @@ export default function Input({ placeholder, textContentType, value, onChange, i
     </Wrapper>
   );
 }
+
+export default Input;

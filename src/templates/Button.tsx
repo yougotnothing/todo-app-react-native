@@ -1,6 +1,6 @@
 import styled from "styled-components/native";
 import Text from "./Text";
-import { Props } from "components/interfaces/button.interface";
+import { Props } from "src/interfaces/button.interface";
 
 const Button = styled.TouchableOpacity`
   background-color: #646FD4;
@@ -13,10 +13,12 @@ const Button = styled.TouchableOpacity`
   color: #D9D9D9;
 `;
 
-export default function SignUpButton({ text, ...props }: Props) {
+function SignUpButton({ text, ...props }: Props) {
   return(
     <Button {...props}>
       <Text color="#D9D9D9" fontFamily="Jost-Regular" text={text} />
     </Button>
   );
 }
+
+export default SignUpButton;
