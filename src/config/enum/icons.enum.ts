@@ -265,6 +265,9 @@ enum Icons {
   "blue back button" = `<svg width="19" height="16" viewBox="0 0 19 16" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path d="M18.9999 6.99997H4.41394L9.70694 1.70697L8.29294 0.292969L0.585938 7.99997L8.29294 15.707L9.70694 14.293L4.41394 8.99997H18.9999V6.99997Z" fill="#646FD4"/>
   </svg>`,
+  "grey back button" = `<svg width="19" height="16" viewBox="0 0 19 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M18.9999 6.99997H4.41394L9.70694 1.70697L8.29294 0.292969L0.585938 7.99997L8.29294 15.707L9.70694 14.293L4.41394 8.99997H18.9999V6.99997Z" fill="#888888"/>
+  </svg>`,
   "default avatar" = `<svg xmlns="http://www.w3.org/2000/svg" class="svg-icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1"><path d="M514 114.3c-219.9 0-398.8 178.9-398.8 398.8 0 220 178.9 398.9 398.8 398.9s398.8-178.9 398.8-398.9c0-219.8-178.9-398.8-398.8-398.8z m0 701.6c-166.9 0-302.7-135.8-302.7-302.7S347.1 210.5 514 210.5s302.7 135.8 302.7 302.7S680.9 815.9 514 815.9z" fill="#BDD2EF"/><path d="M514 346.3m-155.2 0a155.2 155.2 0 1 0 310.4 0 155.2 155.2 0 1 0-310.4 0Z" fill="#2867CE"/><path d="M626.9 497.9c-31.5 23.5-70.6 37.4-112.9 37.4s-81.4-13.9-112.9-37.4c-70.2 30.7-125.5 89-152.1 161.3 51.6 93.3 151 156.7 265 156.7s213.4-63.4 265.1-156.7c-26.7-72.3-82-130.6-152.2-161.3z" fill="#2867CE"/></svg>`,
   "line" = `<svg xmlns="http://www.w3.org/2000/svg" width="168" height="1" viewBox="0 0 168 1" fill="none">
   <line x1="168" y1="0.5" x2="-4.26706e-08" y2="0.499986" stroke="url(#paint0_linear_249_1193)"/>

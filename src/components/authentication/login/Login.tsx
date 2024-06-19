@@ -25,15 +25,15 @@ export default function Login() {
       password: ''
     },
     validationSchema: loginSchema,
-    onSubmit: (values) => {
-      values.login = "",
-      values.password = "";
+    onSubmit: (_, helpers) => {
+      helpers.setFieldValue("login", "");
+      helpers.setFieldValue("password", "");
     }
   });
 
   useEffect(() => {
     if(!user.isLoggedIn) navigation.setOptions({ canGoBack: false });
-  });
+  }, [user.isLoggedIn]);
 
   const login = async () => {
     if(!formik.values.login || !formik.values.password) return;

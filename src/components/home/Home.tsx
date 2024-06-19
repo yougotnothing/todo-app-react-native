@@ -92,13 +92,7 @@ function Home() {
           <Text color="#363636" fontFamily="Jost-Medium" size="medium" text={date} />
         </TextWrapper>
       </Header>
-      <TasksInput
-        placeholder="Search tasks"
-        value={searchTasks.value}
-        onChange={(text) => searchTasks.setValue(text)}
-        onFocus={() => searchTasks.getTasksBySubstring()}
-        onBlur={() => console.log('blur')}
-      />
+      <TasksInput />
       <MainSection>
         <TimeWrapper>
           {["Today", "Week", "Month"].map((item, index) => (

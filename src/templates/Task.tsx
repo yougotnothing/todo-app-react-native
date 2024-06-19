@@ -177,8 +177,7 @@ function Task({ header, content, isChecked, from, till, tasks }: TaskProps) {
         return newState;
       });
     }
-  }, [tasks]);
-  
+  }, [tasks]); 
 
   return (
     <TaskWrapper>

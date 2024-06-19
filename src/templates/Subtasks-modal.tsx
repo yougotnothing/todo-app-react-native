@@ -5,6 +5,7 @@ import styled from "styled-components/native";
 import AddButton from "./Add-button";
 import { SvgXml } from "react-native-svg";
 import Icons from "@icons";
+import { TextInputProps } from "react-native";
 
 const Subtask = styled.View`
   display: flex;
@@ -41,7 +42,7 @@ const Content = styled.TextInput`
   color: #888888;
 `;
 
-function SubtasksModal() {
+function SubtasksModal({ ...props }: TextInputProps) {
 
   useEffect(() => {
     console.log('tasks: ', createTaskModal.tasks);
@@ -57,6 +58,7 @@ function SubtasksModal() {
               {item.isChecked && <SvgXml xml={Icons["checkbox"]} />}
             </IsChecked>
             <Content
+              {...props}
               placeholderTextColor="#D9D9D9"
               placeholder="Enter subtask"
               value={item.content}

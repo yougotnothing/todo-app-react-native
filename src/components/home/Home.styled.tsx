@@ -11,6 +11,8 @@ export const Container = styled.View`
   flex-direction: column;
   height: 100%;
   width: 100%;
+  margin: 0;
+  padding: 0;
   background-color: #fff;
 `;
 
@@ -66,7 +68,7 @@ export const Header = styled.View`
   gap: 25px;
   padding: 20px;
   z-index: 10;
-  margin-bottom: -25px;
+  margin-bottom: 85px;
 `;
 
 export const RightCircle = styled.View`

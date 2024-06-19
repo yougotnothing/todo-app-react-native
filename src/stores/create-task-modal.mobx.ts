@@ -54,6 +54,7 @@ class CreateTaskModalStore implements TaskEntity {
     switch(type) {
       case "till from":
         this.isTillFromModalOpen = false;
+        this.clear();
         break;
       case "subtasks":
         this.isSubtasksModalOpen = false;

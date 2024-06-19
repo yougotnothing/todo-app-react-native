@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react';
 import Text from 'src/templates/Text';
+import { Gesture, GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export default function App() {
   const [user_token, setUser_token] = useState<string | null>(null);

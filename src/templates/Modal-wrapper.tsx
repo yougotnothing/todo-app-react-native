@@ -1,10 +1,13 @@
 import { BlurView } from "expo-blur";
 import { observer } from "mobx-react";
-import { FC } from "react";
 import styled from "styled-components/native";
 import { Modal, Platform } from "react-native";
 import { shadowStyle } from "@templates/styles/shadow";
 import { ModalProps } from "@interfaces/modal";
+
+interface ModalWrapperProps extends ModalProps {
+  type?: 'new task';
+}
 
 const PressableButton = styled.Pressable`
   position: absolute;
@@ -26,7 +29,7 @@ const Wrapper = styled.View`
   z-index: 9999;
 `;
 
-function ModalWrapper({ isModalVisible, children, onPressOutside }: ModalProps) {
+function ModalWrapper({ isModalVisible, children, onPressOutside, type }: ModalWrapperProps) {
 
   return (
     <Modal
@@ -52,9 +55,13 @@ function ModalWrapper({ isModalVisible, children, onPressOutside }: ModalProps) 
         }}
       >
         <PressableButton onPress={onPressOutside} />
-        <Wrapper
-          style={Platform.OS === 'android' && shadowStyle(30, "black")}
-        >{children}</Wrapper>
+        {type === 'new task' ? (
+          <>{children}</>
+        ) : (
+          <Wrapper
+            style={Platform.OS === 'android' && shadowStyle(30, "black")}
+          >{children}</Wrapper>
+        )}
       </BlurView>
     </Modal>
   );

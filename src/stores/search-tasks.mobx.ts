@@ -13,7 +13,6 @@ class SearchTasks {
 
   @action
   setIsFocused(isFocused: boolean) {
-    console.log('isFocused: ', isFocused);
     this.isFocused = isFocused;
   }
 
@@ -28,11 +27,11 @@ class SearchTasks {
   }
 
   @action
-  async getTasksBySubstring() {
+  async getTasksBySubstring(substring: string) {
     try {
       const response = await api.get('/tasks/get-tasks-by-substring', {
         params: {
-          substring: this.value
+          substring
         }
       });
 
