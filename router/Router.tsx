@@ -13,6 +13,8 @@ import Register from "components/authentication/register/Register";
 import Notification from "notifications/Notification";
 import Profile from "components/profile/Profile";
 import { user } from "@store/user";
+import ChangePassword from "components/change-password/Change-password";
+import { useEffect } from "react";
 
 interface Token {
   token: string | null;
@@ -76,6 +78,11 @@ export default function Router({ token }: Token) {
   const noHeader = { headerShown: false };
   const noHeaderTitle = (title: string) => ({ ...noHeader, headerTitle: title });
 
+  useEffect(() => {
+    console.log('is logged in ', user.isLoggedIn)
+  }, [user.isLoggedIn]);
+  
+
   return (
     <Navigator screenOptions={{
       headerStyle: {
@@ -107,6 +114,7 @@ export default function Router({ token }: Token) {
       <Screen name="Read tasks" options={noHeaderTitle("Read tasks")} component={TodayTasks} />
       <Screen name="Work out tasks" options={noHeaderTitle("Work out tasks")} component={TodayTasks} />
       <Screen name="Profile" options={noHeaderTitle("Profile")} component={Profile} />
+      <Screen name="Change password" options={noHeaderTitle("Change password")} component={ChangePassword} />
     </Navigator>
   )
 }

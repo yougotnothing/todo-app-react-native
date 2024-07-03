@@ -4,7 +4,8 @@ import { ChangePasswordDto } from "dto/change-password";
 import { LoginDto } from "dto/login";
 import { UserDto } from "dto/user";
 import { action, makeObservable, observable, runInAction } from "mobx";
-import { DATE_CONFIG } from "src/config/date.config";
+import { DATE_CONFIG } from "@config/date";
+import { Buffer } from "buffer";
 
 class UserStore implements UserDto {
   @observable name: string = "";
@@ -40,8 +41,9 @@ class UserStore implements UserDto {
       console.log('response: ', response.data);
 
       await AsyncStorage.setItem('token', response.data.token);
+      await AsyncStorage.setItem('hashed password', Buffer.from(dto.password).toString('base64'));
       await this.getUser();
-
+      
       console.log("User logged in");
 
       return { isLoggedSuccess: true };
@@ -99,7 +101,7 @@ class UserStore implements UserDto {
         avatar
       });
 
-      this.getUser();
+      await this.getUser();
     }catch(error: unknown) {
       console.error(error);
       return;
@@ -109,12 +111,14 @@ class UserStore implements UserDto {
   @action
   async changeName(name: string) {
     try {
+      const password = await AsyncStorage.getItem('hashed password');
       const response = await api.patch('/user/change-name', {
         newName: name,
       },
-      { 
+      {
         headers: {
-          'X-User-Id': this.id
+          'X-User-Id': this.id,
+          'X-User-Password': password
         }
       });
 
@@ -124,8 +128,8 @@ class UserStore implements UserDto {
       await this.getUser();
 
       console.log(`name changed to ${name}!`);
-    }catch(error: unknown) {
-      console.error(error);
+    }catch(error: any) {
+      console.error(error.response.data);
       return;
     }
   }
@@ -147,7 +151,10 @@ class UserStore implements UserDto {
 
   @action
   async logout(clearToken: "clear" | "keep" = "clear") {
-    if(clearToken === "clear") await AsyncStorage.removeItem('token');
+    if(clearToken === "clear") {
+      await AsyncStorage.removeItem('token')
+      await AsyncStorage.removeItem('hashed password');
+    };
 
     runInAction(() => {
       this.name = "";
@@ -155,7 +162,9 @@ class UserStore implements UserDto {
       this.avatar = "";
       this.isHaveAvatar = false;
       this.id = 0;
-      if(clearToken === "clear") this.isLoggedIn = false;
+      if(clearToken === "clear") {
+        this.isLoggedIn = false;
+      }
     });
   }
 }

@@ -21,3 +21,11 @@ export const loginSchema = yup.object().shape({
 
 export const taskHeaderSchema = yup.string().min(1, 'Task header is required')
                                             .max(24, 'Task header is too long');
+
+export const changePassowrdSchema = yup.object().shape({
+  oldPassword: yup.string().required('Old password is required'),
+  newPassword: yup.string().min(8, 'Password is to short')
+                           .max(20, 'Password is to long')
+                           .required('Password is required'),
+  confirmNewPassword: yup.string().oneOf([yup.ref('newPassword')], 'Passwords must match')
+})

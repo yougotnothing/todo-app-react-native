@@ -20,16 +20,20 @@ function Profile() {
   const [userName, setUserName] = useState<string>(user.name);
   const [isDroplistOpen, setIsDroplistOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const { navigate, goBack } = useNavigation<RouterProps>();
+  const { navigate, goBack, dispatch } = useNavigation<RouterProps>();
 
   useEffect(() => {
     user.getUser();
     changeAvatar.setAvatar(user.avatar);
     tasks.getTasksLength();
     setIsLoading(false);
-
-    console.log('user: ', user.name);
   }, []);
+
+  useEffect(() => {
+    if(!user.isLoggedIn) {
+      navigate('Log in', { goBack: false });
+    }
+  }, [user.isLoggedIn]);
 
   const handlePickAvatar = async () => {
     await changeAvatar.pickAvatar()
@@ -52,8 +56,8 @@ function Profile() {
                 <TransparentButton text="Change avatar" onPress={handlePickAvatar} />
                 <TransparentButton text="Change name" onPress={() => navigate('Change name')} />
                 <TransparentButton text="Change email" onPress={() => console.log('change email')} />
-                <TransparentButton text="Change password" onPress={() => console.log('change password')} />
-                <TransparentButton text="Log out" onPress={() => console.log('log out')} />
+                <TransparentButton text="Change password" onPress={() => navigate('Change password')} />
+                <TransparentButton text="Log out" onPress={() => user.logout('clear')} />
               </>
             )}
           </OptionsDroplist>
@@ -79,7 +83,7 @@ function Profile() {
             </TextRow>
             {Object.entries(tasks.tasksLength).map(([key, value], index) => (
               <TextRow key={index}>
-                <Text color="#363636" fontFamily="Jost-Regular" size="medium" text={key + " tasks:"} />
+                <Text color="#363636" fontFamily="Jost-Regular" size="medium" text={`${key} tasks:`} />
                 <Text color="#646FD4" fontFamily="Jost-Regular" size="medium" text={value.toString()} />
               </TextRow>
             ))}

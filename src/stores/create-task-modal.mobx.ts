@@ -133,6 +133,7 @@ class CreateTaskModalStore implements TaskEntity {
 
   @action
   toTaskEntity(): TaskEntity {
+    console.log('toTaskEntity: ', this.header, this.type, this.till, this.from, this.important, this.tasks, this.createdAt);
     return {
       type: this.type,
       header: this.header,
@@ -145,18 +146,20 @@ class CreateTaskModalStore implements TaskEntity {
   }
 
   @action
-  async createTask() {
+  async createTask(): Promise<{ status: number } | void> {
     try {
       if(!this.toTaskEntity().header.length) return;
       
-      const response = await api.post('/user/add-task', {
-        ...this.toTaskEntity()
+      const response = await api.post('/tasks/create-task', {
+        task: { ...this.toTaskEntity() },
+        name: user.name
       });
 
       console.log('response: ', response.data);
-    }catch(error: unknown) {
+      return { status: response.status };
+    }catch(error: any) {
       console.error(error);
-      return;
+      return { status: error.response.status };
     }
   }
 }

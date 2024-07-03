@@ -18,6 +18,8 @@ api.interceptors.request.use(
       config.headers.Authorization = `Basic ${token}`;
     }
 
+    console.log('token: ', token);
+
     return config;
   },
   (error) => {

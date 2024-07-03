@@ -21,7 +21,7 @@ const Wrapper = styled(Animated.View)`
   align-items: center;
   justify-content: flex-start;
   align-self: center;
-  z-index: 9999;
+  z-index: 120;
   height: max-content;
   position: absolute;
   margin: 0;
@@ -30,12 +30,18 @@ const Wrapper = styled(Animated.View)`
   top: 125px;
 `;
 
+const TasksPressable = styled.Pressable`
+  position: absolute;
+  background-color: transparent;
+`;
+
 const TasksWrapper = styled(Animated.ScrollView)`
   display: flex;
   flex-direction: column;
   width: 90%;
+  gap: 14px;
   border-radius: 18px;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
   background-color: white;
 `;
 
@@ -91,19 +97,28 @@ function TasksInput() {
   const tasksWrapperPadding = useSharedValue<number>(searchTasks.isFocused ? 7 : 0);
   const inputRef = useRef<TextInput>(null);
 
-  const handlePressOutside = useCallback(() => {
-    if(isInputFocused) setIsInputFocused(false);
+  const handlePressOutside = () => {
+    if(isInputFocused) {
+      setIsInputFocused(false);
+    }else{
+      searchTasks.setIsFocused(false);
+    }
 
+    inputRef.current?.blur();
+  }
+
+  const handleExit = () => {
+    setIsInputFocused(false);
     searchTasks.setIsFocused(false);
     inputRef.current?.blur();
-  }, [isInputFocused]);
+  }
 
-  const handleChange = useCallback((value: string) => {
+  const handleChange = (value: string) => {
     if(!searchTasks.isFocused) searchTasks.setIsFocused(true);
 
     searchTasks.setValue(value);
     searchTasks.getTasksBySubstring(value);
-  }, [searchTasks.isFocused]);
+  };
 
   useEffect(() => {
     wrapperGap.value = searchTasks.isFocused ? 22 : 0;
@@ -184,13 +199,15 @@ function TasksInput() {
             }}
           />
           {searchTasks.isFocused && (
-            <CloseButton onPress={handlePressOutside}>
+            <CloseButton onPress={handleExit}>
               <SvgXml xml={Icons["grey back button"]} />
             </CloseButton>
           )}
         </InputWrapper>
-        <TasksWrapper style={tasksWrapperStyle}>
-          {searchTasks.tasks.map((task) => (<MiniTask key={task.id} {...task} />))}
+        <TasksWrapper onTouchEnd={handlePressOutside} style={tasksWrapperStyle}>
+          {searchTasks.tasks.map((task) => (
+            <MiniTask key={task.id} {...task} onPress={() => console.log(task)} />
+          ))}
         </TasksWrapper>
       </BlurView>
     </Wrapper>

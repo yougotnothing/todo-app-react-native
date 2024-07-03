@@ -34,7 +34,6 @@ import { DATE_CONFIG } from "@config/date";
 import { Platform } from "react-native";
 import { shadowStyle } from "@templates/styles/shadow";
 import TasksInput from "@animated/Tasks-input";
-import { searchTasks } from "@store/search-tasks";
 
 function Home() {
   const [date, setDate] = useState<string>(new Date().toLocaleDateString('en-US', DATE_CONFIG));
@@ -48,11 +47,16 @@ function Home() {
 
   useEffect(() => {
     const interval = setInterval(() => {
+      tasks.getTodayTasks();
       setDate(new Date().toLocaleDateString('en-US', DATE_CONFIG));
     }, 60000);
 
     return () => clearInterval(interval);
   });
+
+  useEffect(() => {
+    tasks.getTasksLength();
+  }, []);
 
   const handlePressTodoButton = async (type: TaskType | undefined) => {
     if(type) {

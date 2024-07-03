@@ -157,7 +157,13 @@ function NewTask() {
       <SubtasksModal onFocus={() => setIsInputFocused(true)} onBlur={() => setIsInputFocused(false)} />
       <Footer>
         <TransparentButton onPress={() => createTaskModal.clear()} text="Cancel" />
-        <TransparentButton onPress={() => createTaskModal.createTask()} text="Ok" />
+        <TransparentButton
+          onPress={() => {
+            createTaskModal.createTask()
+              .then(req => req && req.status === 200 && createTaskModal.close('till from'))
+          }}
+          text="Ok"
+        />
       </Footer>
     </Wrapper>
     </ModalWrapper>
