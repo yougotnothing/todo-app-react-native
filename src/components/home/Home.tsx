@@ -2,13 +2,9 @@ import { DrawerActions, useNavigation, useFocusEffect } from "@react-navigation/
 import {
   Container,
   Header,
-  Input,
-  InputWrapper,
   LeftCircle,
   MainSection,
-  Navbar,
   RightCircle,
-  SearchIcon,
   TextWrapper, 
   TimeButton,
   TimeWrapper,
@@ -34,6 +30,7 @@ import { DATE_CONFIG } from "@config/date";
 import { Platform } from "react-native";
 import { shadowStyle } from "@templates/styles/shadow";
 import TasksInput from "@animated/Tasks-input";
+import Navbar from "@templates/Navbar";
 
 function Home() {
   const [date, setDate] = useState<string>(new Date().toLocaleDateString('en-US', DATE_CONFIG));
@@ -84,11 +81,13 @@ function Home() {
             height="320"
           />
         </RightCircle>
-        <Navbar>
-          <DrawerMenuButton onPress={() => navigation.dispatch(DrawerActions.openDrawer())} />
-          <Text color="white" fontFamily="Jost-Medium" size="large" text="Mtodo logo" />
-          <UserAvatar user={user} size={40} onPress={() => navigation.navigate('Profile')} />
-        </Navbar>
+        <Navbar
+          header="Mtodo logo"
+          buttons={[
+            <DrawerMenuButton onPress={() => navigation.dispatch(DrawerActions.openDrawer())} />,
+            <UserAvatar user={user} size={40} onPress={() => navigation.navigate('Profile')} />
+          ]}
+        />
         <TextWrapper>
           <Text color="#363636" fontFamily="Jost-Medium" size="medium" text="you have" />
           <Text color="white" fontFamily="Jost-Medium" size="large" text={`${tasks.tasks["today"].length} tasks`} />

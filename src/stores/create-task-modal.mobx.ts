@@ -2,6 +2,7 @@ import { TaskEntity, TaskType } from "dto/todo";
 import { action, makeObservable, observable } from "mobx";
 import { user } from "./user.mobx";
 import { api } from "axios-config";
+import { DATE_CONFIG } from "@config/date";
 
 type ModalType = 
   | "till from"
@@ -26,13 +27,7 @@ class CreateTaskModalStore implements TaskEntity {
   @observable from: string = this.date;
   @observable important: boolean = false;
   @observable tasks: Array<{ isChecked: boolean, content: string }> = [];
-  @observable createdAt: string = new Date()
-                                      .toLocaleDateString('en-US', {
-                                        weekday: 'long',
-                                        year: 'numeric',
-                                        month: 'long', 
-                                        day: 'numeric'
-                                      });
+  @observable createdAt: string = new Date().toLocaleDateString('en-US', DATE_CONFIG);
 
   constructor() {
     makeObservable(this);
@@ -133,7 +128,6 @@ class CreateTaskModalStore implements TaskEntity {
 
   @action
   toTaskEntity(): TaskEntity {
-    console.log('toTaskEntity: ', this.header, this.type, this.till, this.from, this.important, this.tasks, this.createdAt);
     return {
       type: this.type,
       header: this.header,

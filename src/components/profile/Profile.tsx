@@ -5,7 +5,7 @@ import { changeAvatar } from "@store/change-avatar";
 import { useEffect, useState } from "react";
 import UserAvatar from "@templates/User-avatar";
 import { user } from "@store/user";
-import { Navbar, TextRow, UserInfo, UserNameInput } from "./Profile.styled";
+import { TextRow, UserInfo, UserNameInput } from "./Profile.styled";
 import { useNavigation } from "@react-navigation/native";
 import { RouterProps } from "router/router.interface";
 import BackButton from "@templates/Back-button";
@@ -15,6 +15,7 @@ import TransparentButton from "@templates/Transparent-button";
 import Loader from "@templates/Loader";
 import { tasks } from "@store/tasks";
 import { Platform } from "react-native";
+import Navbar from "@templates/Navbar";
 
 function Profile() {
   const [userName, setUserName] = useState<string>(user.name);
@@ -41,13 +42,17 @@ function Profile() {
     setIsDroplistOpen(false);
   }
 
+  const handleDrawerMenuClick = () => (setIsDroplistOpen(!isDroplistOpen));
+
   return (
     <Wrapper>
-      <Navbar>
-        <BackButton color="white" onPress={goBack} disabled={changeAvatar.isFetching || isLoading} />
-        <Text color="#fff" fontFamily="Jost-Bold" size="large" text="Profile" />
-        <DrawerMenuButton onPress={() => setIsDroplistOpen(!isDroplistOpen)} disabled={changeAvatar.isFetching || isLoading} />
-      </Navbar>
+      <Navbar
+        header="Profile"
+        buttons={[
+          <BackButton color="white" onPress={goBack} disabled={changeAvatar.isFetching || isLoading} />,
+          <DrawerMenuButton onPress={handleDrawerMenuClick} disabled={changeAvatar.isFetching || isLoading} />
+        ]}
+      />
       {changeAvatar.isFetching || isLoading ? <Loader /> : (
         <>
           <OptionsDroplist setIsOpen={setIsDroplistOpen} $isOpen={isDroplistOpen}>

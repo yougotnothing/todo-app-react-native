@@ -1,15 +1,15 @@
 import Wrapper from "@templates/Wrapper";
 import { observer } from "mobx-react";
-import { BackButton, ConfirmButton, InputWrapper, Navbar } from "./Change-password.styled";
+import { BackButton as InvisibleButton, ConfirmButton, InputWrapper } from "./Change-password.styled";
+import Navbar from "@templates/Navbar";
 import Input from "@templates/Input";
 import { changePassword } from "@store/change-password";
-import { SvgXml } from "react-native-svg";
-import Icons from "@icons";
 import { useNavigation } from "@react-navigation/native";
 import { RouterProps } from "router/router.interface";
 import Text from "@templates/Text";
 import { user } from "@store/user";
 import TransparentButton from "@templates/Transparent-button";
+import BackButton from "@templates/Back-button";
 
 function ChangePassword() {
   const navigation = useNavigation<RouterProps>();
@@ -22,13 +22,13 @@ function ChangePassword() {
 
   return (
     <Wrapper>
-      <Navbar>
-        <BackButton onPress={() => navigation.goBack()}>
-          <SvgXml xml={Icons["white back button"]} />
-        </BackButton>
-        <Text color="white" fontFamily="Jost-Medium" size="large" text="Change password" />
-        <BackButton disabled></BackButton>
-      </Navbar>
+      <Navbar
+        header="Change password" 
+        buttons={[
+          <BackButton color="white" onPress={() => navigation.goBack()} />,
+          <InvisibleButton disabled />
+        ]}
+      />
       <InputWrapper>
         <Input
           onChange={(value) => changePassword.setFieldValue('oldPassword', value)}
