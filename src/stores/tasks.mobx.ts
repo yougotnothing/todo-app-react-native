@@ -1,5 +1,5 @@
 import { api } from "axios-config";
-import { TaskEntity, TaskType, TodoDto, UserTasks, Tasks } from "dto/todo";
+import { TaskEntity, TaskType, UserTasks, Tasks } from "dto/todo";
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { DATE_CONFIG } from "src/config/date.config";
 
@@ -43,9 +43,9 @@ class TasksStore {
   @action
   async getTasksByType(type: TaskType) {
     try {
-      const response = await api.get('/tasks/get-tasks-by-type', {
+      const response = await api.get('/tasks/tasks-by-type', { 
         params: {
-          type
+          type: encodeURIComponent(type)
         }
       });
       
@@ -75,7 +75,9 @@ class TasksStore {
   async deleteTask(id: number, type: keyof UserTasks) {
     try {
       await api.delete('tasks/delete-task', {
-        params: { id },
+        params: {
+          id
+        },
       });
 
       console.log('deleted');

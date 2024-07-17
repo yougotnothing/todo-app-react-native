@@ -5,7 +5,6 @@ import { LoginDto } from "dto/login";
 import { UserDto } from "dto/user";
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { DATE_CONFIG } from "@config/date";
-import { Buffer } from "buffer";
 
 class UserStore implements UserDto {
   @observable name: string = "";
@@ -14,6 +13,8 @@ class UserStore implements UserDto {
   @observable isHaveAvatar: boolean = false;
   @observable id: number = 0;
   @observable isLoggedIn: boolean = false;
+  @observable sessionID: string | null = null;
+  @observable isVerified: boolean = false;
 
   constructor() {
     makeObservable(this);
@@ -26,7 +27,9 @@ class UserStore implements UserDto {
     this.avatar = `${user.avatar}&time=${new Date()}`;
     this.isHaveAvatar = user.isHaveAvatar;
     this.id = user.id;
+    this.sessionID = user.sessionID;
     this.isLoggedIn = true;
+    this.isVerified = user.isVerified;
   }
 
   @action
@@ -37,14 +40,10 @@ class UserStore implements UserDto {
       });
 
       if(response.status !== 200) return { isLoggedSuccess: false };
+      runInAction(() => (this.sessionID = response.data.session as string));
+      await AsyncStorage.setItem('token', response.data.session as string);
 
-      console.log('response: ', response.data);
-
-      await AsyncStorage.setItem('token', response.data.token);
-      await AsyncStorage.setItem('hashed password', Buffer.from(dto.password).toString('base64'));
       await this.getUser();
-      
-      console.log("User logged in");
 
       return { isLoggedSuccess: true };
 
@@ -70,14 +69,8 @@ class UserStore implements UserDto {
   async changePassword(dto: ChangePasswordDto) {
     try {
       const response = await api.patch('/user/change-password', {
-          ...dto,
-        },
-        { 
-          headers: {
-            'X-User-Id': this.id
-          }
-        }
-      );
+        ...dto,
+      });
 
       await AsyncStorage.setItem('token', response.data.token);
       await this.getUser();
@@ -102,8 +95,8 @@ class UserStore implements UserDto {
       });
 
       await this.getUser();
-    }catch(error: unknown) {
-      console.error(error);
+    }catch(error: any) {
+      console.error(error.response.data.message);
       return;
     }
   }
@@ -111,23 +104,13 @@ class UserStore implements UserDto {
   @action
   async changeName(name: string) {
     try {
-      const password = await AsyncStorage.getItem('hashed password');
       const response = await api.patch('/user/change-name', {
-        newName: name,
-      },
-      {
-        headers: {
-          'X-User-Id': this.id,
-          'X-User-Password': password
-        }
+        newName: name
       });
 
       console.log(response.data);
 
-      await AsyncStorage.setItem('token', response.data.token);
       await this.getUser();
-
-      console.log(`name changed to ${name}!`);
     }catch(error: any) {
       console.error(error.response.data);
       return;
@@ -151,10 +134,9 @@ class UserStore implements UserDto {
 
   @action
   async logout(clearToken: "clear" | "keep" = "clear") {
-    if(clearToken === "clear") {
-      await AsyncStorage.removeItem('token')
-      await AsyncStorage.removeItem('hashed password');
-    };
+    await api.post('/auth/logout');
+
+    if(clearToken === "clear") await AsyncStorage.removeItem('token');
 
     runInAction(() => {
       this.name = "";
@@ -166,6 +148,15 @@ class UserStore implements UserDto {
         this.isLoggedIn = false;
       }
     });
+  }
+
+  async sendEmailVerification() {
+    try {
+      const response = await api.post('/mail/send-verify-email-message')
+    }catch(error: any) {
+      console.error(error.response.data.message);
+      return;
+    }
   }
 }
 

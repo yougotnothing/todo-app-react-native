@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios, { AxiosRequestConfig } from 'axios';
+import axios from 'axios';
 
 export const api = axios.create({
   baseURL: process.env.API_URL,
@@ -8,34 +8,35 @@ export const api = axios.create({
 
 api.interceptors.request.use(
   async (config) => {
-    const token = await AsyncStorage.getItem('token');
-    
     config.headers['Access-Control-Allow-Origin'] = process.env.API_URL;
-
-    if(!token) {
-      config.headers.Authorization = undefined;
-    }else{
-      config.headers.Authorization = `Basic ${token}`;
-    }
-
-    console.log('token: ', token);
-
+    config.headers['Authorization'] = `SID ${await AsyncStorage.getItem('token')}`;
     return config;
   },
-  (error) => {
-    if(error.response && error.response.status === 401) {
-      throw new Error('Invalid token',  error.response.status);
-    }else return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
 api.interceptors.response.use(
-  (response) => response, 
+  (response) => response,
   async (error) => {
-    if(error.response && error.response.status === 401) {
-      throw new Error('Invalid token',  error.response.status);
-    }else{
-      throw new Error(error);
+    const originalRequest = error.config;
+    if(error.response && error.response.status === 401 && !originalRequest._retry) {
+      const response = await api.patch('/auth/refresh');
+
+      originalRequest._retry = false;
+
+      await AsyncStorage.removeItem('token');
+
+      if(response.data.status === 200) {
+        await AsyncStorage.setItem('token', response.data.session as string);
+
+        const sid = await AsyncStorage.getItem('token');
+
+        api.defaults.headers['Authorization'] = `SID ${sid}`;
+        
+        originalRequest._retry = true;
+      }else return Promise.reject(response.data);
+
+      return api(originalRequest);
     }
   }
 );

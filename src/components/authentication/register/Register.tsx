@@ -29,7 +29,7 @@ export default function Register() {
         if(req.status !== 200) { 
           return;
         }else navigation.navigate('Root');
-        
+
         console.log('request', req.data);
       });
     }catch(error: any) {

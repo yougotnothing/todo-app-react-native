@@ -3,6 +3,10 @@
 # dependencies
 node_modules/
 
+# build
+android/
+%ProgramData%
+
 # Expo
 .expo/
 dist/
@@ -34,5 +38,3 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
-
-%ProgramData%

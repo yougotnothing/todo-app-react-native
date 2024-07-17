@@ -25,7 +25,6 @@ export const handleLogin = async (dto: LoginDto) => {
       password: dto.password
     });
 
-    await AsyncStorage.setItem('token', response.data.token);
     console.log('response', response.data);
   }catch(error: any) {
     console.error(error);

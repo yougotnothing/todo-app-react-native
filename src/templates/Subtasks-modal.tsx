@@ -9,6 +9,8 @@ import { TextInputProps } from "react-native";
 
 const Subtask = styled.View`
   display: flex;
+  width: 80%;
+  align-self: center;
   padding: 5px 10px;
   border-radius: 6px;
   flex-direction: row;
@@ -34,7 +36,6 @@ const Subtasks = styled.ScrollView`
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 24px;
 `;
 
 const Content = styled.TextInput`
@@ -43,12 +44,10 @@ const Content = styled.TextInput`
 `;
 
 function SubtasksModal({ ...props }: TextInputProps) {
-
   useEffect(() => {
     console.log('tasks: ', createTaskModal.tasks);
   }, [createTaskModal.tasks]);
   
-
   return (
     <>
       <Subtasks>

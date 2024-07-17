@@ -4,4 +4,6 @@ export interface UserDto {
   avatar: string;
   isHaveAvatar: boolean;
   id: number;
+  sessionID: string | null;
+  isVerified: boolean;
 }

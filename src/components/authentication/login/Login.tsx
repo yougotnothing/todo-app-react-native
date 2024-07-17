@@ -39,9 +39,10 @@ export default function Login() {
     if(!formik.values.login || !formik.values.password) return;
 
     await user.login(formik.values)
-              .then(({ isLoggedSuccess }) => (
+              .then(({ isLoggedSuccess }) => {
                 isLoggedSuccess && navigation.navigate('Root')
-              ));
+                if(!user.isVerified) user.sendEmailVerification();
+              });
   }
 
   return (

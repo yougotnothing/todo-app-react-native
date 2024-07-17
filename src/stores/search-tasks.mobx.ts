@@ -29,7 +29,7 @@ class SearchTasks {
   @action
   async getTasksBySubstring(substring: string) {
     try {
-      const response = await api.get('/tasks/get-tasks-by-substring', {
+      const response = await api.get('/tasks/tasks-by-substring', {
         params: {
           substring
         }
