@@ -1,6 +1,6 @@
 import { api } from "axios-config";
 import { TaskEntity, TaskType, UserTasks, Tasks } from "dto/todo";
-import { action, makeObservable, observable, runInAction } from "mobx";
+import { action, observable } from "mobx";
 import { DATE_CONFIG } from "src/config/date.config";
 
 class TasksStore {
@@ -15,6 +15,7 @@ class TasksStore {
     "shop": [],
     "read": [],
     "work out": [],
+    "important": [],
   }
   @observable tasksLength: Record<TaskType, number> = {
     "school": 0,
@@ -22,10 +23,7 @@ class TasksStore {
     "shop": 0,
     "read": 0,
     "work out": 0,
-  }
-
-  constructor() {
-    makeObservable(this);
+    "important": 0,
   }
 
   @action
@@ -33,7 +31,19 @@ class TasksStore {
     try {
       const response = await api.get('/tasks/tasks-length');
 
-      runInAction(() => this.tasksLength = response.data.tasks);
+      this.tasksLength = response.data.tasks;
+    }catch(error: any) {
+      console.error(error.response.data);
+      return;
+    }
+  }
+
+  @action
+  async getImportantTasks() {
+    try {
+      const response = await api.get('/tasks/important-tasks');
+
+      this.userTasks["important"] = response.data.tasks;
     }catch(error: any) {
       console.error(error.response.data);
       return;
@@ -49,7 +59,7 @@ class TasksStore {
         }
       });
       
-      runInAction(() => (this.userTasks[type] = response.data.tasks));
+      this.userTasks[type] = response.data.tasks;
     }catch(error: any) {
       console.error(error.response.data);
       return;
@@ -81,7 +91,7 @@ class TasksStore {
       });
 
       console.log('deleted');
-      runInAction(() => this.userTasks[type] = this.userTasks[type].filter(item => item.id !== id));
+      this.userTasks[type] = this.userTasks[type].filter(item => item.id !== id);
     }catch(error: unknown) {
       console.error(error);
       return;
@@ -118,7 +128,7 @@ class TasksStore {
             }
           });
 
-          runInAction(() => this.tasks["week"] = week.data.tasks);
+          this.tasks["week"] = week.data.tasks;
           break;
         case "month":
           const month = await api.get('/tasks/month-tasks', {
@@ -130,7 +140,7 @@ class TasksStore {
             }
           });
 
-          runInAction(() => this.tasks["month"] = month.data.tasks);
+          this.tasks["month"] = month.data.tasks;
           break;
       }
     }catch(error: unknown) {
@@ -148,7 +158,7 @@ class TasksStore {
         }
       });
 
-      runInAction(() => this.tasks["today"] = response.data.tasks);
+      this.tasks["today"] = response.data.tasks;
     }catch(error: unknown) {
       console.error(error);
       return;

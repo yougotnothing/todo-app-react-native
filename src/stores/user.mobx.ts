@@ -3,7 +3,7 @@ import { api } from "axios-config";
 import { ChangePasswordDto } from "dto/change-password";
 import { LoginDto } from "dto/login";
 import { UserDto } from "dto/user";
-import { action, makeObservable, observable, runInAction } from "mobx";
+import { action, observable, runInAction } from "mobx";
 import { DATE_CONFIG } from "@config/date";
 
 class UserStore implements UserDto {
@@ -16,10 +16,6 @@ class UserStore implements UserDto {
   @observable sessionID: string | null = null;
   @observable isVerified: boolean = false;
 
-  constructor() {
-    makeObservable(this);
-  }
-
   @action
   setUser(user: UserDto) {
     this.name = user.name;
@@ -30,6 +26,11 @@ class UserStore implements UserDto {
     this.sessionID = user.sessionID;
     this.isLoggedIn = true;
     this.isVerified = user.isVerified;
+  }
+
+  @action
+  setSessionID(sessionID: string | null) {
+    this.sessionID = sessionID;
   }
 
   @action

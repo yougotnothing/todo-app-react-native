@@ -1,4 +1,4 @@
-import { DrawerActions, useNavigation } from "@react-navigation/native";
+import { DrawerActions, useFocusEffect, useNavigation } from "@react-navigation/native";
 import {
   ReturnButton,
   RoutesWrapper,
@@ -15,13 +15,14 @@ import { RouterProps } from "router/router.interface";
 import TransparentButton from "@templates/Transparent-button";
 import UserAvatar from "@templates/User-avatar";
 import { observer } from "mobx-react";
+import { DrawerRoutes } from "@interfaces/drawer-routes";
 
 function MiniProfile() {
   const navigation = useNavigation<RouterProps>();
-  const routes = [
+  const routes: DrawerRoutes[] = [
     { label: "Edit profile", icon: Icons["edit profile"], navigateTo: "Profile" },
     { label: "Daily tasks", icon: Icons["daily tasks"], navigateTo: "Daily tasks" },
-    { label: "Important tasks", icon: Icons["important tasks"], navigateTo: "Home" },
+    { label: "Important tasks", icon: Icons["important tasks"], navigateTo: "Important tasks" },
     { label: "Done tasks", icon: Icons["done tasks"], navigateTo: "Home" }
   ];
 
@@ -37,8 +38,7 @@ function MiniProfile() {
         <SvgXml xml={Icons["blue back button"]} />
       </ReturnButton>
       <UserWrapper>
-        <UserAvatar user={user} size={50} onPress={() => navigation.navigate('Profile')}
-        />
+        <UserAvatar user={user} size={50} onPress={() => navigation.navigate('Profile')} />
         <UserInfo>
           <Text color="#242F9B" fontFamily="Jost-Medium" size="small" text={user.name} />
           <Text color="#888888" fontFamily="Jost-Medium" size="small" text={user.email} />
@@ -56,7 +56,7 @@ function MiniProfile() {
         ))}
       </RoutesWrapper>
       <TransparentButton
-        style={{ 
+        style={{
           marginTop: "auto",
           marginLeft: 10,
           marginRight: "auto"

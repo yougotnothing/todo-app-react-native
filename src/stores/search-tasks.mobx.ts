@@ -1,15 +1,11 @@
 import { api } from "axios-config";
 import { TodoDto } from "dto/todo";
-import { action, makeObservable, observable, runInAction } from "mobx";
+import { action, observable } from "mobx";
 
 class SearchTasks {
   @observable tasks: TodoDto[] = [];
   @observable value: string = "";
   @observable isFocused: boolean = false;
-
-  constructor() {
-    makeObservable(this);
-  }
 
   @action
   setIsFocused(isFocused: boolean) {

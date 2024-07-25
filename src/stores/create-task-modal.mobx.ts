@@ -1,5 +1,5 @@
 import { TaskEntity, TaskType } from "dto/todo";
-import { action, makeObservable, observable } from "mobx";
+import { action, observable } from "mobx";
 import { user } from "./user.mobx";
 import { api } from "axios-config";
 import { DATE_CONFIG } from "@config/date";
@@ -28,10 +28,6 @@ class CreateTaskModalStore implements TaskEntity {
   @observable important: boolean = false;
   @observable tasks: Array<{ isChecked: boolean, content: string }> = [];
   @observable createdAt: string = new Date().toLocaleDateString('en-US', DATE_CONFIG);
-
-  constructor() {
-    makeObservable(this);
-  }
 
   @action
   clear() {

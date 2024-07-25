@@ -10,7 +10,7 @@ interface UserAvatarProps {
   onPress?: () => void;
 }
 
-const UserAvatar = observer(({ user, size, onPress }: UserAvatarProps) => {
+function UserAvatar({ user, size, onPress }: UserAvatarProps) {
   return (
     <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
       {user.isHaveAvatar ? (
@@ -30,6 +30,6 @@ const UserAvatar = observer(({ user, size, onPress }: UserAvatarProps) => {
       )}
     </TouchableOpacity>
   )
-});
+};
 
-export default UserAvatar;
+export default observer(UserAvatar);

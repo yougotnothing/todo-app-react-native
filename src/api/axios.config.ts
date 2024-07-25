@@ -20,23 +20,22 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     if(error.response && error.response.status === 401 && !originalRequest._retry) {
-      const response = await api.patch('/auth/refresh');
+      try {
+        const response = await api.patch('/auth/refresh');
 
-      originalRequest._retry = false;
+        originalRequest._retry = false;
 
-      await AsyncStorage.removeItem('token');
+        await AsyncStorage.setItem('token', response.data.session);
 
-      if(response.data.status === 200) {
-        await AsyncStorage.setItem('token', response.data.session as string);
+        api.defaults.headers['Authorization'] = `SID ${await AsyncStorage.getItem('token')}`;
+        originalRequest.defaults.headers['Authorization'] = `SID ${await AsyncStorage.getItem('token')}`;
 
-        const sid = await AsyncStorage.getItem('token');
-
-        api.defaults.headers['Authorization'] = `SID ${sid}`;
-        
         originalRequest._retry = true;
-      }else return Promise.reject(response.data);
 
-      return api(originalRequest);
+        return api(originalRequest);
+      }catch(error: any) {
+        console.log(error);
+      }
     }
   }
 );

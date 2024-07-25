@@ -26,7 +26,8 @@ export type TaskType =
   | 'work'
   | 'shop'
   | 'read'
-  | 'work out';
+  | 'work out'
+  | 'important';
 
 export type UserTasks = Record<TaskType, Array<TodoDto & { type: TaskType }>>;
 export type Tasks = Record<"today" | "week" | "month", TodoDto[]>;

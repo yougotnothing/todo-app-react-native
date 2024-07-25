@@ -1,4 +1,3 @@
-import { TextInputIOSProps } from "react-native";
 import { Platform } from "react-native";
 import styled from "styled-components/native";
 import { SvgXml } from "react-native-svg";

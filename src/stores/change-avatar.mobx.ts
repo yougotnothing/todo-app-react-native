@@ -1,4 +1,4 @@
-import { action, makeObservable, observable, autorun } from "mobx";
+import { action, observable, autorun } from "mobx";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import { api } from "axios-config";
@@ -11,8 +11,6 @@ class ChangeAvatarStore {
   @observable isFetching: boolean = false;
 
   constructor() {
-    makeObservable(this);
-
     autorun(() => (
       this.setAvatar(`${process.env.API_URL}/user/get-avatar?id=${user.id}&time=${new Date().toLocaleDateString('en-US', DATE_CONFIG)}`)
     ));
@@ -39,9 +37,11 @@ class ChangeAvatarStore {
     });
 
     if(!result.canceled) {
+      this.setIsFetching(true);
       await this.setAvatarFile(result.assets[0]);
       await this.changeAvatar();
-      this.setAvatar(result.assets[0].uri)
+      this.setAvatar(result.assets[0].uri);
+      this.setIsFetching(false);
     };
   }
 

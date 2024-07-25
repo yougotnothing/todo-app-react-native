@@ -20,7 +20,7 @@
       "fonts/*": ["assets/fonts/*"],
       "images/*": ["assets/images/*"],
       "@animated/*": ["src/animated/*"],
-      "@interfaces/*": ["src/interfaces/*.interface"]
+      "@interfaces/*": ["src/interfaces/*.interface"],
     }
   }
 }

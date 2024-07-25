@@ -5,7 +5,7 @@ import Icons from "@icons";
 import Home from "components/home/Home";
 import SignUp from "components/welcome-page/Sign-up";
 import Login from "components/authentication/login/Login";
-import TodayTasks from "components/today-tasks/Today-tasks";
+import TodayTasks from "components/tasks/Tasks";
 import CreateTask from "components/create-task/Create-task";
 import MiniProfile from "components/mini-profile/Mini-profile";
 import WelcomePage from "components/welcome-page/Welcome-page";
@@ -65,7 +65,7 @@ const DrawerStack = () => {
         name="Daily tasks" component={TodayTasks}
       />
       <Drawer.Screen options={{ drawerIcon: () => <SvgXml xml={Icons["important tasks"]} /> }}
-        name="Important tasks" component={Home}
+        name="Important tasks" component={TodayTasks}
       />
       <Drawer.Screen options={{ drawerIcon: () => <SvgXml xml={Icons["done tasks"]} /> }}
         name="Done tasks" component={Home}
@@ -79,9 +79,8 @@ export default function Router({ token }: Token) {
   const noHeaderTitle = (title: string) => ({ ...noHeader, headerTitle: title });
 
   useEffect(() => {
-    console.log('is logged in ', user.isLoggedIn)
+    console.log('is logged in ', user.isLoggedIn);
   }, [user.isLoggedIn]);
-  
 
   return (
     <Navigator screenOptions={{
@@ -115,6 +114,7 @@ export default function Router({ token }: Token) {
       <Screen name="Work out tasks" options={noHeaderTitle("Work out tasks")} component={TodayTasks} />
       <Screen name="Profile" options={noHeaderTitle("Profile")} component={Profile} />
       <Screen name="Change password" options={noHeaderTitle("Change password")} component={ChangePassword} />
+      <Screen name="Important tasks" options={noHeaderTitle("Important tasks")} component={TodayTasks} />
     </Navigator>
   )
 }

@@ -9,15 +9,15 @@ import {
   ReturnButton,
   TasksWrapper,
   Wrapper
-} from "./Today-tasks.styled";
+} from "./Tasks.styled";
 import Icons from "@icons";
 import Task from "src/templates/Task";
-import { useNavigation } from "@react-navigation/native";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
 import Text from "src/templates/Text";
 import { useEffect } from "react";
 import { tasksPages } from "@store/tasks-pages";
 import { observer } from "mobx-react";
-import { tasks, tasks as tasksStore } from "@store/tasks";
+import { tasks as tasksStore } from "@store/tasks";
 import { RouterProps } from "router/router.interface";
 import { Tasks, UserTasks } from "dto/todo";
 import NewTask from "@templates/New-task/New-task";
@@ -48,7 +48,7 @@ function TodayTasks() {
             color="white"
             fontFamily="Jost-Medium"
             size="large"
-            text={`${tasksPages.type} tasks`}
+            text={navigation.getState().routes[1].name}
           />
           <ReturnButton disabled />
         </Navbar>
