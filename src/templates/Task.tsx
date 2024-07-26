@@ -3,7 +3,7 @@ import { SvgXml } from "react-native-svg";
 import Text from "./Text";
 import { useEffect, useRef, useState } from "react";
 import Icons from "@icons";
-import { TouchableWithoutFeedback, View } from "react-native";
+import { View } from "react-native";
 
 interface TaskProps {
   header: string;
@@ -162,7 +162,7 @@ function Task({ header, content, isChecked, from, till, tasks }: TaskProps) {
       },
     }
   }
-  
+
   const handleSetChidrenChecked = (index: number) => {
     setIsChildrenChecked(prevState => {
       const newState = [...prevState];
@@ -202,17 +202,17 @@ function Task({ header, content, isChecked, from, till, tasks }: TaskProps) {
         <Settings onPress={() => setIsActionsOpen(true)}>
           <SvgXml xml={Icons["three dots"]} />
         </Settings>
-          <TodoActions $isOpen={isActionsOpen} forwardedAs={View} ref={todoActionsRef}>
-            <TodoAction activeOpacity={1} $isActive={isActive[0]} {...todoActionPress(0)}>
-              <Text color={isActive[0] ? 'white' : '#363636'} size="small" fontFamily="Jost-Regular" text="add subtasks" />
-            </TodoAction>
-            <TodoAction activeOpacity={1} $isActive={isActive[1]} {...todoActionPress(1)}>
-              <Text color={isActive[1] ? 'white' : '#363636'} size="small" fontFamily="Jost-Regular" text="edit tasks" />
-            </TodoAction>
-            <TodoAction activeOpacity={1} $isActive={isActive[2]} {...todoActionPress(2)}>
-              <Text color={isActive[2] ? 'white' : '#363636'} size="small" fontFamily="Jost-Regular" text="delete tasks" />
-            </TodoAction>
-          </TodoActions>
+        <TodoActions $isOpen={isActionsOpen} forwardedAs={View} ref={todoActionsRef}>
+          <TodoAction activeOpacity={1} $isActive={isActive[0]} {...todoActionPress(0)}>
+            <Text color={isActive[0] ? 'white' : '#363636'} size="small" fontFamily="Jost-Regular" text="add subtasks" />
+          </TodoAction>
+          <TodoAction activeOpacity={1} $isActive={isActive[1]} {...todoActionPress(1)}>
+            <Text color={isActive[1] ? 'white' : '#363636'} size="small" fontFamily="Jost-Regular" text="edit tasks" />
+          </TodoAction>
+          <TodoAction activeOpacity={1} $isActive={isActive[2]} {...todoActionPress(2)}>
+            <Text color={isActive[2] ? 'white' : '#363636'} size="small" fontFamily="Jost-Regular" text="delete tasks" />
+          </TodoAction>
+        </TodoActions>
       </Wrapper>
       {tasks && (
         <ChildTasksWrapper>

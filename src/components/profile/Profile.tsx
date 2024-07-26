@@ -82,6 +82,12 @@ function Profile() {
               <Text color="#363636" fontFamily="Jost-Regular" size="medium" text="email:" />
               <Text color="#646FD4" fontFamily="Jost-Regular" size="medium" text={user.email} />
             </TextRow>
+            {!user.isVerified && (
+              <TextRow>
+                <Text color="#363636" fontFamily="Jost-Regular" size="medium" text="your email is not verified:" />
+                <TransparentButton text="verify email" onPress={() => navigate('Verify email')} />
+              </TextRow>
+            )}
             {Object.entries(tasks.tasksLength).map(([key, value], index) => (
               <TextRow key={index}>
                 <Text color="#363636" fontFamily="Jost-Regular" size="medium" text={`${key} tasks:`} />
