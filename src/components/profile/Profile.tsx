@@ -79,10 +79,6 @@ function Profile() {
             }
           }>
             <TextRow>
-              <Text color="#363636" fontFamily="Jost-Regular" size="medium" text="id:" />
-              <Text color="#646FD4" fontFamily="Jost-Regular" size="medium" text={user.id.toString()} />
-            </TextRow>
-            <TextRow>
               <Text color="#363636" fontFamily="Jost-Regular" size="medium" text="email:" />
               <Text color="#646FD4" fontFamily="Jost-Regular" size="medium" text={user.email} />
             </TextRow>

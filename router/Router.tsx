@@ -15,6 +15,7 @@ import Profile from "components/profile/Profile";
 import { user } from "@store/user";
 import ChangePassword from "components/change-password/Change-password";
 import { useEffect } from "react";
+import ForgotPassword from "components/forgot-password/Forgot-password";
 
 interface Token {
   token: string | null;
@@ -96,25 +97,105 @@ export default function Router({ token }: Token) {
       }}}
       initialRouteName={token ? 'Root' : 'Welcome'}
     >
-      <Screen name="Root" component={DrawerStack} options={{ ...noHeader, gestureEnabled: false }} />
-      <Screen name="Notification" component={Notification} />
-      <Screen name="Register" component={Register} />
-      <Screen name="Welcome" component={WelcomePage} />
-      <Screen name="Sign Up" component={SignUp} />
-      <Screen name="Log in" component={Login} options={{ gestureEnabled: false, headerBackVisible: user.isLoggedIn }} />
-      <Screen name="Create task" options={noHeader} component={CreateTask} />
-      <Screen name="Daily tasks" options={noHeader} component={TodayTasks} />
-      <Screen name="Today tasks" options={noHeader} component={TodayTasks} />
-      <Screen name="Week tasks" options={noHeaderTitle("Week tasks")} component={TodayTasks} /> 
-      <Screen name="Month tasks" options={noHeaderTitle("Month tasks")} component={TodayTasks} />
-      <Screen name="School tasks" options={noHeaderTitle("School tasks")} component={TodayTasks} />
-      <Screen name="Work tasks" options={noHeaderTitle("Work tasks")} component={TodayTasks} />
-      <Screen name="Shop tasks" options={noHeaderTitle("Shop tasks")} component={TodayTasks} />
-      <Screen name="Read tasks" options={noHeaderTitle("Read tasks")} component={TodayTasks} />
-      <Screen name="Work out tasks" options={noHeaderTitle("Work out tasks")} component={TodayTasks} />
-      <Screen name="Profile" options={noHeaderTitle("Profile")} component={Profile} />
-      <Screen name="Change password" options={noHeaderTitle("Change password")} component={ChangePassword} />
-      <Screen name="Important tasks" options={noHeaderTitle("Important tasks")} component={TodayTasks} />
+      <Screen
+        name="Root"
+        component={DrawerStack}
+        options={{ ...noHeader, gestureEnabled: false }}
+      />
+      <Screen
+        name="Notification"
+        component={Notification}
+      />
+      <Screen
+        name="Register"
+        component={Register}
+      />
+      <Screen
+        name="Welcome"
+        component={WelcomePage}
+      />
+      <Screen
+        name="Sign Up"
+        component={SignUp}
+      />
+      <Screen
+        name="Log in"
+        component={Login}
+        options={{
+          gestureEnabled: false,
+          headerBackVisible: user.isLoggedIn
+        }}
+      />
+      <Screen
+        name="Create task"
+        options={noHeader}
+        component={CreateTask}
+      />
+      <Screen
+        name="Daily tasks"
+        options={noHeader}
+        component={TodayTasks}
+      />
+      <Screen
+        name="Today tasks"
+        options={noHeader}
+        component={TodayTasks}
+      />
+      <Screen
+        name="Week tasks"
+        options={noHeaderTitle("Week tasks")}
+        component={TodayTasks}
+      /> 
+      <Screen
+        name="Month tasks"
+        options={noHeaderTitle("Month tasks")}
+        component={TodayTasks}
+      />
+      <Screen
+        name="School tasks"
+        options={noHeaderTitle("School tasks")}
+        component={TodayTasks}
+      />
+      <Screen
+        name="Work tasks"
+        options={noHeaderTitle("Work tasks")}
+        component={TodayTasks}
+      />
+      <Screen
+        name="Shop tasks"
+        options={noHeaderTitle("Shop tasks")}
+        component={TodayTasks}
+      />
+      <Screen
+        name="Read tasks"
+        options={noHeaderTitle("Read tasks")}
+        component={TodayTasks}
+      />
+      <Screen
+        name="Work out tasks"
+        options={noHeaderTitle("Work out tasks")}
+        component={TodayTasks}
+      />
+      <Screen
+        name="Profile"
+        options={noHeaderTitle("Profile")}
+        component={Profile}
+      />
+      <Screen
+        name="Change password"
+        options={noHeaderTitle("Change password")}
+        component={ChangePassword}
+      />
+      <Screen
+        name="Important tasks"
+        options={noHeaderTitle("Important tasks")}
+        component={TodayTasks}
+      />
+      <Screen
+        name="Forgot password"
+        options={noHeaderTitle("Forgot password")}
+        component={ForgotPassword}
+      />
     </Navigator>
   )
 }

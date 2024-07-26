@@ -3,18 +3,23 @@ import { api } from "axios-config";
 import { ChangePasswordDto } from "dto/change-password";
 import { LoginDto } from "dto/login";
 import { UserDto } from "dto/user";
-import { action, observable, runInAction } from "mobx";
+import { action, makeObservable, observable, runInAction } from "mobx";
 import { DATE_CONFIG } from "@config/date";
+import { UUID } from "@interfaces/uuid";
 
 class UserStore implements UserDto {
   @observable name: string = "";
   @observable email: string = "";
   @observable avatar: string = "";
   @observable isHaveAvatar: boolean = false;
-  @observable id: number = 0;
+  @observable id: UUID | null = null;
   @observable isLoggedIn: boolean = false;
   @observable sessionID: string | null = null;
   @observable isVerified: boolean = false;
+
+  constructor() {
+    makeObservable(this);
+  }
 
   @action
   setUser(user: UserDto) {
@@ -144,7 +149,7 @@ class UserStore implements UserDto {
       this.email = "";
       this.avatar = "";
       this.isHaveAvatar = false;
-      this.id = 0;
+      this.id = null;
       if(clearToken === "clear") {
         this.isLoggedIn = false;
       }
@@ -153,7 +158,7 @@ class UserStore implements UserDto {
 
   async sendEmailVerification() {
     try {
-      const response = await api.post('/mail/send-verify-email-message')
+      await api.post('/mail/send-verify-email-message');
     }catch(error: any) {
       console.error(error.response.data.message);
       return;

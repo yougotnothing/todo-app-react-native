@@ -49,9 +49,10 @@ export const UserInfo = styled.View`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: space-between;
   gap: 12px;
   border-radius: 16px;
-  padding: 14px;
+  padding: 20px;
   background-color: white;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
   width: 100%;

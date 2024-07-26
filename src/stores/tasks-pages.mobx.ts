@@ -1,6 +1,6 @@
 import { api } from "axios-config";
 import { TaskType, TodoDto } from "dto/todo";
-import { action, observable } from "mobx";
+import { action, makeObservable, observable } from "mobx";
 import { tasks } from "./tasks.mobx"; 
 
 type Pages = DailyPages | TaskType;
@@ -13,6 +13,10 @@ type DailyPages =
 class TasksPagesStore {
   @observable type: Pages = "Daily";
   @observable tasks: TodoDto[] = [];
+
+  constructor() {
+    makeObservable(this);
+  }
 
   @action
   async getTasksByType(type: Pages) {

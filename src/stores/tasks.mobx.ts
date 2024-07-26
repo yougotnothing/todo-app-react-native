@@ -1,10 +1,10 @@
 import { api } from "axios-config";
-import { TaskEntity, TaskType, UserTasks, Tasks } from "dto/todo";
-import { action, observable } from "mobx";
+import { TaskEntity, TaskType, UserTasks, Tasks, TodoDto } from "dto/todo";
+import { action, makeObservable, observable } from "mobx";
 import { DATE_CONFIG } from "src/config/date.config";
 
 class TasksStore {
-  @observable tasks: Tasks = {
+  @observable tasks: Tasks= {
     "today": [],
     "week": [],
     "month": [],
@@ -26,12 +26,31 @@ class TasksStore {
     "important": 0,
   }
 
+  constructor() {
+    makeObservable(this);
+  }
+
+  @action
+  setTasks(type: keyof Tasks, tasks: TodoDto[]) {
+    this.tasks[type] = tasks;
+  }
+
+  @action
+  setUserTasks(type: keyof UserTasks, tasks: TodoDto[]) {
+    this.userTasks[type] = tasks;
+  }
+
+  @action
+  setTasksLength(tasksLength: Record<TaskType, number>) {
+    this.tasksLength = tasksLength;
+  }
+
   @action
   async getTasksLength() {
     try {
       const response = await api.get('/tasks/tasks-length');
 
-      this.tasksLength = response.data.tasks;
+      this.setTasksLength(response.data.tasks);
     }catch(error: any) {
       console.error(error.response.data);
       return;
@@ -43,7 +62,7 @@ class TasksStore {
     try {
       const response = await api.get('/tasks/important-tasks');
 
-      this.userTasks["important"] = response.data.tasks;
+      this.setUserTasks("important", response.data.tasks);
     }catch(error: any) {
       console.error(error.response.data);
       return;
@@ -59,7 +78,7 @@ class TasksStore {
         }
       });
       
-      this.userTasks[type] = response.data.tasks;
+      this.setUserTasks(type, response.data.tasks);
     }catch(error: any) {
       console.error(error.response.data);
       return;
@@ -128,7 +147,7 @@ class TasksStore {
             }
           });
 
-          this.tasks["week"] = week.data.tasks;
+          this.setTasks("week", week.data.tasks);
           break;
         case "month":
           const month = await api.get('/tasks/month-tasks', {
@@ -140,7 +159,7 @@ class TasksStore {
             }
           });
 
-          this.tasks["month"] = month.data.tasks;
+          this.setTasks("month", month.data.tasks);
           break;
       }
     }catch(error: unknown) {
@@ -158,7 +177,7 @@ class TasksStore {
         }
       });
 
-      this.tasks["today"] = response.data.tasks;
+      this.setTasks("today", response.data.tasks);
     }catch(error: unknown) {
       console.error(error);
       return;

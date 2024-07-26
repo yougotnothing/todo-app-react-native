@@ -12,7 +12,7 @@ import {
 } from "./Tasks.styled";
 import Icons from "@icons";
 import Task from "src/templates/Task";
-import { DrawerActions, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import Text from "src/templates/Text";
 import { useEffect } from "react";
 import { tasksPages } from "@store/tasks-pages";

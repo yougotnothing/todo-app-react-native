@@ -1,11 +1,15 @@
 import { ChangePasswordDto } from "dto/change-password";
-import { action, observable } from "mobx";
+import { action, makeObservable, observable } from "mobx";
 
 class ChangePasswordStore {
   @observable oldPassword: string = '';
   @observable newPassword: string = '';
   @observable confirmNewPassword: string = '';
   @observable isFetching: boolean = false;
+
+  constructor() {
+    makeObservable(this);
+  }
 
   @action
   setFieldValue(field: 'oldPassword' | 'newPassword' | 'confirmNewPassword', value: string) {
