@@ -88,7 +88,7 @@ class UserStore implements UserDto {
   }
 
   @action
-  async updateAvatar() {
+  updateAvatar() {
     const date = new Date().toLocaleDateString('en-US', DATE_CONFIG);
     this.avatar = `${process.env.API_URL}/user/get-avatar?id=${this.id}&time=${date}`;
   }

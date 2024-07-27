@@ -23,7 +23,7 @@ function MiniProfile() {
     { label: "Edit profile", icon: Icons["edit profile"], navigateTo: "Profile" },
     { label: "Daily tasks", icon: Icons["daily tasks"], navigateTo: "Daily tasks" },
     { label: "Important tasks", icon: Icons["important tasks"], navigateTo: "Important tasks" },
-    { label: "Done tasks", icon: Icons["done tasks"], navigateTo: "Home" }
+    { label: "Done tasks", icon: Icons["done tasks"], navigateTo: "Done tasks" }
   ];
 
   const handleLogout = async () => {

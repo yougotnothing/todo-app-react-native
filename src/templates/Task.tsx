@@ -4,6 +4,7 @@ import Text from "./Text";
 import { useEffect, useRef, useState } from "react";
 import Icons from "@icons";
 import { View } from "react-native";
+import { observer } from "mobx-react";
 
 interface TaskProps {
   header: string;
@@ -12,6 +13,7 @@ interface TaskProps {
   from?: string;
   till?: string;
   tasks?: Array<{ isChecked: boolean, content: string }>;
+  onPressCheckbox(): Promise<void>;
 }
 
 interface TodoActionProps {
@@ -133,7 +135,7 @@ const TodoAction = styled.TouchableOpacity<TodoActionProps>`
   color: ${({ $isActive }) => $isActive ? 'white' : '#363636'};
 `;
 
-function Task({ header, content, isChecked, from, till, tasks }: TaskProps) {
+function Task({ header, content, isChecked, from, till, tasks, onPressCheckbox }: TaskProps) {
   const [isTaskChecked, setIsTaskChecked] = useState<boolean>(isChecked);
   const [isChildrenChecked, setIsChildrenChecked] = useState<boolean[]>(Array(tasks?.length).fill(false));
   const [isActionsOpen, setIsActionsOpen] = useState<boolean>(false);
@@ -189,7 +191,10 @@ function Task({ header, content, isChecked, from, till, tasks }: TaskProps) {
             <Text color="#888888" fontFamily="Jost-Regular" size="small" text={from} />
             <Text color="#888888" fontFamily="Jost-Regular" size="small" text={till} />
           </TimeWrapper>
-          <Checkbox onPress={() => setIsTaskChecked(!isTaskChecked)}>
+          <Checkbox onPress={() => {
+            setIsTaskChecked(!isTaskChecked);
+            onPressCheckbox();
+          }}>
             {isTaskChecked && (
               <SvgXml xml={Icons["checkbox"]} />
             )}
@@ -230,4 +235,4 @@ function Task({ header, content, isChecked, from, till, tasks }: TaskProps) {
   );
 }
 
-export default Task;
+export default observer(Task);

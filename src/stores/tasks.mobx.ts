@@ -8,6 +8,7 @@ class TasksStore {
     "today": [],
     "week": [],
     "month": [],
+    "done": []
   }
   @observable userTasks: UserTasks = {
     "school": [],
@@ -15,7 +16,7 @@ class TasksStore {
     "shop": [],
     "read": [],
     "work out": [],
-    "important": [],
+    "important": []
   }
   @observable tasksLength: Record<TaskType, number> = {
     "school": 0,
@@ -23,7 +24,7 @@ class TasksStore {
     "shop": 0,
     "read": 0,
     "work out": 0,
-    "important": 0,
+    "important": 0
   }
 
   constructor() {
@@ -132,7 +133,7 @@ class TasksStore {
   }
 
   @action
-  async getTasks(type: "today" | "week" | "month") {
+  async getTasks(type: keyof Tasks) {
     const date = new Date().toLocaleDateString('en-US', DATE_CONFIG);
 
     try {
@@ -161,6 +162,11 @@ class TasksStore {
 
           this.setTasks("month", month.data.tasks);
           break;
+        case "done":
+          const done = await api.get('/tasks/done-tasks');
+
+          this.setTasks("done", done.data.tasks);
+          break;
       }
     }catch(error: unknown) {
       console.error(error);
@@ -180,6 +186,46 @@ class TasksStore {
       this.setTasks("today", response.data.tasks);
     }catch(error: unknown) {
       console.error(error);
+      return;
+    }
+  }
+
+  @action
+  async changeTaskIsChecked(
+    task: TodoDto,
+    isChecked: boolean,
+    page: keyof Tasks | keyof UserTasks
+  ) {
+    try {
+      await api.patch('/tasks/check', {
+        params: {
+          id: task.id,
+        },
+        isChecked
+      });
+
+      switch(page) {
+        case "today":
+        case "week": 
+        case "month":
+        case "done":
+          this.tasks[page].map(
+            item => item.id === task.id ? item.isChecked = isChecked : item
+          );
+          break;
+        case 'school':
+        case 'work':
+        case 'shop':
+        case 'read':
+        case 'work out':
+        case 'important':
+          this.userTasks[page].map(
+            item => item.id === task.id ? item.isChecked = isChecked : item
+          );
+          break;
+      }
+    }catch(error: any) {
+      console.error(error.response.data.message);
       return;
     }
   }

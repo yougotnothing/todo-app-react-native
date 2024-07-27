@@ -30,4 +30,4 @@ export type TaskType =
   | 'important';
 
 export type UserTasks = Record<TaskType, Array<TodoDto & { type: TaskType }>>;
-export type Tasks = Record<"today" | "week" | "month", TodoDto[]>;
+export type Tasks = Record<"today" | "week" | "month" | "done", TodoDto[]>;

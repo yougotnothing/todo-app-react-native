@@ -21,7 +21,7 @@ function Profile() {
   const [userName, setUserName] = useState<string>(user.name);
   const [isDroplistOpen, setIsDroplistOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const { navigate, goBack, dispatch } = useNavigation<RouterProps>();
+  const navigation = useNavigation<RouterProps>();
 
   useEffect(() => {
     user.getUser();
@@ -32,7 +32,7 @@ function Profile() {
 
   useEffect(() => {
     if(!user.isLoggedIn) {
-      navigate('Log in', { goBack: false });
+      navigation.navigate('Log in', { goBack: false });
     }
   }, [user.isLoggedIn]);
 
@@ -49,7 +49,7 @@ function Profile() {
       <Navbar
         header="Profile"
         buttons={[
-          <BackButton color="white" onPress={goBack} disabled={changeAvatar.isFetching || isLoading} />,
+          <BackButton color="white" onPress={() => navigation.goBack()} disabled={changeAvatar.isFetching || isLoading} />,
           <DrawerMenuButton onPress={handleDrawerMenuClick} disabled={changeAvatar.isFetching || isLoading} />
         ]}
       />
@@ -59,9 +59,9 @@ function Profile() {
             {isDroplistOpen && (
               <>
                 <TransparentButton text="Change avatar" onPress={handlePickAvatar} />
-                <TransparentButton text="Change name" onPress={() => navigate('Change name')} />
+                <TransparentButton text="Change name" onPress={() => navigation.navigate('Change name')} />
                 <TransparentButton text="Change email" onPress={() => console.log('change email')} />
-                <TransparentButton text="Change password" onPress={() => navigate('Change password')} />
+                <TransparentButton text="Change password" onPress={() => navigation.navigate('Change password')} />
                 <TransparentButton text="Log out" onPress={() => user.logout('clear')} />
               </>
             )}
@@ -85,7 +85,7 @@ function Profile() {
             {!user.isVerified && (
               <TextRow>
                 <Text color="#363636" fontFamily="Jost-Regular" size="medium" text="your email is not verified:" />
-                <TransparentButton text="verify email" onPress={() => navigate('Verify email')} />
+                <TransparentButton text="verify email" onPress={() => navigation.navigate('Verify email')} />
               </TextRow>
             )}
             {Object.entries(tasks.tasksLength).map(([key, value], index) => (

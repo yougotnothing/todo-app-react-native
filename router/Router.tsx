@@ -16,6 +16,7 @@ import { user } from "@store/user";
 import ChangePassword from "components/change-password/Change-password";
 import { useEffect } from "react";
 import ForgotPassword from "components/forgot-password/Forgot-password";
+import VerifyEmail from "components/verify-email/Verify-email";
 
 interface Token {
   token: string | null;
@@ -69,7 +70,7 @@ const DrawerStack = () => {
         name="Important tasks" component={TodayTasks}
       />
       <Drawer.Screen options={{ drawerIcon: () => <SvgXml xml={Icons["done tasks"]} /> }}
-        name="Done tasks" component={Home}
+        name="Done tasks" component={TodayTasks}
       />
     </Drawer.Navigator>
   );
@@ -192,9 +193,19 @@ export default function Router({ token }: Token) {
         component={TodayTasks}
       />
       <Screen
+        name="Done tasks"
+        options={noHeaderTitle("Done tasks")}
+        component={TodayTasks}
+      />
+      <Screen
         name="Forgot password"
         options={noHeaderTitle("Forgot password")}
         component={ForgotPassword}
+      />
+      <Screen
+        name="Verify email"
+        options={noHeaderTitle("Verify email")}
+        component={VerifyEmail}
       />
     </Navigator>
   )

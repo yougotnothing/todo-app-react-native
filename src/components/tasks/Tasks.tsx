@@ -53,9 +53,20 @@ function TodayTasks() {
           <ReturnButton disabled />
         </Navbar>
         <TasksWrapper>
-          {tasksPages.tasks && tasksPages.type !== "Today" && tasksPages.type !== "Week" && tasksPages.type !== "Month" ? (
+          {tasksPages.tasks
+          && tasksPages.type
+          !== "Today"
+          && tasksPages.type
+          !== "Week"
+          && tasksPages.type
+          !== "Month"
+          ? (
+            Array.isArray(
+              tasksStore.userTasks[tasksPages.type.toLowerCase() as keyof UserTasks]
+            ) && tasksStore.userTasks[tasksPages.type.toLowerCase() as keyof UserTasks].length ?
             tasksStore.userTasks[tasksPages.type.toLowerCase() as keyof UserTasks].map((task, index) => (
               <Task
+                onPressCheckbox={() => tasksStore.changeTaskIsChecked(task, !task.isChecked, tasksPages.type as keyof UserTasks)}
                 key={index}
                 header={task.header}
                 content={task.content}
@@ -64,10 +75,27 @@ function TodayTasks() {
                 till={task.till}
                 tasks={task.tasks}
               />
-            ))
+            )) : (
+              <Text
+                color="#363636"
+                fontFamily="Jost-Medium"
+                size="large"
+                text={`you have no ${tasksPages.type} tasks`}
+              />
+            )
           ) : (
+            Array.isArray(
+              tasksStore.tasks[tasksPages.type.toLowerCase() as keyof Tasks]
+            ) && tasksStore.tasks[tasksPages.type.toLowerCase() as keyof Tasks].length ?
             tasksStore.tasks[tasksPages.type.toLowerCase() as keyof Tasks].map((task, index) => (
               <Task
+                onPressCheckbox={
+                  () => tasksStore.changeTaskIsChecked(
+                                    task,
+                                    !task.isChecked,
+                                    tasksPages.type as keyof Tasks
+                                  )
+                }
                 key={index}
                 header={task.header}
                 content={task.content}
@@ -76,7 +104,14 @@ function TodayTasks() {
                 till={task.till}
                 tasks={task.tasks}
               />
-            ))
+            )) : (
+              <Text
+                color="#363636"
+                fontFamily="Jost-Medium"
+                size="large"
+                text={`you have no ${tasksPages.type} tasks`}
+              />
+            )
           )}
         </TasksWrapper>
         <Footer>

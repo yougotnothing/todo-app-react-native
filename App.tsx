@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react';
 import Text from 'src/templates/Text';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export default function App() {
   const [user_token, setUser_token] = useState<string | null>(null);
@@ -27,12 +28,14 @@ export default function App() {
   }, []);
 
   return (
-    <NavigationContainer>
-      {
-        isFetching ? 
-        <Text color="#363636" fontFamily="Jost-Medium" size="large" weight="700" text="Loading..." /> :
-        <Router token={user_token} />
-      }
-    </NavigationContainer>
+    <GestureHandlerRootView>
+      <NavigationContainer>
+        {
+          isFetching ? 
+          <Text color="#363636" fontFamily="Jost-Medium" size="large" weight="700" text="Loading..." /> :
+          <Router token={user_token} />
+        }
+      </NavigationContainer>
+    </GestureHandlerRootView>
   );
 }
