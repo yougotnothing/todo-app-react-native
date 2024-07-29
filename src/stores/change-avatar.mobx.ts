@@ -1,4 +1,4 @@
-import { action, observable, autorun, makeObservable } from "mobx";
+import { action, observable, autorun, makeObservable, computed } from "mobx";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import { api } from "axios-config";
@@ -16,6 +16,11 @@ class ChangeAvatarStore {
     autorun(() => (
       this.setAvatar(`${process.env.API_URL}/user/get-avatar?id=${user.id}&time=${new Date().toLocaleDateString('en-US', DATE_CONFIG)}`)
     ));
+  }
+
+  @computed
+  get avatarUrl() {
+    return `${process.env.API_URL}/user/get-avatar?id=${user.id}&time=${new Date().toLocaleDateString('en-US', DATE_CONFIG)}`;
   }
 
   @action

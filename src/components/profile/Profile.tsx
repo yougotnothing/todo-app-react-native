@@ -28,6 +28,8 @@ function Profile() {
     changeAvatar.setAvatar(user.avatar);
     tasks.getTasksLength();
     setIsLoading(false);
+
+    console.log("user: ", user);
   }, []);
 
   useEffect(() => {

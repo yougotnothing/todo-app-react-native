@@ -16,9 +16,15 @@ class UserStore implements UserDto {
   @observable isLoggedIn: boolean = false;
   @observable sessionID: string | null = null;
   @observable isVerified: boolean = false;
+  @observable verificationMessage: string = "";
 
   constructor() {
     makeObservable(this);
+  }
+
+  @action
+  setVerificationMessage(message: string) {
+    this.verificationMessage = message;
   }
 
   @action
@@ -46,7 +52,7 @@ class UserStore implements UserDto {
       });
 
       if(response.status !== 200) return { isLoggedSuccess: false };
-      runInAction(() => (this.sessionID = response.data.session as string));
+      this.sessionID = response.data.session as string;
       await AsyncStorage.setItem('token', response.data.session as string);
 
       await this.getUser();
@@ -64,6 +70,7 @@ class UserStore implements UserDto {
     try {
       const response = await api.get('/user/get-user');
 
+      console.log("response:", response.data);
       this.setUser(response.data.user);
     }catch(error: any) {
       console.error(error);
@@ -158,8 +165,13 @@ class UserStore implements UserDto {
 
   async sendEmailVerification() {
     try {
-      await api.post('/mail/send-verify-email-message');
+      this.setVerificationMessage("");
+      const response = await api.post('/mail/send-verify-email-message');
+
+      this.setVerificationMessage(response.data.message);
     }catch(error: any) {
+      this.setVerificationMessage(error.response.data.message);
+
       console.error(error.response.data.message);
       return;
     }
