@@ -62,7 +62,7 @@ function Profile() {
               <>
                 <TransparentButton text="Change avatar" onPress={handlePickAvatar} />
                 <TransparentButton text="Change name" onPress={() => navigation.navigate('Change name')} />
-                <TransparentButton text="Change email" onPress={() => console.log('change email')} />
+                <TransparentButton text="Change email" onPress={() => navigation.navigate('Change email')} />
                 <TransparentButton text="Change password" onPress={() => navigation.navigate('Change password')} />
                 <TransparentButton text="Log out" onPress={() => user.logout('clear')} />
               </>

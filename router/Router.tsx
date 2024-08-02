@@ -17,6 +17,7 @@ import ChangePassword from "components/change-password/Change-password";
 import { useEffect } from "react";
 import ForgotPassword from "components/forgot-password/Forgot-password";
 import VerifyEmail from "components/verify-email/Verify-email";
+import ChangeEmail from "components/change-email/Change-email";
 
 interface Token {
   token: string | null;
@@ -206,6 +207,11 @@ export default function Router({ token }: Token) {
         name="Verify email"
         options={noHeaderTitle("Verify email")}
         component={VerifyEmail}
+      />
+      <Screen
+        name="Change email"
+        options={noHeaderTitle("Change email")}
+        component={ChangeEmail}
       />
     </Navigator>
   )

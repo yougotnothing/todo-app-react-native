@@ -1,6 +1,8 @@
 import { SvgXml } from "react-native-svg";
 import styled from "styled-components/native";
 import Icons from "@icons";
+import { Suspense } from "react";
+import Loader from "./Loader";
 
 interface CircleProps {
   $left?: number | 'initial';
@@ -40,7 +42,9 @@ function Wrapper({ children }: { children: React.ReactNode }) {
       <Circle $right={0} $top={0}>
         <SvgXml xml={Icons["bottom circle"]} />
       </Circle>
-      {children}
+      <Suspense fallback={<Loader />}>
+        {children}
+      </Suspense>
     </Container>
   )
 }
