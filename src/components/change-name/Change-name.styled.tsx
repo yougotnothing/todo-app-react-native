@@ -10,4 +10,3 @@ export const InputWrapper = styled.View`
   background-color: #fff;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.3);
 `;
-

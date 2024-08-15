@@ -1,6 +1,6 @@
 import Wrapper from "@templates/Wrapper";
 import { observer } from "mobx-react";
-import { BackButton as InvisibleButton, ConfirmButton, InputWrapper } from "./Change-password.styled";
+import { BackButton as InvisibleButton, InputWrapper } from "./Change-password.styled";
 import Navbar from "@templates/Navbar";
 import Input from "@templates/Input";
 import { changePassword } from "@store/change-password";
@@ -10,6 +10,7 @@ import Text from "@templates/Text";
 import { user } from "@store/user";
 import TransparentButton from "@templates/Transparent-button";
 import BackButton from "@templates/Back-button";
+import ConfirmButton from "@templates/Confirm-button";
 
 function ChangePassword() {
   const navigation = useNavigation<RouterProps>();
@@ -48,9 +49,7 @@ function ChangePassword() {
           placeholder="Enter new password"
           textContentType="password"
         />
-        <ConfirmButton onPress={handleChangePassword}>
-          <Text color="white" fontFamily="Jost-Medium" size="large" text="Confirm" />
-        </ConfirmButton>
+        <ConfirmButton text="Confirm" onPress={handleChangePassword} isFetching={changePassword.isFetching} />
         <TransparentButton text="forgot password?" onPress={() => navigation.navigate('Forgot password')} />
       </InputWrapper>
     </Wrapper>

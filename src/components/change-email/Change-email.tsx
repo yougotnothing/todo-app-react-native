@@ -4,11 +4,12 @@ import Navbar from "@templates/Navbar";
 import Wrapper from "@templates/Wrapper";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { RouterProps } from "router/router.interface";
-import { ConfirmButton, InputWrapper } from "./Change-email.styled";
+import { ConfirmButton } from "./Change-email.styled";
 import Input from "@templates/Input";
 import { observer } from "mobx-react";
 import { changeEmail } from "@store/change-email";
 import Text from "@templates/Text";
+import InputWrapper from "@templates/Input-wrapper";
 
 function ChangeEmail() {
   const navigation = useNavigation<RouterProps>();
