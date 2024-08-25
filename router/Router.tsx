@@ -6,7 +6,6 @@ import Home from "components/home/Home";
 import SignUp from "components/welcome-page/Sign-up";
 import Login from "components/authentication/login/Login";
 import TodayTasks from "components/tasks/Tasks";
-import CreateTask from "components/create-task/Create-task";
 import MiniProfile from "components/mini-profile/Mini-profile";
 import WelcomePage from "components/welcome-page/Welcome-page";
 import Register from "components/authentication/register/Register";
@@ -16,8 +15,8 @@ import { user } from "@store/user";
 import ChangePassword from "components/change-password/Change-password";
 import { useEffect } from "react";
 import ForgotPassword from "components/forgot-password/Forgot-password";
-import VerifyEmail from "components/verify-email/Verify-email";
 import ChangeEmail from "components/change-email/Change-email";
+import ChangeName from "components/change-name/Change-name";
 
 interface Token {
   token: string | null;
@@ -129,11 +128,6 @@ export default function Router({ token }: Token) {
         }}
       />
       <Screen
-        name="Create task"
-        options={noHeader}
-        component={CreateTask}
-      />
-      <Screen
         name="Daily tasks"
         options={noHeader}
         component={TodayTasks}
@@ -204,14 +198,14 @@ export default function Router({ token }: Token) {
         component={ForgotPassword}
       />
       <Screen
-        name="Verify email"
-        options={noHeaderTitle("Verify email")}
-        component={VerifyEmail}
-      />
-      <Screen
         name="Change email"
         options={noHeaderTitle("Change email")}
         component={ChangeEmail}
+      />
+      <Screen
+        name="Change name"
+        options={noHeaderTitle("Change name")}
+        component={ChangeName}
       />
     </Navigator>
   )

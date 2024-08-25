@@ -17,7 +17,7 @@ export const T = styled.Text<TextProps>`
   font-weight: ${({ weight }) => weight ? weight : '500'};
 `;
 
-function Text({ size, weight, text, fontFamily, color }: TextProps) {
+function Text({ size, weight, text, fontFamily, color, ...props }: TextProps) {
   const [loaded, error] = useFonts({
     "Jost-Bold": require('fonts/Jost-Bold.ttf'),
     "Jost-Black": require('fonts/Jost-Black.ttf'),
@@ -42,7 +42,7 @@ function Text({ size, weight, text, fontFamily, color }: TextProps) {
       {loaded && (
         <T
           color={color}
-          style={{ fontFamily: fontFamily ? fontFamily : 'Jost-Regular' }}
+          style={[props.style, { fontFamily: fontFamily ? fontFamily : 'Jost-Regular' }]}
           size={size}
           weight={weight}
         >{text}</T>

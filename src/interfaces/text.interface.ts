@@ -1,3 +1,5 @@
+import { TextProps as _ } from "react-native";
+
 export interface Props {
   size?: 'small' | 'medium' | 'large';
   weight?:
@@ -20,7 +22,7 @@ export interface Props {
     | "Jost-Thin";
 }
 
-export interface TextProps extends Props {
+export interface TextProps extends Props, _ {
   text?: string | null;
   isButton?: boolean;
   header?: boolean;

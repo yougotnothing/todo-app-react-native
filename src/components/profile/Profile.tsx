@@ -2,11 +2,11 @@ import { observer } from "mobx-react";
 import Text from "@templates/Text";
 import Wrapper from "@templates/Wrapper";
 import { changeAvatar } from "@store/change-avatar";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import UserAvatar from "@templates/User-avatar";
 import { user } from "@store/user";
 import { TextRow, UserInfo, UserNameInput } from "./Profile.styled";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { RouterProps } from "router/router.interface";
 import BackButton from "@templates/Back-button";
 import DrawerMenuButton from "@templates/Drawer-menu-button";
@@ -16,12 +16,24 @@ import Loader from "@templates/Loader";
 import { tasks } from "@store/tasks";
 import { Platform } from "react-native";
 import Navbar from "@templates/Navbar";
+import { changeName } from "@store/change-name";
+import { messageModal } from "@store/message-modal";
 
 function Profile() {
   const [userName, setUserName] = useState<string>(user.name);
   const [isDroplistOpen, setIsDroplistOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const navigation = useNavigation<RouterProps>();
+
+  useFocusEffect(
+    useCallback(() => {
+      user.getUser();
+    }, [{
+      ...user,
+      ...changeName,
+      ...changeAvatar
+    }])
+  );
 
   useEffect(() => {
     user.getUser();
@@ -40,11 +52,31 @@ function Profile() {
 
   const handlePickAvatar = async () => {
     await changeAvatar.pickAvatar()
-                      .then(() => (user.updateAvatar()));               
+                      .then(req => {
+                        user.updateAvatar();
+                        messageModal.setIsOpen(true);
+                        messageModal.setMessage(req);
+                      });               
     setIsDroplistOpen(false);
   }
 
   const handleDrawerMenuClick = () => (setIsDroplistOpen(!isDroplistOpen));
+
+  const handleVerifyEmail = async () => {
+    await user.sendEmailVerification()
+              .then(req => {
+                messageModal.setIsOpen(true);
+                messageModal.setMessage(req.message);
+              });
+  }
+
+  const handleChangeName = async (newName: string) => {
+    await user.changeName(newName)
+              .then(req => {
+                messageModal.setIsOpen(true);
+                messageModal.setMessage(req.message);
+              });
+  }
 
   return (
     <Wrapper>
@@ -71,7 +103,7 @@ function Profile() {
           <UserAvatar user={user} size={150} onPress={handlePickAvatar} />
           <UserNameInput
             value={userName}
-            onSubmitEditing={(name) => user.changeName(name.nativeEvent.text)}
+            onSubmitEditing={(name) => handleChangeName(name.nativeEvent.text)}
             onChangeText={(name) => setUserName(name)}
           />
           <UserInfo style={
@@ -87,7 +119,7 @@ function Profile() {
             {!user.isVerified && (
               <TextRow>
                 <Text color="#363636" fontFamily="Jost-Regular" size="medium" text="your email is not verified:" />
-                <TransparentButton text="verify email" onPress={() => navigation.navigate('Verify email')} />
+                <TransparentButton text="verify email" onPress={handleVerifyEmail} />
               </TextRow>
             )}
             {Object.entries(tasks.tasksLength).map(([key, value], index) => (

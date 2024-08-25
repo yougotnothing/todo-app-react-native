@@ -9,7 +9,7 @@ interface ConfirmButtonProps extends TouchableOpacityProps {
 
 const Button = styled.TouchableOpacity<{ $isFetching?: boolean }>`
 	margin-top: 40px;
-  background-color: ${({ $isFetching }) => $isFetching ? '#646FD4' : '#878cb9'};
+  background-color: ${({ $isFetching }) => $isFetching ? '#878cb9' : '#646FD4'};
   border-radius: 16px;
   padding: 10px 20px;
   width: 100%;

@@ -9,9 +9,27 @@ import Text from "@templates/Text";
 import Input from "@templates/Input";
 import { changeName } from "@store/change-name";
 import InputWrapper from "@templates/Input-wrapper";
+import ConfirmButton from "@templates/Confirm-button";
+import { user } from "@store/user";
+import { useEffect } from "react";
+import MessageModal from "@animated/Message-modal";
+import { messageModal } from "@store/message-modal";
 
 function ChangeName() {
 	const navigation = useNavigation<RouterProps>();
+
+	const handleSetNewName = () => {
+		user.changeName(changeName.newName);
+
+		navigation.navigate('Profile');
+
+		messageModal.setIsOpen(true);
+		messageModal.setMessage("Name changed successfully!");
+	}
+
+	useEffect(() => {
+		changeName.setNewName(user.name);
+	}, [user.name]);
 
   return (
 		<Wrapper>
@@ -25,12 +43,17 @@ function ChangeName() {
 			<InputWrapper>
 				<Text color="#363636" fontFamily="Jost-Medium" size="medium" text="Enter your new name" />
 				<Input
+					isError={changeName.newName === user.name || !changeName.newName.length}
 					textContentType="name"
 					placeholder="Enter your new name"
 					value={changeName.newName}
 					onChange={(value) => changeName.setNewName(value)}
 				/>
-
+				<ConfirmButton
+					text="Confirm"
+					disabled
+					onPress={handleSetNewName}
+				/>
 			</InputWrapper>
 		</Wrapper>
 	);

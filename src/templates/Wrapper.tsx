@@ -3,6 +3,8 @@ import styled from "styled-components/native";
 import Icons from "@icons";
 import { Suspense } from "react";
 import Loader from "./Loader";
+import MessageModal from "@animated/Message-modal";
+import { messageModal } from "@store/message-modal";
 
 interface CircleProps {
   $left?: number | 'initial';
@@ -43,6 +45,9 @@ function Wrapper({ children }: { children: React.ReactNode }) {
         <SvgXml xml={Icons["bottom circle"]} />
       </Circle>
       <Suspense fallback={<Loader />}>
+        <MessageModal
+          onPress={() => messageModal.setIsOpen(false)}
+        />
         {children}
       </Suspense>
     </Container>

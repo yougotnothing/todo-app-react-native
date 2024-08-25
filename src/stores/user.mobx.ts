@@ -3,9 +3,11 @@ import { api } from "axios-config";
 import { ChangePasswordDto } from "dto/change-password";
 import { LoginDto } from "dto/login";
 import { UserDto } from "dto/user";
-import { action, makeObservable, observable, runInAction } from "mobx";
+import { action, autorun, makeObservable, observable, runInAction } from "mobx";
 import { DATE_CONFIG } from "@config/date";
 import { UUID } from "@interfaces/uuid";
+
+type PromiseType<T> = T extends Promise<infer T> ? T : never;
 
 class UserStore implements UserDto {
   @observable name: string = "";
@@ -56,7 +58,6 @@ class UserStore implements UserDto {
       await AsyncStorage.setItem('token', response.data.session as string);
 
       await this.getUser();
-
       return { isLoggedSuccess: true };
 
     }catch(error: any) {
@@ -87,7 +88,6 @@ class UserStore implements UserDto {
 
       await AsyncStorage.setItem('token', response.data.token);
       await this.getUser();
-      
     }catch(error: any) {
       console.error(error.response.data);
       return;
@@ -115,7 +115,7 @@ class UserStore implements UserDto {
   }
 
   @action
-  async changeName(name: string) {
+  async changeName(name: string): Promise<{ message: string }> {
     try {
       const response = await api.patch('/user/change-name', {
         newName: name
@@ -124,9 +124,11 @@ class UserStore implements UserDto {
       console.log(response.data);
 
       await this.getUser();
+
+      return response.data;
     }catch(error: any) {
       console.error(error.response.data);
-      return;
+      return error.response.data;
     }
   }
 
@@ -163,17 +165,18 @@ class UserStore implements UserDto {
     });
   }
 
-  async sendEmailVerification() {
+  async sendEmailVerification(): Promise<{ message: string, status: number }> {
     try {
       this.setVerificationMessage("");
       const response = await api.post('/mail/send-verify-email-message');
 
       this.setVerificationMessage(response.data.message);
+      return response.data;
     }catch(error: any) {
       this.setVerificationMessage(error.response.data.message);
 
       console.error(error.response.data.message);
-      return;
+      return error.response.data;
     }
   }
 }

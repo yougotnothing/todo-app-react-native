@@ -46,10 +46,19 @@ class ChangeAvatarStore {
     if(!result.canceled) {
       this.setIsFetching(true);
       await this.setAvatarFile(result.assets[0]);
-      await this.changeAvatar();
+      const response = await this.changeAvatar();
       this.setAvatar(result.assets[0].uri);
       this.setIsFetching(false);
+
+      return response.message;
     };
+
+    return "no avatar found";
+  }
+
+  @action
+  private _setAvatarFile(file: { uri: string, name: string, type: string }) {
+    this.avatarFile = file as unknown as File;
   }
 
   @action
@@ -66,7 +75,7 @@ class ChangeAvatarStore {
         };
         
         this.setAvatar(fileUri);
-        this.avatarFile = file as unknown as File;
+        this._setAvatarFile(file);
       }
     }catch(error: unknown) {
       console.error("failed to set avatar file: ", error);
@@ -75,8 +84,8 @@ class ChangeAvatarStore {
   }
 
   @action
-  async changeAvatar() {
-    if(!this.avatarFile) return;
+  async changeAvatar(): Promise<{ message: string }> {
+    if(!this.avatarFile) return { message: "no avatar found" };
 
     try {
       this.setIsFetching(true);
@@ -89,17 +98,19 @@ class ChangeAvatarStore {
         type: 'image/jpeg'
       } as unknown as Blob);
 
-      await api.post('/user/change-avatar', formData, {
+      const response = await api.post('/user/change-avatar', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
 
       this.setIsFetching(false);
-    }catch(error: unknown) {
+
+      return response.data;
+    }catch(error: any) {
       this.setIsFetching(false);
       console.error("failed to change avatar: ", error);
-      return;
+      return error.response.data;
     }
   }
 }

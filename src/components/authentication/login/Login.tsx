@@ -40,9 +40,9 @@ export default function Login() {
 
     await user.login(formik.values)
               .then(({ isLoggedSuccess }) => {
-                isLoggedSuccess && navigation.navigate('Root')
+                isLoggedSuccess && navigation.navigate('Root');
                 if(!user.isVerified) user.sendEmailVerification();
-              });
+              })
   }
 
   return (

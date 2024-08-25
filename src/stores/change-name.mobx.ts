@@ -3,6 +3,7 @@ import { user } from "./user.mobx";
 
 class ChangeNameStore {
 	@observable newName: string = "";
+	@observable isFetching: boolean = false;
 
 	constructor() {
 		makeObservable(this);

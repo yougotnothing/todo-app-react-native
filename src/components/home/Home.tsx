@@ -21,7 +21,6 @@ import { user } from "@store/user";
 import { createTaskModal } from "@store/create-task-modal";
 import { observer } from "mobx-react";
 import { tasksPages } from "@store/tasks-pages";
-import CreateTask from "components/create-task/Create-task";
 import { TaskType, UserTasks } from "dto/todo";
 import { RouterProps } from "router/router.interface";
 import UserAvatar from "@templates/User-avatar";
@@ -31,6 +30,8 @@ import { Platform } from "react-native";
 import { shadowStyle } from "@templates/styles/shadow";
 import TasksInput from "@animated/Tasks-input";
 import Navbar from "@templates/Navbar";
+import MessageModal from "@animated/Message-modal";
+import NewTask from "@templates/New-task/New-task";
 
 function Home() {
   const [date, setDate] = useState<string>(new Date().toLocaleDateString('en-US', DATE_CONFIG));
@@ -38,8 +39,8 @@ function Home() {
 
   useFocusEffect(
     useCallback(() => {
-      user.getUser();
-    }, [{ ...user }])
+      user.getAvatar();
+    }, [user])
   );
 
   useEffect(() => {
@@ -65,7 +66,7 @@ function Home() {
 
   return (
     <Container>
-      <CreateTask />
+      <NewTask />
       <Header>
         <LeftCircle>
           <SvgXml 
@@ -88,6 +89,7 @@ function Home() {
             <UserAvatar user={user} size={40} onPress={() => navigation.navigate('Profile')} />
           ]}
         />
+        <MessageModal />
         <TextWrapper>
           <Text color="#363636" fontFamily="Jost-Medium" size="medium" text="you have" />
           <Text color="white" fontFamily="Jost-Medium" size="large" text={`${tasks.tasks["today"].length} tasks`} />
