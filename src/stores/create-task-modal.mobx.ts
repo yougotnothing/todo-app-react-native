@@ -1,4 +1,4 @@
-import { TaskEntity, TaskType } from "dto/todo";
+import { TaskEntity, TaskType, TodoDto } from "dto/todo";
 import { action, makeObservable, observable } from "mobx";
 import { user } from "./user.mobx";
 import { api } from "axios-config";
@@ -28,9 +28,14 @@ class CreateTaskModalStore implements TaskEntity {
   @observable important: boolean = false;
   @observable tasks: Array<{ isChecked: boolean, content: string }> = [];
   @observable createdAt: string = new Date().toLocaleDateString('en-US', DATE_CONFIG);
+  @observable modalHeader: string = "Add a new task";
 
   constructor() {
     makeObservable(this);
+  }
+
+  @action setModalHeader(header: string) {
+    this.modalHeader = header;
   }
 
   @action
@@ -155,6 +160,23 @@ class CreateTaskModalStore implements TaskEntity {
       console.error(error);
       return { status: error.response.status };
     }
+  }
+
+  @action
+  setSubtasks(tasks: Array<{ isChecked: boolean, content: string }>) {
+    this.tasks = tasks;
+  }
+
+  @action
+  setTask(task: TodoDto) {
+    this.setModalHeader("Edit task")
+    this.setSubtasks(task.tasks);
+    this.setHeader(task.header);
+    this.setContent(task.content);
+    this.setType(task.type);
+    this.setTill(task.till);
+    this.setFrom(task.from);
+    this.setImportant(task.important);
   }
 }
 

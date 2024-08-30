@@ -54,8 +54,8 @@ class UserStore implements UserDto {
       });
 
       if(response.status !== 200) return { isLoggedSuccess: false };
-      this.sessionID = response.data.session as string;
       await AsyncStorage.setItem('token', response.data.session as string);
+      this.setSessionID(await AsyncStorage.getItem('token'));
 
       await this.getUser();
       return { isLoggedSuccess: true };
@@ -80,17 +80,18 @@ class UserStore implements UserDto {
   }
 
   @action
-  async changePassword(dto: ChangePasswordDto) {
+  async changePassword(dto: ChangePasswordDto): Promise<string> {
     try {
       const response = await api.patch('/user/change-password', {
         ...dto,
       });
 
-      await AsyncStorage.setItem('token', response.data.token);
       await this.getUser();
+
+      return response.data.message;
     }catch(error: any) {
       console.error(error.response.data);
-      return;
+      return error.response.data.message;
     }
   }
 

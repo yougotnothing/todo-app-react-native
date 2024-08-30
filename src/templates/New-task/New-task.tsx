@@ -116,7 +116,7 @@ function NewTask() {
     >
       <Wrapper style={wrapperStyle}>
       <Header>
-        <Text color="#363636" fontFamily="Jost-Medium" size="small" text="Add a new task" />
+        <Text color="#363636" fontFamily="Jost-Medium" size="small" text={createTaskModal.modalHeader} />
         <ImportantButton onPress={() => createTaskModal.setImportant(!createTaskModal.important)}>
           <SvgXml xml={Icons[`important ${createTaskModal.important ? "enabled" : "disabled"}`]} />
         </ImportantButton>

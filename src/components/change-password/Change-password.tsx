@@ -6,19 +6,23 @@ import Input from "@templates/Input";
 import { changePassword } from "@store/change-password";
 import { useNavigation } from "@react-navigation/native";
 import { RouterProps } from "router/router.interface";
-import Text from "@templates/Text";
 import { user } from "@store/user";
 import TransparentButton from "@templates/Transparent-button";
 import BackButton from "@templates/Back-button";
 import ConfirmButton from "@templates/Confirm-button";
+import { messageModal } from "@store/message-modal";
 
 function ChangePassword() {
   const navigation = useNavigation<RouterProps>();
 
   const handleChangePassword = async () => {
-    await user.changePassword(changePassword.toPasswordDto());
-    navigation.navigate('Home');
-    changePassword.clearFields();
+    await user.changePassword(changePassword.toPasswordDto())
+              .then(req => {
+                messageModal.setIsOpen(true);
+                messageModal.setMessage(req);
+                navigation.navigate('Home');
+                changePassword.clearFields();
+              });
   }
 
   return (

@@ -139,7 +139,7 @@ function Task({ header, content, isChecked, from, till, tasks, onPressCheckbox }
   const [isTaskChecked, setIsTaskChecked] = useState<boolean>(isChecked);
   const [isChildrenChecked, setIsChildrenChecked] = useState<boolean[]>(Array(tasks?.length).fill(false));
   const [isActionsOpen, setIsActionsOpen] = useState<boolean>(false);
-  const [isActive, setIsActive] = useState<boolean[]>(Array(3).fill(false));
+  const [isActive, setIsActive] = useState<boolean[]>(Array(2).fill(false));
   const todoActionsRef = useRef<View>(null);
 
   const handleSetIsActive = (index: number, value: boolean) => { 
@@ -208,9 +208,6 @@ function Task({ header, content, isChecked, from, till, tasks, onPressCheckbox }
           <SvgXml xml={Icons["three dots"]} />
         </Settings>
         <TodoActions $isOpen={isActionsOpen} forwardedAs={View} ref={todoActionsRef}>
-          <TodoAction activeOpacity={1} $isActive={isActive[0]} {...todoActionPress(0)}>
-            <Text color={isActive[0] ? 'white' : '#363636'} size="small" fontFamily="Jost-Regular" text="add subtasks" />
-          </TodoAction>
           <TodoAction activeOpacity={1} $isActive={isActive[1]} {...todoActionPress(1)}>
             <Text color={isActive[1] ? 'white' : '#363636'} size="small" fontFamily="Jost-Regular" text="edit tasks" />
           </TodoAction>

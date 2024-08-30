@@ -59,8 +59,11 @@ function Home() {
   const handlePressTodoButton = async (type: TaskType | undefined) => {
     if(type) {
       tasksPages.setType(type);
+      createTaskModal.setType(type.toLowerCase() as TaskType);
       await tasksPages.getTasksByType(type);
       navigation.navigate(`${type} tasks`);
+
+      console.log('type: ', createTaskModal.type);
     }else createTaskModal.open("till from");
   };
 

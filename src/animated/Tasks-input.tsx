@@ -1,4 +1,5 @@
 import Icons from "@icons";
+import { createTaskModal } from "@store/create-task-modal";
 import { searchTasks } from "@store/search-tasks";
 import MiniTask from "@templates/Mini-task";
 import { BlurView } from "expo-blur";
@@ -206,7 +207,11 @@ function TasksInput() {
         </InputWrapper>
         <TasksWrapper onTouchEnd={handlePressOutside} style={tasksWrapperStyle}>
           {searchTasks.tasks.map((task) => (
-            <MiniTask key={task.id} {...task} onPress={() => console.log(task)} />
+            <MiniTask key={task.id} {...task} onPress={() => {
+              handleExit();
+              createTaskModal.setTask(task);
+              createTaskModal.open('till from');
+            }} />
           ))}
         </TasksWrapper>
       </BlurView>
